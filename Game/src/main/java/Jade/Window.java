@@ -62,7 +62,13 @@ public class Window {
             throw new IllegalStateException("Fail to create the GLFW Window");
         }
         
-        GLFW.glfwSetCursor(glfwWindow, MouseListener::mousePosCallback);
+        // Events Callback
+        GLFW.glfwSetCursorPosCallback(glfwWindow, MouseListener::mousePosCallback);  
+        GLFW.glfwSetMouseButtonCallback(glfwWindow, MouseListener::mouseButtonCallback);
+        GLFW.glfwSetScrollCallback(glfwWindow, MouseListener::mouseScrollCallback);
+        GLFW.glfwSetKeyCallback(glfwWindow, keysListener::keyCallback);
+        
+        
         // Make the open GL context current
         GLFW.glfwMakeContextCurrent(glfwWindow);
         
@@ -84,6 +90,11 @@ public class Window {
         while(! GLFW.glfwWindowShouldClose(glfwWindow)){
             //poll Events
             GLFW.glfwPollEvents();
+            
+            if(keysListener.isKeyPress(GLFW.GLFW_KEY_SPACE)){
+                System.out.println(" Space key is pressed");
+            }
+            
             
             GL11.glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT); // said how to clear the buffer
