@@ -2,6 +2,7 @@
 package Jade;
 
 import jdk.nashorn.internal.runtime.Version;
+import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.system.MemoryUtil;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -30,6 +31,15 @@ public class Window {
         System.out.println(Tittle + Version.version());
         init();
         loop();
+        
+        // free memory 
+        Callbacks.glfwFreeCallbacks(glfwWindow);
+        GLFW.glfwDestroyWindow(glfwWindow);
+        
+        // Terminate GLFW the free the error callback
+        GLFW.glfwTerminate();
+        GLFW.glfwSetErrorCallback(null).free();
+        
         
     }
     public void init(){
