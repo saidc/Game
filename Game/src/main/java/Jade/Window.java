@@ -62,6 +62,7 @@ public class Window {
             throw new IllegalStateException("Fail to create the GLFW Window");
         }
         
+        GLFW.glfwSetCursor(glfwWindow, MouseListener::mousePosCallback);
         // Make the open GL context current
         GLFW.glfwMakeContextCurrent(glfwWindow);
         
