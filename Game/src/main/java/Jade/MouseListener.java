@@ -23,4 +23,15 @@ public class MouseListener {
         }
         return MouseListener.instance;
     }
+    public static void mousePosCallback(long window , double xPos, double yPos){
+        get().lastX = get().xPos;
+        get().lastY = get().yPos;
+        get().xPos = xPos;
+        get().yPos = yPos;
+        
+    }
+    public static void mouseButtonCallback(long window, int button , int action , int mods ){
+        //get().mouseButtonPressed[button] = true;
+        
+    }
 }
