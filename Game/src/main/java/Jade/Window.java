@@ -1,6 +1,11 @@
 
 package Jade;
 
+import Jade.EventListener.keysListener;
+import Jade.EventListener.MouseListener;
+import Jade.Scenes.LevelEditoScene;
+import Jade.Scenes.LevelScene;
+import Util.Time;
 import jdk.nashorn.internal.runtime.Version;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
@@ -15,12 +20,31 @@ public class Window {
     private static Window window = null;
     long glfwWindow;
     
+    private static Scene currentScene = null;
+    
     private Window(){
         this.width  = 1920;
         this.height = 1080;
         this.Tittle = "Game";
         
     }
+    
+    public static void changeScene(int newScene){
+        switch(newScene){
+            case 0:
+                currentScene = new LevelEditoScene();
+                //currentScene.init();
+                break;
+            case 1:
+                currentScene = new LevelScene();
+                break;
+            default: 
+                assert false : " Unknown scene '"+ newScene +"'";
+                break;
+                
+        }
+    }
+    
     public static Window get(){
         if(Window.window == null){
             Window.window = new Window();
@@ -86,20 +110,31 @@ public class Window {
        
         
     }
+    
     public void loop(){
+        float endTime, beginTime = Time.getTime();
+        float dt = -1.0f; // delta time
+        
+        Window.changeScene(0);// init with the scene 0
+        
         while(! GLFW.glfwWindowShouldClose(glfwWindow)){
             //poll Events
             GLFW.glfwPollEvents();
             
-            if(keysListener.isKeyPress(GLFW.GLFW_KEY_SPACE)){
-                System.out.println(" Space key is pressed");
+            // calling the actual Scene
+            if(dt > 0){
+                currentScene.update(dt);
             }
-            
             
             GL11.glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT); // said how to clear the buffer
             GLFW.glfwSwapBuffers(glfwWindow);
             
+            // creating a delta time
+            endTime = Time.getTime();
+            dt = endTime - beginTime;
+            beginTime = endTime;
+                    
         }
     }
     

@@ -1,4 +1,4 @@
-package Jade;
+package Jade.EventListener;
 
 import org.lwjgl.glfw.GLFW;
 
