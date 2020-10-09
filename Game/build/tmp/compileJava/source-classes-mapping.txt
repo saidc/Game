@@ -4,13 +4,13 @@ Jade/Scene.java
  Jade.Scene
 Jade/EventListener/keysListener.java
  Jade.EventListener.keysListener
-Jade/Scenes/LevelEditoScene.java
- Jade.Scenes.LevelEditoScene
+Jade/Scenes/LevelScene.java
+ Jade.Scenes.LevelScene
 Game/Game.java
  Game.Game
 Jade/EventListener/MouseListener.java
  Jade.EventListener.MouseListener
-Jade/Scenes/LevelScene.java
- Jade.Scenes.LevelScene
+Jade/Scenes/LevelEditoScene.java
+ Jade.Scenes.LevelEditoScene
 Jade/Window.java
  Jade.Window
