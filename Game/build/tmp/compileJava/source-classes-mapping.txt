@@ -1,16 +1,16 @@
 Util/Time.java
  Util.Time
-Jade/Scene.java
- Jade.Scene
-Jade/EventListener/keysListener.java
- Jade.EventListener.keysListener
-Jade/Scenes/LevelScene.java
- Jade.Scenes.LevelScene
-Game/Game.java
- Game.Game
 Jade/EventListener/MouseListener.java
  Jade.EventListener.MouseListener
+Jade/EventListener/keysListener.java
+ Jade.EventListener.keysListener
+Jade/Scene.java
+ Jade.Scene
+Jade/Scenes/LevelScene.java
+ Jade.Scenes.LevelScene
 Jade/Scenes/LevelEditoScene.java
  Jade.Scenes.LevelEditoScene
+Game/Game.java
+ Game.Game
 Jade/Window.java
  Jade.Window

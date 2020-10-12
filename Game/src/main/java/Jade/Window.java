@@ -33,10 +33,11 @@ public class Window {
         switch(newScene){
             case 0:
                 currentScene = new LevelEditoScene();
-                //currentScene.init();
+                currentScene.init();
                 break;
             case 1:
                 currentScene = new LevelScene();
+                currentScene.init();
                 break;
             default: 
                 assert false : " Unknown scene '"+ newScene +"'";
@@ -121,14 +122,20 @@ public class Window {
             //poll Events
             GLFW.glfwPollEvents();
             
+            // Render pass 1. Render to picking texture
+            //GL11.glDisable(GL11.GL_BLEND);
+            //GL11.pickingTexture.enableWriting();
+            
+            GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT  | GL11.GL_DEPTH_BUFFER_BIT); // said how to clear the buffer
+            
             // calling the actual Scene
-            if(dt > 0){
+            if(dt >= 0){
                 currentScene.update(dt);
             }
             
-            GL11.glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
-            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT); // said how to clear the buffer
             GLFW.glfwSwapBuffers(glfwWindow);
+            
             
             // creating a delta time
             endTime = Time.getTime();

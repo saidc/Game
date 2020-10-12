@@ -14,12 +14,6 @@ public class LevelScene extends Scene{
 
     @Override
     public void update(float dt) {
-        if(keysListener.isKeyPress(GLFW.GLFW_KEY_SPACE)){
-            System.out.println(" Space key is pressed in LecelScene");
-        }
-        if(keysListener.isKeyPress(GLFW.GLFW_KEY_D)){
-            System.out.println(" D key is pressed");
-            Window.changeScene(0);
-        }
+        
     }
 }
