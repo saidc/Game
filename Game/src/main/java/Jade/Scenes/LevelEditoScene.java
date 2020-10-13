@@ -10,6 +10,7 @@ import org.lwjgl.BufferUtils;
         
 import org.lwjgl.opengl.GL20 ;
 import static org.lwjgl.opengl.GL30.* ;
+import renderer.Shader;
         
 public class LevelEditoScene extends Scene {
     
@@ -56,6 +57,7 @@ public class LevelEditoScene extends Scene {
     public LevelEditoScene(){
         System.out.println("you are in LevelEditorScene");
         
+        Shader testShader = new Shader("src/main/java/assets/shader/default.glsl");
     }
     
     @Override
