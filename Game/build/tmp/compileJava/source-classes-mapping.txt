@@ -10,9 +10,9 @@ Jade/Scenes/LevelScene.java
  Jade.Scenes.LevelScene
 Game/Game.java
  Game.Game
-Jade/Window.java
- Jade.Window
 Jade/Scenes/LevelEditoScene.java
  Jade.Scenes.LevelEditoScene
+Jade/Window.java
+ Jade.Window
 renderer/Shader.java
  renderer.Shader
