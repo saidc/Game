@@ -4,10 +4,9 @@ package renderer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import static org.lwjgl.opengl.GL11.GL_FALSE;
+
 import org.lwjgl.opengl.GL20;
 import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
 
 public class Shader {
 
@@ -112,9 +111,7 @@ public class Shader {
             System.out.println(GL20.glGetProgramInfoLog(shaderProgramID, len));
             assert false : "";
         }
-        
     }
-
     public void use() {
         // Bind shader program
         glUseProgram(shaderProgramID);
