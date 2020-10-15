@@ -57,11 +57,12 @@ public class LevelEditoScene extends Scene {
     public LevelEditoScene(){
         System.out.println("you are in LevelEditorScene");
         
-        Shader testShader = new Shader("src/main/java/assets/shader/default.glsl");
+        
     }
     
     @Override
     public void init() {
+        Shader testShader = new Shader("src/main/java/assets/shader/default.glsl");
         /* =================================
             Compile and Link Shaders
            =================================
