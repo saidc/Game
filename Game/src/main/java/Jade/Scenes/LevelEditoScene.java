@@ -115,15 +115,26 @@ public class LevelEditoScene extends Scene {
     @Override
     public void update(float dt) {
         
-        if (keysListener.isKeyPress(GLFW_KEY_UP)) {
-            this.camera.addPosition(new Vector2f(           0.0f  ,(-1)*dt*50.0f));
-        }else if(keysListener.isKeyPress(GLFW_KEY_DOWN)){
-            this.camera.addPosition(new Vector2f(           0.0f  , dt*50.0f));
-        }else if(keysListener.isKeyPress(GLFW_KEY_LEFT)){
-            this.camera.addPosition(new Vector2f(       dt*50.0f  , 0.0f));
-        }else if(keysListener.isKeyPress(GLFW_KEY_RIGHT)){
-            this.camera.addPosition(new Vector2f(  (-1)*dt*50.0f  , 0.0f));
+        if(      keysListener.isKeyPress(GLFW_KEY_RIGHT) && keysListener.isKeyPress(GLFW_KEY_UP))  {
+            this.camera.addPosition(new Vector2f(  (-1)*dt*50.0f  , (-1)*dt*50.0f));
+        }else if(keysListener.isKeyPress(GLFW_KEY_RIGHT) && keysListener.isKeyPress(GLFW_KEY_DOWN)){
+            this.camera.addPosition(new Vector2f(  (-1)*dt*50.0f  ,      dt*50.0f));
+        }else if(keysListener.isKeyPress(GLFW_KEY_LEFT)  && keysListener.isKeyPress(GLFW_KEY_DOWN)){
+            this.camera.addPosition(new Vector2f(       dt*50.0f  ,      dt*50.0f));
+        }else if(keysListener.isKeyPress(GLFW_KEY_LEFT)  && keysListener.isKeyPress(GLFW_KEY_UP))  {
+            this.camera.addPosition(new Vector2f(       dt*50.0f  , (-1)*dt*50.0f));
+        }else{
+            if (keysListener.isKeyPress(GLFW_KEY_UP)) {
+                this.camera.addPosition(new Vector2f(           0.0f  ,(-1)*dt*50.0f));
+            }else if(keysListener.isKeyPress(GLFW_KEY_DOWN)){
+                this.camera.addPosition(new Vector2f(           0.0f  , dt*50.0f));
+            }else if(keysListener.isKeyPress(GLFW_KEY_LEFT)){
+                this.camera.addPosition(new Vector2f(       dt*50.0f  , 0.0f));
+            }else if(keysListener.isKeyPress(GLFW_KEY_RIGHT)){
+                this.camera.addPosition(new Vector2f(  (-1)*dt*50.0f  , 0.0f));
+            }
         }
+        
         
         this.defaultShader.use();
         this.defaultShader.uploadMat4f("uProjection", camera.getProjectionMatrix());

@@ -1,31 +1,20 @@
 Jade/EventListener/keysListener.java
  Jade.EventListener.keysListener
-renderer/Shader.java
- renderer.Shader
+Jade/Scene.java
+ Jade.Scene
 Util/Time.java
  Util.Time
 Game/Game.java
  Game.Game
 Jade/EventListener/MouseListener.java
  Jade.EventListener.MouseListener
-Jade/Scene.java
- Jade.Scene
 Jade/Camera.java
  Jade.Camera
 Jade/Scenes/LevelScene.java
  Jade.Scenes.LevelScene
-<<<<<<< HEAD
-Game/Game.java
- Game.Game
-Jade/Window.java
- Jade.Window
-Jade/Scenes/LevelEditoScene.java
- Jade.Scenes.LevelEditoScene
 renderer/Shader.java
  renderer.Shader
-=======
 Jade/Scenes/LevelEditoScene.java
  Jade.Scenes.LevelEditoScene
 Jade/Window.java
  Jade.Window
->>>>>>> Camera
