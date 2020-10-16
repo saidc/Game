@@ -1,12 +1,17 @@
 
 package Jade.Scenes;
 
+import Jade.Camera;
 import Jade.Scene;
+import Jade.EventListener.keysListener;
+
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import org.joml.Vector2f;
 
 import org.lwjgl.BufferUtils;
+import static org.lwjgl.glfw.GLFW.*;
         
 import org.lwjgl.opengl.GL20 ;
 import static org.lwjgl.opengl.GL30.* ;
@@ -40,10 +45,10 @@ public class LevelEditoScene extends Scene {
     private int  shaderProgram;
     private float[] vertexArray = {
         // Position             // Color
-         0.5f, -0.5f , 0.0f,     1.0f, 0.0f, 0.0f, 1.0f, // Bottom right    0
-        -0.5f,  0.5f , 0.0f,     1.0f, 0.0f, 0.0f, 1.0f, // Top left        1
-         0.5f,  0.5f , 0.0f,     1.0f, 0.0f, 0.0f, 1.0f, // Top Right       2
-        -0.5f, -0.5f , 0.0f,     1.0f, 0.0f, 0.0f, 1.0f, // Bottom Left     3
+        100.5f,   0.5f , 0.0f,     1.0f, 0.0f, 0.0f, 1.0f, // Bottom right    0
+          0.5f, 100.5f , 0.0f,     1.0f, 0.0f, 0.0f, 1.0f, // Top left        1
+        100.5f, 100.5f , 0.0f,     1.0f, 0.0f, 0.0f, 1.0f, // Top Right       2
+          0.5f,   0.5f , 0.0f,     1.0f, 0.0f, 0.0f, 1.0f, // Bottom Left     3
     };
     
     // IMPORTANT: Must be in counter-Clockwise Order
@@ -63,6 +68,7 @@ public class LevelEditoScene extends Scene {
     
     @Override
     public void init() {
+        this.camera = new Camera(new Vector2f(0.0f,0.0f));
         this.defaultShader = new Shader("src/main/java/assets/shader/default.glsl");
         this.defaultShader.compile();
         
@@ -108,7 +114,20 @@ public class LevelEditoScene extends Scene {
     
     @Override
     public void update(float dt) {
+        
+        if (keysListener.isKeyPress(GLFW_KEY_UP)) {
+            this.camera.addPosition(new Vector2f(           0.0f  ,(-1)*dt*50.0f));
+        }else if(keysListener.isKeyPress(GLFW_KEY_DOWN)){
+            this.camera.addPosition(new Vector2f(           0.0f  , dt*50.0f));
+        }else if(keysListener.isKeyPress(GLFW_KEY_LEFT)){
+            this.camera.addPosition(new Vector2f(       dt*50.0f  , 0.0f));
+        }else if(keysListener.isKeyPress(GLFW_KEY_RIGHT)){
+            this.camera.addPosition(new Vector2f(  (-1)*dt*50.0f  , 0.0f));
+        }
+        
         this.defaultShader.use();
+        this.defaultShader.uploadMat4f("uProjection", camera.getProjectionMatrix());
+        this.defaultShader.uploadMat4f("uView"      , camera.getViewMatrix());
         
         // Bind the VAO that we're using
         glBindVertexArray(vaoID);
