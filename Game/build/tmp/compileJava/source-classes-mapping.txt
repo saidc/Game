@@ -32,3 +32,5 @@ Jade/Scenes/LevelEditoScene.java
  Jade.Scenes.LevelEditoScene
 Jade/Window.java
  Jade.Window
+components/Spritesheet.java
+ components.Spritesheet
