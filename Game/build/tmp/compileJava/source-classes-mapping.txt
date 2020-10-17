@@ -4,18 +4,18 @@ Jade/EventListener/MouseListener.java
  Jade.EventListener.MouseListener
 Jade/Camera.java
  Jade.Camera
-Util/AssetPool.java
- Util.AssetPool
 renderer/Texture.java
  renderer.Texture
+Jade/GameObject.java
+ Jade.GameObject
 renderer/Shader.java
  renderer.Shader
 Game/Game.java
  Game.Game
-components/SpriteRender.java
- components.SpriteRender
-renderer/RenderBatch.java
- renderer.RenderBatch
+components/Spritesheet.java
+ components.Spritesheet
+components/FontRenderer.java
+ components.FontRenderer
 Util/Transform.java
  Util.Transform
 Jade/Scene.java
@@ -26,11 +26,15 @@ Jade/Scenes/LevelScene.java
  Jade.Scenes.LevelScene
 renderer/Renderer.java
  renderer.Renderer
-Jade/GameObject.java
- Jade.GameObject
+components/SpriteRender.java
+ components.SpriteRender
+renderer/RenderBatch.java
+ renderer.RenderBatch
+Util/AssetPool.java
+ Util.AssetPool
+components/Sprite.java
+ components.Sprite
 Jade/Scenes/LevelEditoScene.java
  Jade.Scenes.LevelEditoScene
 Jade/Window.java
  Jade.Window
-components/Spritesheet.java
- components.Spritesheet
