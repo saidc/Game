@@ -4,157 +4,71 @@ package Jade.Scenes;
 import Jade.Camera;
 import Jade.Scene;
 import Jade.EventListener.keysListener;
+import Jade.GameObject;
+import Util.AssetPool;
+import Util.Transform;
+import components.SpriteRender;
 
 
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
 import org.joml.Vector2f;
 
-import org.lwjgl.BufferUtils;
 import static org.lwjgl.glfw.GLFW.*;
-        
-import org.lwjgl.opengl.GL20 ;
-import static org.lwjgl.opengl.GL30.* ;
-import renderer.Shader;
         
 public class LevelEditoScene extends Scene {
     
-    private String vertexShaderSrc      = 
-            "#version 430 core\n" +
-            "layout (location=0) in vec3 aPos;\n" +
-            "layout (location=1) in vec4 aColor;\n" +
-            "\n" +
-            "out vec4 fColor;\n" +
-            "\n" +
-            "void main()\n" +
-            "{\n" +
-            "    fColor = aColor;\n" +
-            "    gl_Position = vec4(aPos, 1.0);\n" +
-            "}";
-    private String fragmentShaderSrc    = 
-            "#version 430 core\n" +
-            "\n" +
-            "in vec4 fColor;\n" +
-            "\n" +
-            "out vec4 color;\n" +
-            "\n" +
-            "void main()\n" +
-            "{\n" +
-            "    color = fColor;\n" +
-            "}";
-    private int  shaderProgram;
-    private float[] vertexArray = {
-        // Position             // Color
-        100.5f,   0.5f , 0.0f,     1.0f, 0.0f, 0.0f, 1.0f, // Bottom right    0
-          0.5f, 100.5f , 0.0f,     1.0f, 0.0f, 0.0f, 1.0f, // Top left        1
-        100.5f, 100.5f , 0.0f,     1.0f, 0.0f, 0.0f, 1.0f, // Top Right       2
-          0.5f,   0.5f , 0.0f,     1.0f, 0.0f, 0.0f, 1.0f, // Bottom Left     3
-    };
     
-    // IMPORTANT: Must be in counter-Clockwise Order
-    private int[] elementArray = {
-        2,1,0, // Top Right Triangle
-        0,1,3  // Bottom left Triangle      
-    };
-    
-    private int vaoID, vboID, eboID;
-    private Shader defaultShader;
-    
-    public LevelEditoScene(){
-        System.out.println("you are in LevelEditorScene");
-        
-        
+    public LevelEditoScene() {
+
     }
-    
+
     @Override
     public void init() {
-        this.camera = new Camera(new Vector2f(0.0f,0.0f));
-        this.defaultShader = new Shader("src/main/java/assets/shader/default.glsl");
-        this.defaultShader.compile();
+        this.camera = new Camera(new Vector2f(-250, 0));
+
+        GameObject obj1 = new GameObject("Object 1", new Transform(new Vector2f(100, 100), new Vector2f(256, 256)));
+        obj1.addComponent(new SpriteRender(AssetPool.getTexture("src/main/java/assets/images/testImage.png")));
+        this.addGameObjectToScene(obj1);
+
+        GameObject obj2 = new GameObject("Object 2", new Transform(new Vector2f(400, 100), new Vector2f(256, 256)));
+        obj2.addComponent(new SpriteRender(AssetPool.getTexture("src/main/java/assets/images/testImage2.png")));
+        this.addGameObjectToScene(obj2);
         
-        
-        /*  ===================================================================
-         *  Generate VAO, VBO, add EBO Buffer Objects, and send to de GPU
-         *  =================================================================== 
-         */
-        vaoID = glGenVertexArrays();
-        glBindVertexArray(vaoID);
+        GameObject obj3 = new GameObject("Object 3", new Transform(new Vector2f(800, 100), new Vector2f(256, 256)));
+        obj3.addComponent(new SpriteRender(AssetPool.getTexture("src/main/java/assets/images/testImage3.png")));
+        this.addGameObjectToScene(obj3);
 
-        // Create a float buffer of vertices
-        FloatBuffer vertexBuffer = BufferUtils.createFloatBuffer(vertexArray.length);
-        vertexBuffer.put(vertexArray).flip();
-
-        // Create VBO upload the vertex buffer
-        vboID = glGenBuffers();
-        glBindBuffer(GL_ARRAY_BUFFER, vboID);
-        glBufferData(GL_ARRAY_BUFFER, vertexBuffer, GL_STATIC_DRAW);
-
-        // Create the indices and upload
-        IntBuffer elementBuffer = BufferUtils.createIntBuffer(elementArray.length);
-        elementBuffer.put(elementArray).flip();
-
-        eboID = glGenBuffers();
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eboID);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementBuffer, GL_STATIC_DRAW);
-
-        // Add the vertex attribute pointers
-        int positionsSize = 3;
-        int colorSize = 4;
-        int floatSizeBytes = 4;
-        int vertexSizeBytes = (positionsSize + colorSize) * floatSizeBytes;
-        glVertexAttribPointer(0, positionsSize, GL_FLOAT, false, vertexSizeBytes, 0);
-        glEnableVertexAttribArray(0);
-
-        glVertexAttribPointer(1, colorSize, GL_FLOAT, false, vertexSizeBytes, positionsSize * floatSizeBytes);
-        glEnableVertexAttribArray(1);
-        
-        
-        
+        loadResources();
     }
-    
+
+    private void loadResources() {
+        AssetPool.getShader("src/main/java/assets/shader/default.glsl");
+    }
+
     @Override
     public void update(float dt) {
-        
-        if(      keysListener.isKeyPress(GLFW_KEY_RIGHT) && keysListener.isKeyPress(GLFW_KEY_UP))  {
-            this.camera.addPosition(new Vector2f(  (-1)*dt*50.0f  , (-1)*dt*50.0f));
-        }else if(keysListener.isKeyPress(GLFW_KEY_RIGHT) && keysListener.isKeyPress(GLFW_KEY_DOWN)){
-            this.camera.addPosition(new Vector2f(  (-1)*dt*50.0f  ,      dt*50.0f));
-        }else if(keysListener.isKeyPress(GLFW_KEY_LEFT)  && keysListener.isKeyPress(GLFW_KEY_DOWN)){
-            this.camera.addPosition(new Vector2f(       dt*50.0f  ,      dt*50.0f));
-        }else if(keysListener.isKeyPress(GLFW_KEY_LEFT)  && keysListener.isKeyPress(GLFW_KEY_UP))  {
-            this.camera.addPosition(new Vector2f(       dt*50.0f  , (-1)*dt*50.0f));
-        }else{
-            if (keysListener.isKeyPress(GLFW_KEY_UP)) {
-                this.camera.addPosition(new Vector2f(           0.0f  ,(-1)*dt*50.0f));
-            }else if(keysListener.isKeyPress(GLFW_KEY_DOWN)){
-                this.camera.addPosition(new Vector2f(           0.0f  , dt*50.0f));
-            }else if(keysListener.isKeyPress(GLFW_KEY_LEFT)){
-                this.camera.addPosition(new Vector2f(       dt*50.0f  , 0.0f));
-            }else if(keysListener.isKeyPress(GLFW_KEY_RIGHT)){
-                this.camera.addPosition(new Vector2f(  (-1)*dt*50.0f  , 0.0f));
-            }
+        // Events
+        if (keysListener.isKeyPress(GLFW_KEY_RIGHT)) {
+            camera.addPosition(new Vector2f( 100f * dt,0.0f));
+            //this.gameObjects.get(1).move(new Vector2f( 1000f * dt,0.0f));
+            //System.out.println("right");
+        } else if (keysListener.isKeyPress(GLFW_KEY_LEFT)) {
+            camera.addPosition(new Vector2f(-100f * dt,0.0f));
+            //this.gameObjects.get(1).move(new Vector2f(-100f * dt,0.0f));
+        }
+        if (keysListener.isKeyPress(GLFW_KEY_UP)) {
+            camera.addPosition(new Vector2f(0.0f, 100f * dt));
+            //this.gameObjects.get(1).move(new Vector2f(0.0f,  100f * dt));
+        } else if (keysListener.isKeyPress(GLFW_KEY_DOWN)) {
+            camera.addPosition(new Vector2f(0.0f,-100f * dt));
+            //this.gameObjects.get(1).move(new Vector2f(0.0f, -100f * dt));
         }
         
+        // update gameObjects information
+        for (GameObject go : this.gameObjects) {
+            go.update(dt);
+        }
         
-        this.defaultShader.use();
-        this.defaultShader.uploadMat4f("uProjection", camera.getProjectionMatrix());
-        this.defaultShader.uploadMat4f("uView"      , camera.getViewMatrix());
-        
-        // Bind the VAO that we're using
-        glBindVertexArray(vaoID);
-
-        // Enable the vertex attribute pointers
-        glEnableVertexAttribArray(0);
-        glEnableVertexAttribArray(1);
-
-        glDrawElements(GL_TRIANGLES, elementArray.length, GL_UNSIGNED_INT, 0);
-
-        // Unbind everything
-        glDisableVertexAttribArray(0);
-        glDisableVertexAttribArray(1);
-
-        glBindVertexArray(0);
-
-        this.defaultShader.detach();
+        // draw images to the window
+        this.renderer.render();
     }
 }

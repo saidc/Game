@@ -5,7 +5,7 @@ import Jade.EventListener.keysListener;
 import Jade.EventListener.MouseListener;
 import Jade.Scenes.LevelEditoScene;
 import Jade.Scenes.LevelScene;
-import Util.Time;
+
 import jdk.nashorn.internal.runtime.Version;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
@@ -15,34 +15,43 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 
 public class Window {
+    
     private int width , height;
     private String Tittle ;
-    private static Window window = null;
-    long glfwWindow;
+    private long glfwWindow;
     
-    private static Scene currentScene = null;
+     public float r, g, b, a;
+    private boolean fadeToBlack = false;
+    private static Window window = null;
+
+    private static Scene currentScene;
     
     private Window(){
         this.width  = 1920;
         this.height = 1080;
         this.Tittle = "Game";
-        
+        r = 0;
+        b = 0;
+        g = 0;
+        a = 1;
     }
     
-    public static void changeScene(int newScene){
-        switch(newScene){
+    
+    public static void changeScene(int newScene) {
+        switch (newScene) {
             case 0:
                 currentScene = new LevelEditoScene();
                 currentScene.init();
+                currentScene.start();
                 break;
             case 1:
                 currentScene = new LevelScene();
                 currentScene.init();
+                currentScene.start();
                 break;
-            default: 
-                assert false : " Unknown scene '"+ newScene +"'";
+            default:
+                assert false : "Unknown scene '" + newScene + "'";
                 break;
-                
         }
     }
     
@@ -52,6 +61,11 @@ public class Window {
         }
         return Window.window;
     }
+    
+    public static Scene getScene() {
+        return get().currentScene;
+    }
+    
     public void run(){
         System.out.println(Tittle + Version.version());
         init();
@@ -67,6 +81,7 @@ public class Window {
         
         
     }
+    
     public void init(){
         // set up an error call back 
         GLFWErrorCallback.createPrint(System.err).set();
@@ -109,14 +124,13 @@ public class Window {
         // bindings available for use.
         GL.createCapabilities();
        
-        
+        Window.changeScene(0);// init with the scene 0
     }
     
     public void loop(){
-        float endTime, beginTime = Time.getTime();
+        float endTime, beginTime = (float)GLFW.glfwGetTime();//Time.getTime();
         float dt = -1.0f; // delta time
         
-        Window.changeScene(0);// init with the scene 0
         
         while(! GLFW.glfwWindowShouldClose(glfwWindow)){
             //poll Events
@@ -127,7 +141,7 @@ public class Window {
             //GL11.pickingTexture.enableWriting();
             
             GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT  | GL11.GL_DEPTH_BUFFER_BIT); // said how to clear the buffer
+            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT  ); // said how to clear the buffer
             
             // calling the actual Scene
             if(dt >= 0){
@@ -138,7 +152,7 @@ public class Window {
             
             
             // creating a delta time
-            endTime = Time.getTime();
+            endTime = (float)GLFW.glfwGetTime();
             dt = endTime - beginTime;
             beginTime = endTime;
                     
