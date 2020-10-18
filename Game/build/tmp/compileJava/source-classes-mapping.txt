@@ -4,16 +4,16 @@ Jade/EventListener/keysListener.java
  Jade.EventListener.keysListener
 components/FontRenderer.java
  components.FontRenderer
-Game/Game.java
- Game.Game
+Jade/Scenes/LevelEditoScene.java
+ Jade.Scenes.LevelEditoScene
 components/Spritesheet.java
  components.Spritesheet
 renderer/Renderer.java
  renderer.Renderer
 Jade/Scene.java
  Jade.Scene
-renderer/RenderBatch.java
- renderer.RenderBatch
+renderer/Shader.java
+ renderer.Shader
 Util/Transform.java
  Util.Transform
 Util/AssetPool.java
@@ -32,9 +32,9 @@ Jade/Scenes/LevelScene.java
  Jade.Scenes.LevelScene
 Jade/GameObject.java
  Jade.GameObject
-renderer/Shader.java
- renderer.Shader
-Jade/Scenes/LevelEditoScene.java
- Jade.Scenes.LevelEditoScene
+renderer/RenderBatch.java
+ renderer.RenderBatch
+Game/Game.java
+ Game.Game
 Jade/Window.java
  Jade.Window

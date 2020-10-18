@@ -12,7 +12,8 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.system.MemoryUtil;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
-import org.lwjgl.opengl.GL11;
+import static org.lwjgl.opengl.GL11.*;
+import org.lwjgl.opengl.GL11C;
 
 public class Window {
     
@@ -30,9 +31,9 @@ public class Window {
         this.width  = 1920;
         this.height = 1080;
         this.Tittle = "Game";
-        r = 0;
-        b = 0;
-        g = 0;
+        r = 1;
+        b = 1;
+        g = 1;
         a = 1;
     }
     
@@ -124,6 +125,9 @@ public class Window {
         // bindings available for use.
         GL.createCapabilities();
        
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+        
         Window.changeScene(0);// init with the scene 0
     }
     
@@ -140,8 +144,8 @@ public class Window {
             //GL11.glDisable(GL11.GL_BLEND);
             //GL11.pickingTexture.enableWriting();
             
-            GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT  ); // said how to clear the buffer
+            glClearColor(r,g,b,a);
+            glClear(GL_COLOR_BUFFER_BIT  ); // said how to clear the buffer
             
             // calling the actual Scene
             if(dt >= 0){
