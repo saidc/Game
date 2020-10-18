@@ -4,8 +4,8 @@ package Util;
 import org.joml.Vector2f;
 
 public class Transform {
-    private Vector2f position;
-    private Vector2f scale;
+    public Vector2f position;
+    public Vector2f scale;
 
     public Transform() {
         init(new Vector2f(), new Vector2f());
@@ -34,4 +34,21 @@ public class Transform {
         this.position.x += add.x;
         this.position.y += add.y;
     }
+    public Transform copy(){
+        return new Transform(new Vector2f(this.position),new Vector2f(this.scale));
+    }
+    public void copy (Transform to){
+        to.position.set(this.position);
+        to.scale.set(this.scale);
+    }
+    
+    @Override
+    public boolean equals(Object o){
+        if (o == null) return false;
+        if (!(o instanceof Transform)) return false;
+
+        Transform t = (Transform)o;
+        return t.position.equals(this.position) && t.scale.equals(this.scale);
+    }
+    
 }

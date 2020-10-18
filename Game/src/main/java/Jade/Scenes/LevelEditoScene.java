@@ -19,6 +19,8 @@ import static org.lwjgl.glfw.GLFW.*;
         
 public class LevelEditoScene extends Scene {
     
+    private GameObject obj1;
+    private Spritesheet sprites;
     
     public LevelEditoScene() {
 
@@ -30,9 +32,9 @@ public class LevelEditoScene extends Scene {
         this.camera = new Camera(new Vector2f(-250, 0));
         
         
-        Spritesheet sprites = AssetPool.getSpritesheet("src/main/java/assets/images/tilemap.png");
+        this.sprites = AssetPool.getSpritesheet("src/main/java/assets/images/tilemap.png");
         
-        GameObject obj1 = new GameObject("Object 1", new Transform(new Vector2f(100, 100), new Vector2f(100, 100)));
+        obj1 = new GameObject("Object 1", new Transform(new Vector2f(100, 100), new Vector2f(100, 100)));
         obj1.addComponent(new SpriteRender(new Sprite(AssetPool.getTexture("src/main/java/assets/images/testImage.png")))); // image 1
         this.addGameObjectToScene(obj1);
 
@@ -44,12 +46,11 @@ public class LevelEditoScene extends Scene {
         obj3.addComponent(new SpriteRender(new Vector4f(1.0f,0.0f,0.0f,1.0f))); // just a color 
         this.addGameObjectToScene(obj3);
         
-            
         GameObject obj4 = new GameObject("Object 4", new Transform(new Vector2f(550, 100), new Vector2f(100, 100)));
         obj4.addComponent(new SpriteRender(sprites.getSprite(24))); // sprite 
         this.addGameObjectToScene(obj4);
             
-        loadResources();
+        
     }
 
     private void loadResources() {
@@ -59,9 +60,14 @@ public class LevelEditoScene extends Scene {
                         16, 16, 486, 1));
     }
     
+    private int spriteIndex = 0;
+    private float spriteFlipTime = 0.2f;
+    private float spriteFlipTimeLeft = 0.0f;
+    
     @Override
     public void update(float dt) {
         // Events
+        /*
         if (keysListener.isKeyPress(GLFW_KEY_RIGHT)) {
             camera.addPosition(new Vector2f( 100f * dt,0.0f));
             //this.gameObjects.get(1).move(new Vector2f( 1000f * dt,0.0f));
@@ -76,6 +82,16 @@ public class LevelEditoScene extends Scene {
         } else if (keysListener.isKeyPress(GLFW_KEY_DOWN)) {
             camera.addPosition(new Vector2f(0.0f,-100f * dt));
             //this.gameObjects.get(1).move(new Vector2f(0.0f, -100f * dt));
+        }
+        */
+        spriteFlipTimeLeft -= dt;
+        if (spriteFlipTimeLeft <= 0) {
+            spriteFlipTimeLeft = spriteFlipTime;
+            spriteIndex++;
+            if (spriteIndex > 4) {
+                spriteIndex = 0;
+            }
+            obj1.getComponent(SpriteRender.class).setSprite(sprites.getSprite(spriteIndex));
         }
         
         // update gameObjects information

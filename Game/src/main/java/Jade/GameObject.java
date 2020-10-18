@@ -9,7 +9,7 @@ import org.joml.Vector2f;
 public class GameObject {
     private String name;
     private List<Component> components;
-    private Transform transform;
+    public Transform transform;
 
     public GameObject(String name) {
         this.name = name;
@@ -63,6 +63,7 @@ public class GameObject {
             components.get(i).start();
         }
     }
+    /*
     public Vector2f getPosition(){
         return this.transform.getPosition();
     }
@@ -72,4 +73,11 @@ public class GameObject {
     public void move(Vector2f movement){
         this.transform.add(movement);
     }
+    public Transform getTransformCopy(){
+        return this.transform.copy();
+    }
+    public Transform getTransform(){
+        return this.transform;
+    }
+    */
 }
