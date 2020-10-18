@@ -27,13 +27,13 @@ public class SpriteRender extends Component{
 
     @Override
     public void start() {
-        this.lastTransform = gameObject.transform.copy();
+        this.lastTransform = gameObject.getTransformCopy();
     }
 
     @Override
     public void update(float dt) {
-        if (!this.lastTransform.equals(this.gameObject.transform)) {
-            this.gameObject.transform.copy(this.lastTransform);
+        if (!this.lastTransform.equals(this.gameObject.getTransform())) {
+            this.gameObject.getTransform().copy(this.lastTransform);
             isDirty = true;
         }
     }

@@ -34,8 +34,8 @@ public class LevelEditoScene extends Scene {
         
         this.sprites = AssetPool.getSpritesheet("src/main/java/assets/images/tilemap.png");
         
-        obj1 = new GameObject("Object 1", new Transform(new Vector2f(100, 100), new Vector2f(100, 100)));
-        obj1.addComponent(new SpriteRender(new Sprite(AssetPool.getTexture("src/main/java/assets/images/testImage.png")))); // image 1
+        obj1 = new GameObject("Object 1", new Transform(new Vector2f(100, 100), new Vector2f(40, 40)));
+        obj1.addComponent(new SpriteRender(sprites.getSprite(24))); // sprite 
         this.addGameObjectToScene(obj1);
 
         GameObject obj2 = new GameObject("Object 2", new Transform(new Vector2f(250, 100), new Vector2f(100, 100)));
@@ -47,7 +47,7 @@ public class LevelEditoScene extends Scene {
         this.addGameObjectToScene(obj3);
         
         GameObject obj4 = new GameObject("Object 4", new Transform(new Vector2f(550, 100), new Vector2f(100, 100)));
-        obj4.addComponent(new SpriteRender(sprites.getSprite(24))); // sprite 
+        obj4.addComponent(new SpriteRender(new Sprite(AssetPool.getTexture("src/main/java/assets/images/testImage.png")))); // image 1
         this.addGameObjectToScene(obj4);
             
         
@@ -67,31 +67,52 @@ public class LevelEditoScene extends Scene {
     @Override
     public void update(float dt) {
         // Events
-        /*
+        
+        int dir = 4;
+        
         if (keysListener.isKeyPress(GLFW_KEY_RIGHT)) {
-            camera.addPosition(new Vector2f( 100f * dt,0.0f));
-            //this.gameObjects.get(1).move(new Vector2f( 1000f * dt,0.0f));
-            //System.out.println("right");
+            //camera.addPosition(new Vector2f( 100f * dt,0.0f));
+            this.gameObjects.get(0).move(new Vector2f( 100f * dt,0.0f));
+            dir = 3;
         } else if (keysListener.isKeyPress(GLFW_KEY_LEFT)) {
-            camera.addPosition(new Vector2f(-100f * dt,0.0f));
-            //this.gameObjects.get(1).move(new Vector2f(-100f * dt,0.0f));
+            //camera.addPosition(new Vector2f(-100f * dt,0.0f));
+            this.gameObjects.get(0).move(new Vector2f(-100f * dt,0.0f));
+            dir = 0;
         }
         if (keysListener.isKeyPress(GLFW_KEY_UP)) {
-            camera.addPosition(new Vector2f(0.0f, 100f * dt));
-            //this.gameObjects.get(1).move(new Vector2f(0.0f,  100f * dt));
+            //camera.addPosition(new Vector2f(0.0f, 100f * dt));
+            this.gameObjects.get(0).move(new Vector2f(0.0f,  100f * dt));
+            dir = 2;
         } else if (keysListener.isKeyPress(GLFW_KEY_DOWN)) {
-            camera.addPosition(new Vector2f(0.0f,-100f * dt));
-            //this.gameObjects.get(1).move(new Vector2f(0.0f, -100f * dt));
+            //camera.addPosition(new Vector2f(0.0f,-100f * dt));
+            this.gameObjects.get(0).move(new Vector2f(0.0f, -100f * dt));
+            dir = 1;
         }
-        */
+        
         spriteFlipTimeLeft -= dt;
         if (spriteFlipTimeLeft <= 0) {
             spriteFlipTimeLeft = spriteFlipTime;
-            spriteIndex++;
-            if (spriteIndex > 4) {
-                spriteIndex = 0;
+            System.out.println(dir);
+            
+            
+            switch(spriteIndex){
+                case 0:
+                    obj1.getComponent(SpriteRender.class).setSprite(sprites.getSprite(23+dir));
+                    break;
+                case 1:
+                    obj1.getComponent(SpriteRender.class).setSprite(sprites.getSprite(50+dir));
+                    break;
+                case 2:
+                    obj1.getComponent(SpriteRender.class).setSprite(sprites.getSprite(77+dir));
+                    break;
+                case 3:
+                    spriteIndex = 0;
             }
-            obj1.getComponent(SpriteRender.class).setSprite(sprites.getSprite(spriteIndex));
+            if(!(dir >= 0 && dir < 4 )){
+                obj1.getComponent(SpriteRender.class).setSprite(sprites.getSprite(24));
+            }
+            
+            spriteIndex++;
         }
         
         // update gameObjects information

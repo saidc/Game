@@ -183,8 +183,8 @@ public class RenderBatch {
             }
 
             // Load position
-            vertices[offset] = sprite.gameObject.transform.position.x + (xAdd * sprite.gameObject.transform.scale.x);
-            vertices[offset + 1] = sprite.gameObject.transform.position.y + (yAdd * sprite.gameObject.transform.scale.y);
+            vertices[offset] = sprite.gameObject.getPosition().x + (xAdd * sprite.gameObject.getScale().x);
+            vertices[offset + 1] = sprite.gameObject.getPosition().y + (yAdd * sprite.gameObject.getScale().y);
 
             // Load color
             vertices[offset + 2] = color.x;
