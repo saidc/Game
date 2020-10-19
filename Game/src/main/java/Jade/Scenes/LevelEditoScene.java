@@ -35,19 +35,19 @@ public class LevelEditoScene extends Scene {
         
         this.sprites = AssetPool.getSpritesheet("src/main/java/assets/images/tilemap.png");
         
-        obj1 = new GameObject("Object 1", new Transform(new Vector2f(100, 100), new Vector2f(40, 40)));
+        obj1 = new GameObject("Object 1", new Transform(new Vector2f(100, 100), new Vector2f(40, 40)) , 4);
         obj1.addComponent(new SpriteRender(sprites.getSprite(24))); // sprite 
         this.addGameObjectToScene(obj1);
 
-        GameObject obj2 = new GameObject("Object 2", new Transform(new Vector2f(250, 100), new Vector2f(100, 100)));
+        GameObject obj2 = new GameObject("Object 2", new Transform(new Vector2f(250, 100), new Vector2f(100, 100)),-1);
         obj2.addComponent(new SpriteRender(new Sprite(AssetPool.getTexture("src/main/java/assets/images/testImage2.png")))); // image 2
         this.addGameObjectToScene(obj2);
         
-        GameObject obj3 = new GameObject("Object 3", new Transform(new Vector2f(400, 100), new Vector2f(100, 100)));
+        GameObject obj3 = new GameObject("Object 3", new Transform(new Vector2f(400, 100), new Vector2f(100, 100)),1);
         obj3.addComponent(new SpriteRender(new Vector4f(1.0f,0.0f,0.0f,1.0f))); // just a color 
         this.addGameObjectToScene(obj3);
         
-        GameObject obj4 = new GameObject("Object 4", new Transform(new Vector2f(550, 100), new Vector2f(100, 100)));
+        GameObject obj4 = new GameObject("Object 4", new Transform(new Vector2f(550, 100), new Vector2f(100, 100)),2);
         obj4.addComponent(new SpriteRender(new Sprite(AssetPool.getTexture("src/main/java/assets/images/testImage.png")))); // image 1
         this.addGameObjectToScene(obj4);
             
@@ -66,6 +66,7 @@ public class LevelEditoScene extends Scene {
     private float spriteFlipTimeLeft = 0.0f;
     private float contador = 0.0f;
     private int conteo = 0;
+    
     @Override
     public void update(float dt) {
         
@@ -136,7 +137,7 @@ public class LevelEditoScene extends Scene {
 
     @Override
     public void MouseRelease(int button) {
-        System.out.println("release mouse "+button);
+        
     }
     @Override
     public void MousePress(int button) {

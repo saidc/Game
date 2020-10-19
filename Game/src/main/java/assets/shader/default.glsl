@@ -17,16 +17,21 @@ void main()
     fColor = aColor;
     fTexCoords = aTexCoords;
     fTexId = aTexId;
+
     gl_Position = uProjection * uView * vec4(aPos, 1.0);
 }
 
 #type fragment
 #version 330 core
+
 in vec4 fColor;
 in vec2 fTexCoords;
 in float fTexId;
+
 uniform sampler2D uTextures[8];
+
 out vec4 color;
+
 void main()
 {
     if (fTexId > 0) {

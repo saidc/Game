@@ -12,9 +12,8 @@ import static org.lwjgl.stb.STBImage.*;
 public class Texture {
     private String filepath;
     private int texID;
-    
     private int width, height;
-    
+
     public Texture(String filepath) {
         this.filepath = filepath;
 
@@ -48,11 +47,9 @@ public class Texture {
                 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width.get(0), height.get(0),
                         0, GL_RGBA, GL_UNSIGNED_BYTE, image);
             } else {
-                System.out.println("Error: (Texture) Unknown number of channesl '" + channels.get(0) + "'");
                 assert false : "Error: (Texture) Unknown number of channesl '" + channels.get(0) + "'";
             }
         } else {
-            System.out.println("Error: (Texture) Could not load image '" + filepath + "'");
             assert false : "Error: (Texture) Could not load image '" + filepath + "'";
         }
 
@@ -66,7 +63,7 @@ public class Texture {
     public void unbind() {
         glBindTexture(GL_TEXTURE_2D, 0);
     }
-    
+
     public int getWidth() {
         return this.width;
     }
