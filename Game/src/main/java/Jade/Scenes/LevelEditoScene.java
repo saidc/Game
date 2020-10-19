@@ -2,7 +2,7 @@
 package Jade.Scenes;
 
 import Jade.Camera;
-import Jade.EventListener.MouseListener;
+
 import Jade.Scene;
 import Jade.EventListener.keysListener;
 import Jade.GameObject;
@@ -35,25 +35,43 @@ public class LevelEditoScene extends Scene {
         
         this.sprites = AssetPool.getSpritesheet("src/main/java/assets/images/tilemap.png");
         
-        obj1 = new GameObject("Object 1", new Transform(new Vector2f(100, 100), new Vector2f(40, 40)) , 4);
-        obj1.addComponent(new SpriteRender(sprites.getSprite(24))); // sprite 
-        this.addGameObjectToScene(obj1);
-
-        GameObject obj2 = new GameObject("Object 2", new Transform(new Vector2f(250, 100), new Vector2f(100, 100)),-1);
+        GameObject obj2 = new GameObject("Object 2", new Transform(new Vector2f(250, 100), new Vector2f(100, 100)),-2);
         obj2.addComponent(new SpriteRender(new Sprite(AssetPool.getTexture("src/main/java/assets/images/testImage2.png")))); // image 2
         this.addGameObjectToScene(obj2);
         
-        GameObject obj3 = new GameObject("Object 3", new Transform(new Vector2f(400, 100), new Vector2f(100, 100)),1);
+        GameObject obj3 = new GameObject("Object 3", new Transform(new Vector2f(400, 100), new Vector2f(100, 100)),-1);
         obj3.addComponent(new SpriteRender(new Vector4f(1.0f,0.0f,0.0f,1.0f))); // just a color 
         this.addGameObjectToScene(obj3);
         
-        GameObject obj4 = new GameObject("Object 4", new Transform(new Vector2f(550, 100), new Vector2f(100, 100)),2);
+        obj1 = new GameObject("Object 1", new Transform(new Vector2f(100, 100), new Vector2f(40, 40)) , -3);
+        obj1.addComponent(new SpriteRender(sprites.getSprite(24))); // sprite 
+        this.addGameObjectToScene(obj1);
+
+        
+        GameObject obj4 = new GameObject("Object 4", new Transform(new Vector2f(550, 100), new Vector2f(100, 100)),-4);
         obj4.addComponent(new SpriteRender(new Sprite(AssetPool.getTexture("src/main/java/assets/images/testImage.png")))); // image 1
         this.addGameObjectToScene(obj4);
-            
+        
         
     }
-
+    
+    private int sw_init = 0;
+    private void InitGameObjects(){
+        if(this.sw_init < 2){
+            
+            for (int i = 0; i < this.gameObjects.size(); i++) {
+                if(this.sw_init == 0){
+                    this.gameObjects.get(i).move(new Vector2f(1));
+                }
+                if(this.sw_init == 1){
+                    this.gameObjects.get(i).move(new Vector2f(-1));
+                }
+            }
+            
+            this.sw_init += 1;
+        }
+    }
+    
     private void loadResources() {
         AssetPool.getShader("src/main/java/assets/shader/default.glsl");
         AssetPool.addSpritesheet("src/main/java/assets/images/tilemap.png",
@@ -67,9 +85,10 @@ public class LevelEditoScene extends Scene {
     private float contador = 0.0f;
     private int conteo = 0;
     
+    
     @Override
     public void update(float dt) {
-        
+        InitGameObjects();
         // Events
         
         int dir = 4;
@@ -93,14 +112,7 @@ public class LevelEditoScene extends Scene {
             dir = 1;
         }
         
-        
-        if(this.contador >= 1000){
-            System.out.println("contado: " + this.conteo);
-            this.conteo += 1;
-            this.contador = 0.0f;
-        }else{
-            this.contador += dt;
-        }
+       
         
         spriteFlipTimeLeft -= dt;
         if (spriteFlipTimeLeft <= 0) {
@@ -133,6 +145,8 @@ public class LevelEditoScene extends Scene {
         
         // draw images to the window
         this.renderer.render();
+        
+        
     }
 
     @Override

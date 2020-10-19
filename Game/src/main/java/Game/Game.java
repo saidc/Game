@@ -5,7 +5,7 @@ import Jade.Window;
 
 /**
  *
- * @author said-
+ * @author saidc
  */
 public class Game {
     public static void main(String[] args){
