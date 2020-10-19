@@ -3,6 +3,7 @@ package Jade;
 
 import Jade.EventListener.keysListener;
 import Jade.EventListener.MouseListener;
+import static Jade.EventListener.MouseListener.get;
 import Jade.Scenes.LevelEditoScene;
 import Jade.Scenes.LevelScene;
 
@@ -28,12 +29,16 @@ public class Window {
     private static Scene currentScene;
     
     private Window(){
+        /*
         this.width  = 1920;
         this.height = 1080;
+        */
+        this.width  = 800;
+        this.height = 800;
         this.Tittle = "Game";
-        r = 1;
-        b = 1;
-        g = 1;
+        r = 0;
+        b = 0;
+        g = 0;
         a = 1;
     }
     
@@ -105,7 +110,8 @@ public class Window {
         
         // Events Callback
         GLFW.glfwSetCursorPosCallback(glfwWindow, MouseListener::mousePosCallback);  
-        GLFW.glfwSetMouseButtonCallback(glfwWindow, MouseListener::mouseButtonCallback);
+        //GLFW.glfwSetMouseButtonCallback(glfwWindow, MouseListener::mouseButtonCallback);
+        GLFW.glfwSetMouseButtonCallback(glfwWindow, this::mouseButtonCallback );
         GLFW.glfwSetScrollCallback(glfwWindow, MouseListener::mouseScrollCallback);
         GLFW.glfwSetKeyCallback(glfwWindow, keysListener::keyCallback);
         
@@ -134,7 +140,7 @@ public class Window {
     public void loop(){
         float endTime, beginTime = (float)GLFW.glfwGetTime();//Time.getTime();
         float dt = -1.0f; // delta time
-        
+        //GLFW.glfwMaximizeWindow(glfwWindow);
         
         while(! GLFW.glfwWindowShouldClose(glfwWindow)){
             //poll Events
@@ -160,6 +166,15 @@ public class Window {
             dt = endTime - beginTime;
             beginTime = endTime;
                     
+        }
+    }
+    
+    private void mouseButtonCallback (long window, int button , int action , int mods){
+        MouseListener.mouseButtonCallback(window,button,action,mods);
+        if(action == GLFW.GLFW_PRESS){
+            this.currentScene.MousePress(button);
+        }else if(action == GLFW.GLFW_RELEASE){
+            this.currentScene.MouseRelease(button);
         }
     }
     

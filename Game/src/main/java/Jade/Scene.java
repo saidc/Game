@@ -38,7 +38,9 @@ public abstract class Scene {
     }
 
     public abstract void update(float dt);
-
+    public abstract void MousePress(int button);
+    public abstract void MouseRelease(int button);
+    
     public Camera camera() {
         return this.camera;
     }

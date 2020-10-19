@@ -8,6 +8,7 @@ public class MouseListener {
     private double scrollX,scrollY ;
     private double xPos, yPos, lastX,lastY;
     private boolean mouseButtonPressed[] = new boolean[3];
+    private boolean mouseButtonPreviousState[] = new boolean[3];
     private boolean isDragging ;
     
     private MouseListener(){
@@ -32,19 +33,23 @@ public class MouseListener {
         get().yPos = yPos;
         get().isDragging = get().mouseButtonPressed[0] || get().mouseButtonPressed[1]|| get().mouseButtonPressed[2] ;
     }
+    
     public static void mouseButtonCallback(long window, int button , int action , int mods ){
         if(action == GLFW.GLFW_PRESS){
             if(button < get().mouseButtonPressed.length ){
                 get().mouseButtonPressed[button] = true;
+                get().mouseButtonPreviousState[button] = false;
             }
         }else if(action == GLFW.GLFW_RELEASE){
             if(button < get().mouseButtonPressed.length ){
                 get().mouseButtonPressed[button] = false;
+                get().mouseButtonPreviousState[button] = true;
                 get().isDragging = false;
             }
         }
         
     }
+    
     public static void mouseScrollCallback(long window, double xOffset , double yOffset){
         get().scrollX = xOffset;
         get().scrollY = yOffset;
@@ -55,8 +60,8 @@ public class MouseListener {
         get().scrollY = 0;
         get().lastX = get().xPos;
         get().lastY = get().yPos;
-        
     }
+    
     public static float getX(){
         return (float)get().xPos;
     }

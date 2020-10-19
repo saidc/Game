@@ -2,6 +2,7 @@
 package Jade.Scenes;
 
 import Jade.Camera;
+import Jade.EventListener.MouseListener;
 import Jade.Scene;
 import Jade.EventListener.keysListener;
 import Jade.GameObject;
@@ -63,9 +64,11 @@ public class LevelEditoScene extends Scene {
     private int spriteIndex = 0;
     private float spriteFlipTime = 0.2f;
     private float spriteFlipTimeLeft = 0.0f;
-    
+    private float contador = 0.0f;
+    private int conteo = 0;
     @Override
     public void update(float dt) {
+        
         // Events
         
         int dir = 4;
@@ -87,6 +90,15 @@ public class LevelEditoScene extends Scene {
             //camera.addPosition(new Vector2f(0.0f,-100f * dt));
             this.gameObjects.get(0).move(new Vector2f(0.0f, -100f * dt));
             dir = 1;
+        }
+        
+        
+        if(this.contador >= 1000){
+            System.out.println("contado: " + this.conteo);
+            this.conteo += 1;
+            this.contador = 0.0f;
+        }else{
+            this.contador += dt;
         }
         
         spriteFlipTimeLeft -= dt;
@@ -120,5 +132,14 @@ public class LevelEditoScene extends Scene {
         
         // draw images to the window
         this.renderer.render();
+    }
+
+    @Override
+    public void MouseRelease(int button) {
+        System.out.println("release mouse "+button);
+    }
+    @Override
+    public void MousePress(int button) {
+        
     }
 }
