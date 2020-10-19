@@ -92,8 +92,6 @@ public class LevelEditoScene extends Scene {
         spriteFlipTimeLeft -= dt;
         if (spriteFlipTimeLeft <= 0) {
             spriteFlipTimeLeft = spriteFlipTime;
-            System.out.println(dir);
-            
             
             switch(spriteIndex){
                 case 0:
