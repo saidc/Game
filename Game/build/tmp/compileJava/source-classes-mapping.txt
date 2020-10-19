@@ -8,10 +8,10 @@ Game/Game.java
  Game.Game
 components/Spritesheet.java
  components.Spritesheet
-renderer/Shader.java
- renderer.Shader
-Jade/GameObject.java
- Jade.GameObject
+renderer/Renderer.java
+ renderer.Renderer
+Jade/Scene.java
+ Jade.Scene
 renderer/RenderBatch.java
  renderer.RenderBatch
 Util/Transform.java
@@ -28,12 +28,12 @@ Jade/Component.java
  Jade.Component
 Jade/Camera.java
  Jade.Camera
-Jade/Scene.java
- Jade.Scene
 Jade/Scenes/LevelScene.java
  Jade.Scenes.LevelScene
-renderer/Renderer.java
- renderer.Renderer
+Jade/GameObject.java
+ Jade.GameObject
+renderer/Shader.java
+ renderer.Shader
 Jade/Scenes/LevelEditoScene.java
  Jade.Scenes.LevelEditoScene
 Jade/Window.java

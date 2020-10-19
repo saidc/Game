@@ -4,15 +4,18 @@
   <auxiliary>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-      <group>
-        <file>file:/C:/Users/said-/Documents/NetBeansProjects/Game/Game/src/main/java/Jade/Window.java</file>
-        <file>file:/C:/Users/said-/Documents/NetBeansProjects/Game/Game/src/main/java/Game/Game.java</file>
-        <file>file:/C:/Users/said-/Documents/NetBeansProjects/Game/Game/src/main/java/Jade/MouseListener.java</file>
-      </group>
+      <group/>
     </open-files>
     <editor-bookmarks lastBookmarkId="0" xmlns="http://www.netbeans.org/ns/editor-bookmarks/2"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-      <group/>
+      <group>
+        <file>file:/C:/Users/said-/Documents/NetBeansProjects/Game/Game/build.gradle</file>
+        <file>file:/C:/Users/said-/Documents/NetBeansProjects/Game/Game/src/main/java/renderer/Renderer.java</file>
+        <file>file:/C:/Users/said-/Documents/NetBeansProjects/Game/Game/src/main/java/renderer/RenderBatch.java</file>
+        <file>file:/C:/Users/said-/Documents/NetBeansProjects/Game/Game/src/main/java/Jade/GameObject.java</file>
+        <file>file:/C:/Users/said-/Documents/NetBeansProjects/Game/Game/src/main/java/Jade/Scenes/LevelEditoScene.java</file>
+        <file>file:/C:/Users/said-/Documents/NetBeansProjects/Game/Game/src/main/java/Jade/Scene.java</file>
+      </group>
     </open-files>
   </auxiliary>
 </gradle-project-properties>

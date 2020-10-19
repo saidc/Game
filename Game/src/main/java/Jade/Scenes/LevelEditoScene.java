@@ -8,6 +8,8 @@ import Jade.EventListener.keysListener;
 import Jade.GameObject;
 import Util.AssetPool;
 import Util.Transform;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import components.Sprite;
 import components.SpriteRender;
 import components.Spritesheet;
@@ -35,24 +37,25 @@ public class LevelEditoScene extends Scene {
         
         this.sprites = AssetPool.getSpritesheet("src/main/java/assets/images/tilemap.png");
         
-        GameObject obj2 = new GameObject("Object 2", new Transform(new Vector2f(250, 100), new Vector2f(100, 100)),-2);
+        obj1 = new GameObject("Object 1", new Transform(new Vector2f(100, 100), new Vector2f(40, 40)) , -1);
+        obj1.addComponent(new SpriteRender(sprites.getSprite(24))); // sprite 
+        this.addGameObjectToScene(obj1);
+        
+        GameObject obj2 = new GameObject("Object 2", new Transform(new Vector2f(250, 100), new Vector2f(100, 100)),0);
         obj2.addComponent(new SpriteRender(new Sprite(AssetPool.getTexture("src/main/java/assets/images/testImage2.png")))); // image 2
         this.addGameObjectToScene(obj2);
         
-        GameObject obj3 = new GameObject("Object 3", new Transform(new Vector2f(400, 100), new Vector2f(100, 100)),-1);
+        GameObject obj3 = new GameObject("Object 3", new Transform(new Vector2f(400, 100), new Vector2f(100, 100)),-2);
         obj3.addComponent(new SpriteRender(new Vector4f(1.0f,0.0f,0.0f,1.0f))); // just a color 
         this.addGameObjectToScene(obj3);
         
-        obj1 = new GameObject("Object 1", new Transform(new Vector2f(100, 100), new Vector2f(40, 40)) , -3);
-        obj1.addComponent(new SpriteRender(sprites.getSprite(24))); // sprite 
-        this.addGameObjectToScene(obj1);
-
-        
-        GameObject obj4 = new GameObject("Object 4", new Transform(new Vector2f(550, 100), new Vector2f(100, 100)),-4);
+        GameObject obj4 = new GameObject("Object 4", new Transform(new Vector2f(550, 100), new Vector2f(100, 100)),0);
         obj4.addComponent(new SpriteRender(new Sprite(AssetPool.getTexture("src/main/java/assets/images/testImage.png")))); // image 1
         this.addGameObjectToScene(obj4);
         
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         
+        System.out.println(gson.toJson(this.sw_init));
     }
     
     private int sw_init = 0;
