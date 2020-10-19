@@ -14,11 +14,13 @@ import components.Sprite;
 import components.SpriteRender;
 import components.Spritesheet;
 
+import renderer.Texture;
 
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 
 import static org.lwjgl.glfw.GLFW.*;
+
         
 public class LevelEditoScene extends Scene {
     
@@ -38,24 +40,37 @@ public class LevelEditoScene extends Scene {
         this.sprites = AssetPool.getSpritesheet("src/main/java/assets/images/tilemap.png");
         
         obj1 = new GameObject("Object 1", new Transform(new Vector2f(100, 100), new Vector2f(40, 40)) , -1);
-        obj1.addComponent(new SpriteRender(sprites.getSprite(24))); // sprite 
+        SpriteRender obj1SpriteRenderer = new SpriteRender();
+        obj1SpriteRenderer.setSprite(sprites.getSprite(24));    // sprite
+        obj1.addComponent(obj1SpriteRenderer);
         this.addGameObjectToScene(obj1);
         
         GameObject obj2 = new GameObject("Object 2", new Transform(new Vector2f(250, 100), new Vector2f(100, 100)),0);
-        obj2.addComponent(new SpriteRender(new Sprite(AssetPool.getTexture("src/main/java/assets/images/testImage2.png")))); // image 2
+        Sprite obj2sprite = new Sprite();
+        obj2sprite.setTexture(AssetPool.getTexture("src/main/java/assets/images/testImage2.png")); // image 2
+        SpriteRender obj2SpriteRender = new SpriteRender();
+        obj2SpriteRender.setSprite(obj2sprite);
+        obj2.addComponent(obj2SpriteRender);
         this.addGameObjectToScene(obj2);
         
         GameObject obj3 = new GameObject("Object 3", new Transform(new Vector2f(400, 100), new Vector2f(100, 100)),-2);
-        obj3.addComponent(new SpriteRender(new Vector4f(1.0f,0.0f,0.0f,1.0f))); // just a color 
+        
+        SpriteRender obj3SpriteRender = new SpriteRender();
+        obj3SpriteRender.setColor(new Vector4f(1.0f,0.0f,0.0f,1.0f));
+        obj3.addComponent(obj3SpriteRender); // just a color 
         this.addGameObjectToScene(obj3);
         
         GameObject obj4 = new GameObject("Object 4", new Transform(new Vector2f(550, 100), new Vector2f(100, 100)),0);
-        obj4.addComponent(new SpriteRender(new Sprite(AssetPool.getTexture("src/main/java/assets/images/testImage.png")))); // image 1
+        Sprite obj4Sprite = new Sprite();
+        obj4Sprite.setTexture(AssetPool.getTexture("src/main/java/assets/images/testImage.png"));
+        SpriteRender obj4SpriteRender = new SpriteRender();
+        obj4SpriteRender.setSprite(obj4Sprite);
+        obj4.addComponent(obj4SpriteRender); // image 1
         this.addGameObjectToScene(obj4);
         
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         
-        System.out.println(gson.toJson(this.sw_init));
+        System.out.println(gson.toJson("hello world"));
     }
     
     private int sw_init = 0;

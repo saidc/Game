@@ -9,31 +9,33 @@ import renderer.Texture;
 
 public class SpriteRender extends Component{
 
-    private Vector4f color;
-    private Sprite sprite;
+    private Vector4f color = new Vector4f(1, 1, 1, 1);
+    private Sprite sprite  = new Sprite();
+    //private Sprite sprite;
     
-    private Transform lastTransform;
-    private boolean isDirty = false;
+    private transient Transform lastTransform;
+    private transient boolean isDirty = false;
     
-    public SpriteRender(Vector4f color) {
-        this.color = color;
-        this.sprite = new Sprite(null);
-    }
-
-    public SpriteRender(Sprite sprite) {
-        this.sprite = sprite;
-        this.color = new Vector4f(1, 1, 1, 1);
-    }
-
+//    public SpriteRenderer(Vector4f color) {
+//        this.color = color;
+//        this.sprite = new Sprite(null);
+//        this.isDirty = true;
+//    }
+//
+//    public SpriteRenderer(Sprite sprite) {
+//        this.sprite = sprite;
+//        this.color = new Vector4f(1, 1, 1, 1);
+//        this.isDirty = true;
+//    }
     @Override
     public void start() {
-        this.lastTransform = gameObject.getTransformCopy();
+        this.lastTransform = gameObject.transform.copy();
     }
-
+ 
     @Override
     public void update(float dt) {
-        if (!this.lastTransform.equals(this.gameObject.getTransform())) {
-            this.gameObject.getTransform().copy(this.lastTransform);
+        if (!this.lastTransform.equals(this.gameObject.transform)) {
+            this.gameObject.transform.copy(this.lastTransform);
             isDirty = true;
         }
     }
@@ -69,4 +71,5 @@ public class SpriteRender extends Component{
     public void setClean() {
         this.isDirty = false;
     }
+
 }
