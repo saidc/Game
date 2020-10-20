@@ -10,11 +10,14 @@ import Util.AssetPool;
 import Util.Transform;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import components.Component;
+import Util.ComponentDeserializer;
+import Util.GameObjectDeserializer;
 import components.Sprite;
 import components.SpriteRender;
 import components.Spritesheet;
 
-import renderer.Texture;
 
 import org.joml.Vector2f;
 import org.joml.Vector4f;
@@ -38,6 +41,8 @@ public class LevelEditoScene extends Scene {
         
         
         this.sprites = AssetPool.getSpritesheet("src/main/java/assets/images/tilemap.png");
+        System.out.println("size of gameobjects: "+this.gameObjects.size());
+        obj1 = this.gameObjects.get(0);
         
         obj1 = new GameObject("Object 1", new Transform(new Vector2f(100, 100), new Vector2f(40, 40)) , -1);
         SpriteRender obj1SpriteRenderer = new SpriteRender();
@@ -68,9 +73,6 @@ public class LevelEditoScene extends Scene {
         obj4.addComponent(obj4SpriteRender); // image 1
         this.addGameObjectToScene(obj4);
         
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        
-        System.out.println(gson.toJson("hello world"));
     }
     
     private int sw_init = 0;
@@ -108,29 +110,35 @@ public class LevelEditoScene extends Scene {
     public void update(float dt) {
         InitGameObjects();
         // Events
-        
+        /*
         int dir = 4;
         
         if (keysListener.isKeyPress(GLFW_KEY_RIGHT)) {
             //camera.addPosition(new Vector2f( 100f * dt,0.0f));
-            this.gameObjects.get(0).move(new Vector2f( 100f * dt,0.0f));
+            this.obj1.move(new Vector2f( 100f * dt,0.0f));
             dir = 3;
         } else if (keysListener.isKeyPress(GLFW_KEY_LEFT)) {
             //camera.addPosition(new Vector2f(-100f * dt,0.0f));
-            this.gameObjects.get(0).move(new Vector2f(-100f * dt,0.0f));
+            this.obj1.move(new Vector2f(-100f * dt,0.0f));
             dir = 0;
         }
         if (keysListener.isKeyPress(GLFW_KEY_UP)) {
             //camera.addPosition(new Vector2f(0.0f, 100f * dt));
-            this.gameObjects.get(0).move(new Vector2f(0.0f,  100f * dt));
+            this.obj1.move(new Vector2f(0.0f,  100f * dt));
             dir = 2;
         } else if (keysListener.isKeyPress(GLFW_KEY_DOWN)) {
             //camera.addPosition(new Vector2f(0.0f,-100f * dt));
-            this.gameObjects.get(0).move(new Vector2f(0.0f, -100f * dt));
+            this.obj1.move(new Vector2f(0.0f, -100f * dt));
             dir = 1;
         }
         
-       
+        if (keysListener.isKeyPress(GLFW_KEY_D)) {
+            //camera.addPosition(new Vector2f(0.0f,-100f * dt));
+            this.gameObjects.remove(1);
+        }
+        
+        
+        
         
         spriteFlipTimeLeft -= dt;
         if (spriteFlipTimeLeft <= 0) {
@@ -155,7 +163,7 @@ public class LevelEditoScene extends Scene {
             
             spriteIndex++;
         }
-        
+        */
         // update gameObjects information
         for (GameObject go : this.gameObjects) {
             go.update(dt);

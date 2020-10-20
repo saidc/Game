@@ -1,0 +1,1032 @@
+[
+  {
+    "name": "Object 1",
+    "components": [
+      {
+        "type": "components.SpriteRender",
+        "properties": {
+          "color": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0,
+            "w": 1.0
+          },
+          "sprite": {
+            "texture": {
+              "filepath": "src/main/java/assets/images/tilemap.png",
+              "texID": 1,
+              "width": 458,
+              "height": 305
+            },
+            "texCoords": [
+              {
+                "x": 0.9257642,
+                "y": 1.0
+              },
+              {
+                "x": 0.9257642,
+                "y": 0.947541
+              },
+              {
+                "x": 0.8908297,
+                "y": 0.947541
+              },
+              {
+                "x": 0.8908297,
+                "y": 1.0
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "transform": {
+      "position": {
+        "x": 567.68207,
+        "y": 157.03712
+      },
+      "scale": {
+        "x": 40.0,
+        "y": 40.0
+      }
+    },
+    "zIndex": -1
+  },
+  {
+    "name": "Object 2",
+    "components": [
+      {
+        "type": "components.SpriteRender",
+        "properties": {
+          "color": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0,
+            "w": 1.0
+          },
+          "sprite": {
+            "texture": {
+              "filepath": "src/main/java/assets/images/testImage2.png",
+              "texID": 2,
+              "width": 32,
+              "height": 32
+            },
+            "texCoords": [
+              {
+                "x": 1.0,
+                "y": 1.0
+              },
+              {
+                "x": 1.0,
+                "y": 0.0
+              },
+              {
+                "x": 0.0,
+                "y": 0.0
+              },
+              {
+                "x": 0.0,
+                "y": 1.0
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "transform": {
+      "position": {
+        "x": 250.0,
+        "y": 100.0
+      },
+      "scale": {
+        "x": 100.0,
+        "y": 100.0
+      }
+    },
+    "zIndex": 0
+  },
+  {
+    "name": "Object 3",
+    "components": [
+      {
+        "type": "components.SpriteRender",
+        "properties": {
+          "color": {
+            "x": 1.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 1.0
+          },
+          "sprite": {
+            "texCoords": [
+              {
+                "x": 1.0,
+                "y": 1.0
+              },
+              {
+                "x": 1.0,
+                "y": 0.0
+              },
+              {
+                "x": 0.0,
+                "y": 0.0
+              },
+              {
+                "x": 0.0,
+                "y": 1.0
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "transform": {
+      "position": {
+        "x": 400.0,
+        "y": 100.0
+      },
+      "scale": {
+        "x": 100.0,
+        "y": 100.0
+      }
+    },
+    "zIndex": -2
+  },
+  {
+    "name": "Object 4",
+    "components": [
+      {
+        "type": "components.SpriteRender",
+        "properties": {
+          "color": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0,
+            "w": 1.0
+          },
+          "sprite": {
+            "texture": {
+              "filepath": "src/main/java/assets/images/testImage.png",
+              "texID": 3,
+              "width": 32,
+              "height": 32
+            },
+            "texCoords": [
+              {
+                "x": 1.0,
+                "y": 1.0
+              },
+              {
+                "x": 1.0,
+                "y": 0.0
+              },
+              {
+                "x": 0.0,
+                "y": 0.0
+              },
+              {
+                "x": 0.0,
+                "y": 1.0
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "transform": {
+      "position": {
+        "x": 550.0,
+        "y": 100.0
+      },
+      "scale": {
+        "x": 100.0,
+        "y": 100.0
+      }
+    },
+    "zIndex": 0
+  },
+  {
+    "name": "Object 1",
+    "components": [
+      {
+        "type": "components.SpriteRender",
+        "properties": {
+          "color": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0,
+            "w": 1.0
+          },
+          "sprite": {
+            "texture": {
+              "filepath": "src/main/java/assets/images/tilemap.png",
+              "texID": 1,
+              "width": 458,
+              "height": 305
+            },
+            "texCoords": [
+              {
+                "x": 0.9257642,
+                "y": 1.0
+              },
+              {
+                "x": 0.9257642,
+                "y": 0.947541
+              },
+              {
+                "x": 0.8908297,
+                "y": 0.947541
+              },
+              {
+                "x": 0.8908297,
+                "y": 1.0
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "transform": {
+      "position": {
+        "x": 363.09534,
+        "y": 263.1759
+      },
+      "scale": {
+        "x": 40.0,
+        "y": 40.0
+      }
+    },
+    "zIndex": -1
+  },
+  {
+    "name": "Object 2",
+    "components": [
+      {
+        "type": "components.SpriteRender",
+        "properties": {
+          "color": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0,
+            "w": 1.0
+          },
+          "sprite": {
+            "texture": {
+              "filepath": "src/main/java/assets/images/testImage2.png",
+              "texID": 2,
+              "width": 32,
+              "height": 32
+            },
+            "texCoords": [
+              {
+                "x": 1.0,
+                "y": 1.0
+              },
+              {
+                "x": 1.0,
+                "y": 0.0
+              },
+              {
+                "x": 0.0,
+                "y": 0.0
+              },
+              {
+                "x": 0.0,
+                "y": 1.0
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "transform": {
+      "position": {
+        "x": 250.0,
+        "y": 100.0
+      },
+      "scale": {
+        "x": 100.0,
+        "y": 100.0
+      }
+    },
+    "zIndex": 0
+  },
+  {
+    "name": "Object 3",
+    "components": [
+      {
+        "type": "components.SpriteRender",
+        "properties": {
+          "color": {
+            "x": 1.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 1.0
+          },
+          "sprite": {
+            "texCoords": [
+              {
+                "x": 1.0,
+                "y": 1.0
+              },
+              {
+                "x": 1.0,
+                "y": 0.0
+              },
+              {
+                "x": 0.0,
+                "y": 0.0
+              },
+              {
+                "x": 0.0,
+                "y": 1.0
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "transform": {
+      "position": {
+        "x": 400.0,
+        "y": 100.0
+      },
+      "scale": {
+        "x": 100.0,
+        "y": 100.0
+      }
+    },
+    "zIndex": -2
+  },
+  {
+    "name": "Object 4",
+    "components": [
+      {
+        "type": "components.SpriteRender",
+        "properties": {
+          "color": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0,
+            "w": 1.0
+          },
+          "sprite": {
+            "texture": {
+              "filepath": "src/main/java/assets/images/testImage.png",
+              "texID": 3,
+              "width": 32,
+              "height": 32
+            },
+            "texCoords": [
+              {
+                "x": 1.0,
+                "y": 1.0
+              },
+              {
+                "x": 1.0,
+                "y": 0.0
+              },
+              {
+                "x": 0.0,
+                "y": 0.0
+              },
+              {
+                "x": 0.0,
+                "y": 1.0
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "transform": {
+      "position": {
+        "x": 550.0,
+        "y": 100.0
+      },
+      "scale": {
+        "x": 100.0,
+        "y": 100.0
+      }
+    },
+    "zIndex": 0
+  },
+  {
+    "name": "Object 1",
+    "components": [
+      {
+        "type": "components.SpriteRender",
+        "properties": {
+          "color": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0,
+            "w": 1.0
+          },
+          "sprite": {
+            "texture": {
+              "filepath": "src/main/java/assets/images/tilemap.png",
+              "texID": 1,
+              "width": 458,
+              "height": 305
+            },
+            "texCoords": [
+              {
+                "x": 0.9257642,
+                "y": 1.0
+              },
+              {
+                "x": 0.9257642,
+                "y": 0.947541
+              },
+              {
+                "x": 0.8908297,
+                "y": 0.947541
+              },
+              {
+                "x": 0.8908297,
+                "y": 1.0
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "transform": {
+      "position": {
+        "x": 313.21893,
+        "y": 259.9522
+      },
+      "scale": {
+        "x": 40.0,
+        "y": 40.0
+      }
+    },
+    "zIndex": -1
+  },
+  {
+    "name": "Object 2",
+    "components": [
+      {
+        "type": "components.SpriteRender",
+        "properties": {
+          "color": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0,
+            "w": 1.0
+          },
+          "sprite": {
+            "texture": {
+              "filepath": "src/main/java/assets/images/testImage2.png",
+              "texID": 2,
+              "width": 32,
+              "height": 32
+            },
+            "texCoords": [
+              {
+                "x": 1.0,
+                "y": 1.0
+              },
+              {
+                "x": 1.0,
+                "y": 0.0
+              },
+              {
+                "x": 0.0,
+                "y": 0.0
+              },
+              {
+                "x": 0.0,
+                "y": 1.0
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "transform": {
+      "position": {
+        "x": 250.0,
+        "y": 100.0
+      },
+      "scale": {
+        "x": 100.0,
+        "y": 100.0
+      }
+    },
+    "zIndex": 0
+  },
+  {
+    "name": "Object 3",
+    "components": [
+      {
+        "type": "components.SpriteRender",
+        "properties": {
+          "color": {
+            "x": 1.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 1.0
+          },
+          "sprite": {
+            "texCoords": [
+              {
+                "x": 1.0,
+                "y": 1.0
+              },
+              {
+                "x": 1.0,
+                "y": 0.0
+              },
+              {
+                "x": 0.0,
+                "y": 0.0
+              },
+              {
+                "x": 0.0,
+                "y": 1.0
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "transform": {
+      "position": {
+        "x": 400.0,
+        "y": 100.0
+      },
+      "scale": {
+        "x": 100.0,
+        "y": 100.0
+      }
+    },
+    "zIndex": -2
+  },
+  {
+    "name": "Object 4",
+    "components": [
+      {
+        "type": "components.SpriteRender",
+        "properties": {
+          "color": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0,
+            "w": 1.0
+          },
+          "sprite": {
+            "texture": {
+              "filepath": "src/main/java/assets/images/testImage.png",
+              "texID": 3,
+              "width": 32,
+              "height": 32
+            },
+            "texCoords": [
+              {
+                "x": 1.0,
+                "y": 1.0
+              },
+              {
+                "x": 1.0,
+                "y": 0.0
+              },
+              {
+                "x": 0.0,
+                "y": 0.0
+              },
+              {
+                "x": 0.0,
+                "y": 1.0
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "transform": {
+      "position": {
+        "x": 550.0,
+        "y": 100.0
+      },
+      "scale": {
+        "x": 100.0,
+        "y": 100.0
+      }
+    },
+    "zIndex": 0
+  },
+  {
+    "name": "Object 1",
+    "components": [
+      {
+        "type": "components.SpriteRender",
+        "properties": {
+          "color": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0,
+            "w": 1.0
+          },
+          "sprite": {
+            "texture": {
+              "filepath": "src/main/java/assets/images/tilemap.png",
+              "texID": 1,
+              "width": 458,
+              "height": 305
+            },
+            "texCoords": [
+              {
+                "x": 0.9257642,
+                "y": 1.0
+              },
+              {
+                "x": 0.9257642,
+                "y": 0.947541
+              },
+              {
+                "x": 0.8908297,
+                "y": 0.947541
+              },
+              {
+                "x": 0.8908297,
+                "y": 1.0
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "transform": {
+      "position": {
+        "x": 276.07852,
+        "y": 261.47552
+      },
+      "scale": {
+        "x": 40.0,
+        "y": 40.0
+      }
+    },
+    "zIndex": -1
+  },
+  {
+    "name": "Object 2",
+    "components": [
+      {
+        "type": "components.SpriteRender",
+        "properties": {
+          "color": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0,
+            "w": 1.0
+          },
+          "sprite": {
+            "texture": {
+              "filepath": "src/main/java/assets/images/testImage2.png",
+              "texID": 2,
+              "width": 32,
+              "height": 32
+            },
+            "texCoords": [
+              {
+                "x": 1.0,
+                "y": 1.0
+              },
+              {
+                "x": 1.0,
+                "y": 0.0
+              },
+              {
+                "x": 0.0,
+                "y": 0.0
+              },
+              {
+                "x": 0.0,
+                "y": 1.0
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "transform": {
+      "position": {
+        "x": 250.0,
+        "y": 100.0
+      },
+      "scale": {
+        "x": 100.0,
+        "y": 100.0
+      }
+    },
+    "zIndex": 0
+  },
+  {
+    "name": "Object 3",
+    "components": [
+      {
+        "type": "components.SpriteRender",
+        "properties": {
+          "color": {
+            "x": 1.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 1.0
+          },
+          "sprite": {
+            "texCoords": [
+              {
+                "x": 1.0,
+                "y": 1.0
+              },
+              {
+                "x": 1.0,
+                "y": 0.0
+              },
+              {
+                "x": 0.0,
+                "y": 0.0
+              },
+              {
+                "x": 0.0,
+                "y": 1.0
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "transform": {
+      "position": {
+        "x": 400.0,
+        "y": 100.0
+      },
+      "scale": {
+        "x": 100.0,
+        "y": 100.0
+      }
+    },
+    "zIndex": -2
+  },
+  {
+    "name": "Object 4",
+    "components": [
+      {
+        "type": "components.SpriteRender",
+        "properties": {
+          "color": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0,
+            "w": 1.0
+          },
+          "sprite": {
+            "texture": {
+              "filepath": "src/main/java/assets/images/testImage.png",
+              "texID": 3,
+              "width": 32,
+              "height": 32
+            },
+            "texCoords": [
+              {
+                "x": 1.0,
+                "y": 1.0
+              },
+              {
+                "x": 1.0,
+                "y": 0.0
+              },
+              {
+                "x": 0.0,
+                "y": 0.0
+              },
+              {
+                "x": 0.0,
+                "y": 1.0
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "transform": {
+      "position": {
+        "x": 550.0,
+        "y": 100.0
+      },
+      "scale": {
+        "x": 100.0,
+        "y": 100.0
+      }
+    },
+    "zIndex": 0
+  },
+  {
+    "name": "Object 1",
+    "components": [
+      {
+        "type": "components.SpriteRender",
+        "properties": {
+          "color": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0,
+            "w": 1.0
+          },
+          "sprite": {
+            "texture": {
+              "filepath": "src/main/java/assets/images/tilemap.png",
+              "texID": 1,
+              "width": 458,
+              "height": 305
+            },
+            "texCoords": [
+              {
+                "x": 0.9257642,
+                "y": 1.0
+              },
+              {
+                "x": 0.9257642,
+                "y": 0.947541
+              },
+              {
+                "x": 0.8908297,
+                "y": 0.947541
+              },
+              {
+                "x": 0.8908297,
+                "y": 1.0
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "transform": {
+      "position": {
+        "x": 100.0,
+        "y": 100.0
+      },
+      "scale": {
+        "x": 40.0,
+        "y": 40.0
+      }
+    },
+    "zIndex": -1
+  },
+  {
+    "name": "Object 2",
+    "components": [
+      {
+        "type": "components.SpriteRender",
+        "properties": {
+          "color": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0,
+            "w": 1.0
+          },
+          "sprite": {
+            "texture": {
+              "filepath": "src/main/java/assets/images/testImage2.png",
+              "texID": 2,
+              "width": 32,
+              "height": 32
+            },
+            "texCoords": [
+              {
+                "x": 1.0,
+                "y": 1.0
+              },
+              {
+                "x": 1.0,
+                "y": 0.0
+              },
+              {
+                "x": 0.0,
+                "y": 0.0
+              },
+              {
+                "x": 0.0,
+                "y": 1.0
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "transform": {
+      "position": {
+        "x": 250.0,
+        "y": 100.0
+      },
+      "scale": {
+        "x": 100.0,
+        "y": 100.0
+      }
+    },
+    "zIndex": 0
+  },
+  {
+    "name": "Object 3",
+    "components": [
+      {
+        "type": "components.SpriteRender",
+        "properties": {
+          "color": {
+            "x": 1.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 1.0
+          },
+          "sprite": {
+            "texCoords": [
+              {
+                "x": 1.0,
+                "y": 1.0
+              },
+              {
+                "x": 1.0,
+                "y": 0.0
+              },
+              {
+                "x": 0.0,
+                "y": 0.0
+              },
+              {
+                "x": 0.0,
+                "y": 1.0
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "transform": {
+      "position": {
+        "x": 400.0,
+        "y": 100.0
+      },
+      "scale": {
+        "x": 100.0,
+        "y": 100.0
+      }
+    },
+    "zIndex": -2
+  },
+  {
+    "name": "Object 4",
+    "components": [
+      {
+        "type": "components.SpriteRender",
+        "properties": {
+          "color": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0,
+            "w": 1.0
+          },
+          "sprite": {
+            "texture": {
+              "filepath": "src/main/java/assets/images/testImage.png",
+              "texID": 3,
+              "width": 32,
+              "height": 32
+            },
+            "texCoords": [
+              {
+                "x": 1.0,
+                "y": 1.0
+              },
+              {
+                "x": 1.0,
+                "y": 0.0
+              },
+              {
+                "x": 0.0,
+                "y": 0.0
+              },
+              {
+                "x": 0.0,
+                "y": 1.0
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "transform": {
+      "position": {
+        "x": 550.0,
+        "y": 100.0
+      },
+      "scale": {
+        "x": 100.0,
+        "y": 100.0
+      }
+    },
+    "zIndex": 0
+  }
+]

@@ -1,9 +1,11 @@
 
-package Jade;
+package components;
+
+import Jade.GameObject;
 
 
 public abstract class Component {
-    public GameObject gameObject = null;
+    public transient GameObject gameObject = null;
 
     public void start() {
 

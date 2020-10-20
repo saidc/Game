@@ -47,18 +47,18 @@ public class Window {
         switch (newScene) {
             case 0:
                 currentScene = new LevelEditoScene();
-                currentScene.init();
-                currentScene.start();
+                
                 break;
             case 1:
                 currentScene = new LevelScene();
-                currentScene.init();
-                currentScene.start();
                 break;
             default:
                 assert false : "Unknown scene '" + newScene + "'";
                 break;
         }
+        currentScene.load();
+        currentScene.init();
+        currentScene.start();
     }
     
     public static Window get(){
@@ -142,6 +142,7 @@ public class Window {
         float dt = -1.0f; // delta time
         //GLFW.glfwMaximizeWindow(glfwWindow);
         
+        
         while(! GLFW.glfwWindowShouldClose(glfwWindow)){
             //poll Events
             GLFW.glfwPollEvents();
@@ -167,6 +168,7 @@ public class Window {
             beginTime = endTime;
                     
         }
+        this.currentScene.saveExit();
     }
     
     private void mouseButtonCallback (long window, int button , int action , int mods){

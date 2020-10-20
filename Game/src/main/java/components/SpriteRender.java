@@ -1,7 +1,6 @@
 
 package components;
 
-import Jade.Component;
 import Util.Transform;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
@@ -14,7 +13,7 @@ public class SpriteRender extends Component{
     //private Sprite sprite;
     
     private transient Transform lastTransform;
-    private transient boolean isDirty = false;
+    private transient boolean isDirty = true;
     
 //    public SpriteRenderer(Vector4f color) {
 //        this.color = color;
