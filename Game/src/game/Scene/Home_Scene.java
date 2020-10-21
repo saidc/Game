@@ -10,7 +10,7 @@ public class Home_Scene extends Scene{
     
     @Override
     public void init() {
-        loadResources();
+        loadResources(); 
         
         
     }
