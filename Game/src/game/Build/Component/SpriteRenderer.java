@@ -3,6 +3,7 @@ package game.Build.Component;
 
 import game.Build.Transform;
 import game.Renderer.Texture;
+import java.awt.Image;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 
@@ -35,6 +36,9 @@ public class SpriteRenderer extends Component {
 
     public Texture getTexture() {
         return sprite.getTexture();
+    }
+    public Image getImage() {
+        return sprite.getImage();
     }
 
     public Vector2f[] getTexCoords() {

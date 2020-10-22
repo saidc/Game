@@ -13,16 +13,16 @@ public class Texture {
     private String filepath;
     private int texID;
     private int width, height;
-    private Image image = null; 
+    private BufferedImage image = null; 
     
     public void init(String filepath) {
         this.filepath = filepath;
 
         // Set texture parameters
         try {
-            Image image = ImageIO.read(new File(filepath));
+            BufferedImage image = ImageIO.read(new File(filepath));
             if (image != null) {
-                this.width = image.getHeight(null);
+                this.width  = image.getHeight(null);
                 this.height = image.getHeight(null);
                 this.image = image;
             } else {
@@ -55,7 +55,10 @@ public class Texture {
     public String getfilePath (){
         return this.filepath;
     }
-    public Image getTexture(){
+    public Image getSubImage(int upper_left_X,int upper_left_Y , int Width , int Height){
+        return this.image.getSubimage(upper_left_X, upper_left_Y, Width, Height);
+    }
+    public Image getImage() {
         return this.image;
     }
 }

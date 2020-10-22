@@ -41,9 +41,9 @@ public class Window implements Runnable,KeyListener,MouseListener,WindowListener
         this.width = 1000;
         this.height = 800;
         this.title = "Game";
-        r = 1;
-        b = 1;
-        g = 1;
+        r = 0;
+        b = 0;
+        g = 0;
         a = 1;
         this.WindowID = this.hashCode();
     }
@@ -66,7 +66,7 @@ public class Window implements Runnable,KeyListener,MouseListener,WindowListener
         canvas.setMinimumSize(new Dimension( width,height));
         canvas.setFocusable(false);
         
-        canvas.setBackground(new Color(1.0f, 0.0f, 0.0f, 1.0f)); //Red
+        canvas.setBackground(new Color(r,g,b,a)); //Red
         
         frame.add(canvas);
         frame.pack();

@@ -34,6 +34,7 @@ public class Home_Scene extends Scene{
         GameObject obj2 = new GameObject("Object 2", new Transform(new Vector2f(250, 100), new Vector2f(100, 100)),0);
         Sprite obj2sprite = new Sprite();
         obj2sprite.setTexture(AssetPool.getTexture("assets/images/blendImage2.png")); // image 2
+        obj2sprite.SetAsSingleImage();
         SpriteRenderer obj2SpriteRender = new SpriteRenderer();
         obj2SpriteRender.setSprite(obj2sprite);
         obj2.addComponent(obj2SpriteRender);
@@ -49,6 +50,14 @@ public class Home_Scene extends Scene{
         
         
     }
+    private void loadResources() {
+        
+        // TODO: FIX TEXTURE SAVE SYSTEM TO USE PATH INSTEAD OF ID
+        AssetPool.addSpritesheet("assets/images/spritesheet.png",
+                new Spritesheet(AssetPool.getTexture("assets/images/spritesheet.png"),
+                        16, 16, 27,18, 1));
+        AssetPool.getTexture("assets/images/blendImage2.png");
+    }
     
     @Override
     public void update(float dt) {
@@ -60,12 +69,5 @@ public class Home_Scene extends Scene{
         this.renderer.render();
     }
     
-     private void loadResources() {
-        
-        // TODO: FIX TEXTURE SAVE SYSTEM TO USE PATH INSTEAD OF ID
-        AssetPool.addSpritesheet("assets/images/spritesheet.png",
-                new Spritesheet(AssetPool.getTexture("assets/images/spritesheet.png"),
-                        16, 16, 26, 0));
-        AssetPool.getTexture("assets/images/blendImage2.png");
-    }
+    
 }

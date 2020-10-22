@@ -10,6 +10,7 @@ import org.joml.Vector4f;
 import game.Renderer.Texture;
 import java.awt.Color;
 import java.awt.Graphics;
+
 public class RenderBatch implements java.lang.Comparable<RenderBatch>{
     
     private final int VERTEX_SIZE = 9;
@@ -70,14 +71,15 @@ public class RenderBatch implements java.lang.Comparable<RenderBatch>{
                 sprite.setClean();
                 rebufferData = true;
                 if (sprite.getTexture() != null) {
-                    graphics.drawImage(sprite.getTexture().getTexture(), sprite.getTexture().getWidth(), sprite.getTexture().getHeight(), null);
+                    
+                    graphics.drawImage(sprite.getImage(), sprite.getTexture().getWidth(), sprite.getTexture().getHeight(), null);
                 }else{
                     float r = sprite.getColor().x;
                     float g = sprite.getColor().y;
                     float b = sprite.getColor().z;
                     float a = sprite.getColor().w;
                     graphics.setColor(new Color(r,g,b,a));
-                    graphics.drawRect((int) sprite.gameObject.getPosition().x, (int)sprite.gameObject.getPosition().x, (int) sprite.gameObject.getScale().x , (int) sprite.gameObject.getScale().y);
+                    graphics.fillRect((int) sprite.gameObject.getPosition().x, (int)sprite.gameObject.getPosition().x, (int) sprite.gameObject.getScale().x , (int) sprite.gameObject.getScale().y);
                 }
             }
         }
