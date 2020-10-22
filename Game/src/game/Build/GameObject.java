@@ -4,6 +4,7 @@ package game.Build;
 import game.Build.Component.Component;
 import java.util.ArrayList;
 import java.util.List;
+import org.joml.Vector2f;
 
 public class GameObject {
      private String name;
@@ -69,5 +70,20 @@ public class GameObject {
 
     public int zIndex() {
         return this.zIndex;
+    }
+    public Vector2f getPosition(){
+        return this.transform.getPosition();
+    }
+    public Vector2f getScale(){
+        return this.transform.getScale();
+    }
+    public void move(Vector2f movement){
+        this.transform.add(movement);
+    }
+    public Transform getTransformCopy(){
+        return this.transform.copy();
+    }
+    public Transform getTransform(){
+        return this.transform;
     }
 }

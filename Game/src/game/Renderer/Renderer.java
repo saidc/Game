@@ -8,17 +8,16 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class Renderer {
     private final int MAX_BATCH_SIZE = 1000;
     private Canvas canvas;
-    //private List<RenderBatch> batches;
+    private List<RenderBatch> batches;
     private int width, height;
     public Renderer() {
-        //this.batches = new ArrayList<>();
+        this.batches = new ArrayList<>();
     }
 
     public void add(GameObject go) {
@@ -29,7 +28,6 @@ public class Renderer {
     }
 
     private void add(SpriteRenderer sprite) {
-        /*
         boolean added = false;
         for (RenderBatch batch : batches) {
             if (batch.hasRoom() && batch.zIndex() == sprite.gameObject.zIndex()) {
@@ -49,7 +47,7 @@ public class Renderer {
             newBatch.addSprite(sprite);
             Collections.sort(batches);
         }
-        */
+        
     }
 
     public void render() {
@@ -59,15 +57,11 @@ public class Renderer {
             return;
         }
         Graphics g = bs.getDrawGraphics();
-        g.setColor(Color.yellow);
-            //g.clearRect(0, 0, width, height);
-        g.fillRect(100,100,500,500);
         
-        /*
         for (RenderBatch batch : batches) {
-        batch.render();
+            batch.render(g);
         }
-         */
+         
         bs.show();
         g.dispose();
     }

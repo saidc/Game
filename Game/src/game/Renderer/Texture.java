@@ -1,49 +1,37 @@
 
 package game.Renderer;
 
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 
 public class Texture {
     private String filepath;
     private int texID;
     private int width, height;
+    private Image image = null; 
     
-//    public Texture(String filepath) {
-//
-//    }
-
     public void init(String filepath) {
         this.filepath = filepath;
 
-        // Generate texture 
-
         // Set texture parameters
-        
-        IntBuffer width = null  ;//= BufferUtils.createIntBuffer(1);
-        IntBuffer height = null ;//= BufferUtils.createIntBuffer(1);
-        
-        ByteBuffer image = null ;//= stbi_load(filepath, width, height, channels, 0);
-
-        if (image != null) {
-            this.width = width.get(0);
-            this.height = height.get(0);
-            /*
-            if (channels.get(0) == 3) {
-                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width.get(0), height.get(0),
-                        0, GL_RGB, GL_UNSIGNED_BYTE, image);
-            } else if (channels.get(0) == 4) {
-                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width.get(0), height.get(0),
-                        0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+        try {
+            Image image = ImageIO.read(new File(filepath));
+            if (image != null) {
+                this.width = image.getHeight(null);
+                this.height = image.getHeight(null);
+                this.image = image;
             } else {
-                assert false : "Error: (Texture) Unknown number of channesl '" + channels.get(0) + "'";
+                assert false : "Error: (Texture) Could not load image '" + filepath + "'";
             }
-            */
-        } else {
-            assert false : "Error: (Texture) Could not load image '" + filepath + "'";
+        } catch (IOException ex) {
+            Logger.getLogger(Texture.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        //stbi_image_free(image);
+        
     }
 
     public void bind() {
@@ -60,5 +48,14 @@ public class Texture {
 
     public int getHeight() {
         return this.height;
+    }
+    public boolean hasTexture(){
+        return (image != null);
+    }
+    public String getfilePath (){
+        return this.filepath;
+    }
+    public Image getTexture(){
+        return this.image;
     }
 }

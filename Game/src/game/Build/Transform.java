@@ -41,4 +41,14 @@ public class Transform {
         Transform t = (Transform)o;
         return t.position.equals(this.position) && t.scale.equals(this.scale);
     }
+    public Vector2f getPosition(){
+        return this.position;
+    }
+    public Vector2f getScale(){
+        return this.scale;
+    }
+    public void add(Vector2f add){
+        this.position.x += add.x;
+        this.position.y += add.y;
+    }
 }
