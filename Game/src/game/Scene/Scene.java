@@ -8,6 +8,9 @@ import game.Build.GameObject;
 import game.Build.serializer.*;
 import game.Renderer.Renderer;
 import java.awt.Canvas;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferStrategy;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -17,9 +20,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Scene {
+public abstract class Scene implements KeyListener,MouseListener{
     protected List<GameObject> gameObjects = new ArrayList<>();
-    public abstract void update(float dt);
+    public abstract void update();
     private boolean isRunning = false;
     protected Renderer renderer = new Renderer();
     protected boolean levelLoaded = false;
@@ -34,10 +37,11 @@ public abstract class Scene {
         }
     }
     
+    
     public abstract void init();
     
-    public void start(Canvas canvas , int width, int height) {
-        this.renderer.setCanvas(canvas);
+    public void start( int width, int height) {
+        
         this.renderer.setDimension(width, height);
         
         for (GameObject go : gameObjects) {
@@ -87,4 +91,5 @@ public abstract class Scene {
             e.printStackTrace();
         }
     }
+    
 }

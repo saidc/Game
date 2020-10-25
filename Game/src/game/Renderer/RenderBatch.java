@@ -5,11 +5,10 @@ import game.Build.Component.SpriteRenderer;
 
 import java.util.List;
 import java.util.ArrayList;
-import org.joml.Vector2f;
-import org.joml.Vector4f;
-import game.Renderer.Texture;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
+import org.joml.Vector4f;
 
 public class RenderBatch implements java.lang.Comparable<RenderBatch>{
     
@@ -32,10 +31,10 @@ public class RenderBatch implements java.lang.Comparable<RenderBatch>{
         this.sprites = new SpriteRenderer[maxBatchSize];
         this.maxBatchSize = maxBatchSize;
 
-        
         this.numSprites = 0;
         this.hasRoom = true;
         this.textures = new ArrayList<>();
+        
     }
 
     public void start() {
@@ -53,72 +52,46 @@ public class RenderBatch implements java.lang.Comparable<RenderBatch>{
                 textures.add(spr.getTexture());
             }
         }
-
-        // Add properties to local vertices array
-        loadVertexProperties(index);
-
+        
         if (numSprites >= this.maxBatchSize) {
             this.hasRoom = false;
         }
     }
-
+    
     public void render(Graphics graphics) {
-        boolean rebufferData = false;
+        
         for (int i=0; i < numSprites; i++) {
             SpriteRenderer sprite = sprites[i];
-            if (sprite.isDirty()) {
-                //loadVertexProperties(i);
+            //if (sprite.isDirty()) {
                 sprite.setClean();
-                rebufferData = true;
-                if (sprite.getTexture() != null) {
-                    
-                    graphics.drawImage(sprite.getImage(), sprite.getTexture().getWidth(), sprite.getTexture().getHeight(), null);
+                if(sprite.getText() != null){
+                    Vector4f color = null;
+                    if( sprite.getColor() != null){
+                        color =  sprite.getColor();
+                        graphics.setColor(new Color(color.x,color.y,color.z,color.w));
+                    }else{
+                        graphics.setColor(Color.BLACK);
+                    }
+                    //Font myFont = new Font ("Courier New", 1, 17);
+                    Font myFont = new Font ("TimesRoman", 1, 18);
+                    graphics.setFont(myFont);
+                    graphics.drawString(sprite.getText(), sprite.gameObject.getPosition().x, sprite.gameObject.getPosition().y);
                 }else{
-                    float r = sprite.getColor().x;
-                    float g = sprite.getColor().y;
-                    float b = sprite.getColor().z;
-                    float a = sprite.getColor().w;
-                    graphics.setColor(new Color(r,g,b,a));
-                    graphics.fillRect((int) sprite.gameObject.getPosition().x, (int)sprite.gameObject.getPosition().x, (int) sprite.gameObject.getScale().x , (int) sprite.gameObject.getScale().y);
+                    if (sprite.getTexture() != null) {
+                        graphics.drawImage(sprite.getImage(), sprite.gameObject.getPosition().x, sprite.gameObject.getPosition().y, null);
+                    }else{
+                        float r = sprite.getColor().x;
+                        float g = sprite.getColor().y;
+                        float b = sprite.getColor().z;
+                        float a = sprite.getColor().w;
+                        graphics.setColor(new Color(r,g,b,a));
+                        graphics.fillRect( sprite.gameObject.getPosition().x,sprite.gameObject.getPosition().y, sprite.gameObject.getScale().x , sprite.gameObject.getScale().y);
+                    }
                 }
-            }
+            //}
         }
-        // draw in to the Canvas
-        if (rebufferData) {
-            
-        }
-        /*
-        for (int i=0; i < textures.size(); i++) {
-            textures.get(i).bind();
-        }
-        
-        for (int i=0; i < textures.size(); i++) {
-            textures.get(i).unbind();
-        }
-        */
     }
     
-    private void loadVertexProperties(int index) {
-        SpriteRenderer sprite = this.sprites[index];
-
-        
-
-        Vector4f color = sprite.getColor();
-        Vector2f[] texCoords = sprite.getTexCoords();
-        
-        int texId = 0;
-        if (sprite.getTexture() != null) {
-            for (int i = 0; i < textures.size(); i++) {
-                if (textures.get(i) == sprite.getTexture()) {
-                    texId = i + 1;
-                    break;
-                }
-            }
-        }
-        
-        
-    }
-
     public boolean hasRoom() {
         return this.hasRoom;
     }
@@ -140,5 +113,4 @@ public class RenderBatch implements java.lang.Comparable<RenderBatch>{
         return Integer.compare(this.zIndex, o.zIndex());
     }
 
-    
 }

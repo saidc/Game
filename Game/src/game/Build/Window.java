@@ -1,35 +1,32 @@
 
 package game.Build;
+
+import java.awt.Frame;
+import java.awt.Canvas;
 import game.Scene.Game_Scene;
 import game.Scene.Home_Scene;
 import game.Scene.Scene;
-import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import javax.swing.JFrame;
 
-public class Window implements Runnable,KeyListener,MouseListener,WindowListener{
+
+public class Window implements Runnable,WindowListener{//,KeyListener,MouseListener{
     private static Window window = null;
     
-    private int width, height;
+    public Dimension dimension;
     private String title;
     private int WindowID;
 
     public float r, g, b, a;
     
-    private JFrame frame ;
-    private Canvas canvas;
+    public Frame frame ;
+    public  Canvas canvas;
     
     private boolean running = true;
     
-    private static Scene currentScene;
+    private static Scene currentScene = null;
     
     public static Window get(){
         if (Window.window == null) {
@@ -37,9 +34,9 @@ public class Window implements Runnable,KeyListener,MouseListener,WindowListener
         }
         return Window.window;
     }
+    
     private Window() {
-        this.width = 1000;
-        this.height = 800;
+        this.dimension = new Dimension(1000, 800);
         this.title = "Game";
         r = 0;
         b = 0;
@@ -48,6 +45,10 @@ public class Window implements Runnable,KeyListener,MouseListener,WindowListener
         this.WindowID = this.hashCode();
     }
     
+    public Frame getJFrame(){
+        
+        return this.frame;
+    }
     @Override
     public void run() {
         init();
@@ -55,57 +56,66 @@ public class Window implements Runnable,KeyListener,MouseListener,WindowListener
     }
     
     public void init() {
-        frame = new JFrame(title);
-        frame.setSize(width, height);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
-        frame.setLocationRelativeTo(null);
+        frame = new Frame(title);
         canvas = new Canvas();
-        canvas.setPreferredSize(new Dimension( width,height));
-        canvas.setMaximumSize(new Dimension( width,height));
-        canvas.setMinimumSize(new Dimension( width,height));
-        canvas.setFocusable(false);
         
-        canvas.setBackground(new Color(r,g,b,a)); //Red
+        frame.setSize(dimension );
+        frame.setResizable(false);
         
-        frame.add(canvas);
+        frame.setLocationRelativeTo(null);
+        
+        this.canvas.setPreferredSize(dimension);
+        this.canvas.setMaximumSize(dimension);
+        this.canvas.setMinimumSize(dimension);
+        this.canvas.setFocusable(false);
+        
+        this.canvas.setBackground(new Color(r,g,b,a)); //Red
+        
+        frame.add(this.canvas);
         frame.pack();
+        
+        // inicializacion de ventana antes de pasar los eventos de ventana
+        this.changeScene(0);
         
         
         // Callback Events
-        frame.addKeyListener(this);
-        frame.addMouseListener(this);
+        //frame.addKeyListener(  this);//.currentScene);
+        
+        //frame.addMouseListener(this);//.currentScene);
+        
         frame.addWindowListener(this);
         // show window
         frame.setVisible(true);
         
-        this.changeScene(0);
+        
     }
 
     public void loop() {
         
-        float beginTime = (float)System.currentTimeMillis();
-        float endTime;
-        float dt = -1.0f;
+        long beginTime = System.currentTimeMillis();
+        long endTime=beginTime;
+        long dt = -1;
 
         while(this.running) {
             
-            //glClearColor(r, g, b, a);
-            
-            if (dt >= 0) {
-                currentScene.update(dt);
+            if (dt >= 10) {
+                currentScene.update();
+                beginTime = endTime;
+                dt = 0;
+            }else{
+                endTime = System.currentTimeMillis();
+                dt = endTime - beginTime;
             }
-
-            
-            endTime = (float)System.currentTimeMillis();
-            dt = endTime - beginTime;
-            beginTime = endTime;
         }
         
         //currentScene.saveExit();
         System.out.println("Game Over");
     }
-    public void changeScene(int newScene) {
+    public static void changeScene(int newScene) {
+        if(currentScene != null){ // remove events from the actual scene 
+         Window.get().frame.removeKeyListener(currentScene);
+         Window.get().canvas.removeMouseListener(currentScene);           
+        }
         switch (newScene) {
             case 0:
                 currentScene = new Home_Scene();
@@ -120,40 +130,9 @@ public class Window implements Runnable,KeyListener,MouseListener,WindowListener
 
         currentScene.load();
         currentScene.init();
-        currentScene.start(canvas, window.width,window.height);
-    }
-    
-    @Override
-    public void keyTyped(KeyEvent ke) {
-        
-    }
-
-    @Override
-    public void keyPressed(KeyEvent ke) {
-    }
-
-    @Override
-    public void keyReleased(KeyEvent ke) {
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent me) {
-    }
-
-    @Override
-    public void mousePressed(MouseEvent me) {
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent me) {
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent me) {
-    }
-
-    @Override
-    public void mouseExited(MouseEvent me) {
+        currentScene.start( window.dimension.width,window.dimension.height);
+        Window.get().frame.addKeyListener  (currentScene);
+        Window.get().canvas.addMouseListener(currentScene);
     }
 
     @Override
@@ -164,6 +143,7 @@ public class Window implements Runnable,KeyListener,MouseListener,WindowListener
     @Override
     public void windowClosing(WindowEvent we) {
         this.running = false;
+        System.exit(0);
         System.out.println("windowClosing");
     }
 
@@ -192,4 +172,5 @@ public class Window implements Runnable,KeyListener,MouseListener,WindowListener
     public void windowDeactivated(WindowEvent we) {
         System.out.println("windowDeactivated");
     }
+   
 }

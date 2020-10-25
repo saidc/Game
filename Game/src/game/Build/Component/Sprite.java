@@ -1,6 +1,7 @@
 package game.Build.Component;
 
 import game.Renderer.Texture;
+import java.awt.Dimension;
 import java.awt.Image;
 import org.joml.Vector2f;
 
@@ -15,14 +16,15 @@ public class Sprite {
                 new Vector2f(0, 0), // BottomLeftCorner  
                 new Vector2f(0, 1)  // upperLeftCorner      
     };
-    private int spriteWidth, spriteHeight;
+    
+    private Dimension spriteDimension;
     
     public Texture getTexture() {
         return this.texture;
     }
     public Image getImage() {
         if(HasSubImage){
-            return this.texture.getSubImage((int)this.texCoords[3].x, (int)this.texCoords[3].y, this.spriteWidth, this.spriteHeight);
+            return this.texture.getSubImage((int)this.texCoords[3].x, (int)this.texCoords[3].y, this.spriteDimension.width, this.spriteDimension.height);
         }else{
             return this.texture.getImage();
         }
@@ -44,8 +46,10 @@ public class Sprite {
         this.texCoords = texCoords;
     }
 
-    void setDimension(int spriteWidth, int spriteHeight) {
-        this.spriteWidth  = spriteWidth  ; 
-        this.spriteHeight = spriteHeight ;
+    public void setDimension(int spriteWidth, int spriteHeight) {
+        this.spriteDimension = new Dimension(spriteWidth,spriteHeight);
+    }
+    public Dimension getDimension(){
+        return this.spriteDimension;
     }
 }

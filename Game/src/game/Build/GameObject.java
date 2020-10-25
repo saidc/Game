@@ -2,23 +2,27 @@
 package game.Build;
 
 import game.Build.Component.Component;
+import game.Build.Component.SpriteRenderer;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
-import org.joml.Vector2f;
+import java.util.function.Consumer;
+import org.joml.Vector2i;
 
 public class GameObject {
-     private String name;
+    private String name;
     private List<Component> components;
     public Transform transform;
     private int zIndex;
-
+    private Consumer<Dimension> ClickListener = null;
+    
     public GameObject(String name) {
         this.name = name;
         this.components = new ArrayList<>();
         this.transform = new Transform();
         this.zIndex = 0;
     }
-
+    
     public GameObject(String name, Transform transform, int zIndex) {
         this.name = name;
         this.zIndex = zIndex;
@@ -40,7 +44,7 @@ public class GameObject {
 
         return null;
     }
-
+    
     public <T extends Component> void removeComponent(Class<T> componentClass) {
         for (int i=0; i < components.size(); i++) {
             Component c = components.get(i);
@@ -52,11 +56,13 @@ public class GameObject {
     }
 
     public void addComponent(Component c) {
+        
         this.components.add(c);
         c.gameObject = this;
     }
-
+    
     public void update(float dt) {
+        
         for (int i=0; i < components.size(); i++) {
             components.get(i).update(dt);
         }
@@ -71,13 +77,13 @@ public class GameObject {
     public int zIndex() {
         return this.zIndex;
     }
-    public Vector2f getPosition(){
+    public Vector2i getPosition(){
         return this.transform.getPosition();
     }
-    public Vector2f getScale(){
+    public Vector2i getScale(){
         return this.transform.getScale();
     }
-    public void move(Vector2f movement){
+    public void move(Vector2i movement){
         this.transform.add(movement);
     }
     public Transform getTransformCopy(){
@@ -85,5 +91,32 @@ public class GameObject {
     }
     public Transform getTransform(){
         return this.transform;
+    }
+
+    public void isClicked(Vector2i ClickedPosition) {
+        if(ClickListener != null){
+            SpriteRenderer spr = this.getComponent(SpriteRenderer.class);
+            Dimension dimension = null;
+            if(spr.getTexture() != null){
+                dimension = spr.getDimension();
+            }else{
+                dimension = new Dimension(this.transform.scale.x,this.transform.scale.y);
+            }
+            Vector2i pos = this.transform.getPosition();
+            try {
+                if(     (ClickedPosition.x > pos.x && ClickedPosition.y > pos.y) &&
+                        (ClickedPosition.x < pos.x + dimension.width && ClickedPosition.y < pos.y + dimension.height)
+                  ){
+                    this.ClickListener.accept(new Dimension(ClickedPosition.x-pos.x, ClickedPosition.y - pos.y));
+                } 
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+    public void addClickListener(Consumer<Dimension> ClickListener){
+        this.ClickListener = ClickListener;
     }
 }

@@ -3,23 +3,36 @@ package game.Renderer;
 
 import game.Build.Component.SpriteRenderer;
 import game.Build.GameObject;
+import game.Build.Window;
 import java.awt.Canvas;
-import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.image.BufferStrategy;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 
 public class Renderer {
     private final int MAX_BATCH_SIZE = 1000;
-    private Canvas canvas;
+   
     private List<RenderBatch> batches;
     private int width, height;
     public Renderer() {
         this.batches = new ArrayList<>();
+        
+        // ****
+        try {
+            this.image = ImageIO.read(new File("assets/images/mapTile_136.png"));//C:\Users\said-\Documents\NetBeansProjects\move_image\assets\image\mapTile_136.png
+        } catch (IOException ex) {
+            Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-
+    
     public void add(GameObject go) {
         SpriteRenderer spr = go.getComponent(SpriteRenderer.class);
         if (spr != null) {
@@ -47,27 +60,41 @@ public class Renderer {
             newBatch.addSprite(sprite);
             Collections.sort(batches);
         }
-        
     }
-
+        
+    public Image image ;
+    public int x=100,y=100;
+    public int count= 0 , increase=0 ;
+    
     public void render() {
-        BufferStrategy bs = this.canvas.getBufferStrategy();
+        Canvas canvas = Window.get().canvas;
+        
+        BufferStrategy bs = canvas.getBufferStrategy();
+        
         if( bs == null ){
-            this.canvas.createBufferStrategy(3);
+            canvas.createBufferStrategy(3);
+            //bs = this.canvas.getBufferStrategy();
             return;
         }
-        Graphics g = bs.getDrawGraphics();
         
-        for (RenderBatch batch : batches) {
-            batch.render(g);
+//        if(count++ == 60){
+//            count = 0;
+//            if((increase+=10) > 50){
+//                increase = 0;     
+//            }
+//            //System.out.println(" increase "+increase);
+//        }
+        
+        Graphics graphics = bs.getDrawGraphics();
+        graphics.clearRect(0, 0, Window.get().dimension.width,Window.get().dimension.height);
+//        graphics.drawImage(image,x+increase,y+increase, null);
+//                
+        for (int i = 0; i < batches.size(); i++) {
+            batches.get(i).render(graphics);
         }
-         
+        
         bs.show();
-        g.dispose();
-    }
-
-    public void setCanvas (Canvas canvas) {
-        this.canvas = canvas;
+        graphics.dispose();
     }
     
     public void setDimension(int width, int height){
