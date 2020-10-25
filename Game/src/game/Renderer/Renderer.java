@@ -25,12 +25,7 @@ public class Renderer {
     public Renderer() {
         this.batches = new ArrayList<>();
         
-        // ****
-        try {
-            this.image = ImageIO.read(new File("assets/images/mapTile_136.png"));//C:\Users\said-\Documents\NetBeansProjects\move_image\assets\image\mapTile_136.png
-        } catch (IOException ex) {
-            Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
     }
     
     public void add(GameObject go) {
@@ -62,10 +57,6 @@ public class Renderer {
         }
     }
         
-    public Image image ;
-    public int x=100,y=100;
-    public int count= 0 , increase=0 ;
-    
     public void render() {
         Canvas canvas = Window.get().canvas;
         
@@ -77,18 +68,9 @@ public class Renderer {
             return;
         }
         
-//        if(count++ == 60){
-//            count = 0;
-//            if((increase+=10) > 50){
-//                increase = 0;     
-//            }
-//            //System.out.println(" increase "+increase);
-//        }
-        
         Graphics graphics = bs.getDrawGraphics();
         graphics.clearRect(0, 0, Window.get().dimension.width,Window.get().dimension.height);
-//        graphics.drawImage(image,x+increase,y+increase, null);
-//                
+        
         for (int i = 0; i < batches.size(); i++) {
             batches.get(i).render(graphics);
         }

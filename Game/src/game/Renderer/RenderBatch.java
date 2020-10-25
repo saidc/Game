@@ -73,8 +73,12 @@ public class RenderBatch implements java.lang.Comparable<RenderBatch>{
                         graphics.setColor(Color.BLACK);
                     }
                     //Font myFont = new Font ("Courier New", 1, 17);
-                    Font myFont = new Font ("TimesRoman", 1, 18);
-                    graphics.setFont(myFont);
+                    if(sprite.getFont() != null){
+                        graphics.setFont(sprite.getFont());
+                    }else{
+                        Font myFont = new Font ("TimesRoman", 1, 18);
+                        graphics.setFont(myFont);
+                    }
                     graphics.drawString(sprite.getText(), sprite.gameObject.getPosition().x, sprite.gameObject.getPosition().y);
                 }else{
                     if (sprite.getTexture() != null) {

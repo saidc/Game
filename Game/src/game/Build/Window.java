@@ -36,7 +36,7 @@ public class Window implements Runnable,WindowListener{//,KeyListener,MouseListe
     }
     
     private Window() {
-        this.dimension = new Dimension(1000, 800);
+        this.dimension = new Dimension(1000, 1000);
         this.title = "Game";
         r = 0;
         b = 0;

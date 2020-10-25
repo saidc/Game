@@ -18,43 +18,12 @@ public class Game_Scene extends Scene{
     
     @Override
     public void init() {
-        loadResources(); 
-        
-        //this.camera = new Camera(new Vector2i(-250, 0));
-        
-        
-        this.sprites = AssetPool.getSpritesheet("assets/images/spritesheet.png");
-        
-         //obj1 = this.gameObjects.get(0);
-        
-        this.obj1 = new GameObject("Object 1", new Transform(new Vector2i(100, 100), new Vector2i(40, 40)) , -1);
-        SpriteRenderer obj1SpriteRenderer = new SpriteRenderer();
-        obj1SpriteRenderer.setSprite(sprites.getSprite(24));    // sprite
-        obj1.addComponent(obj1SpriteRenderer);
-        this.addGameObjectToScene(obj1);
-        
-        GameObject obj2 = new GameObject("Object 2", new Transform(new Vector2i(250, 100), new Vector2i(100, 100)),0);
-        Sprite obj2sprite = new Sprite();
-        obj2sprite.setTexture(AssetPool.getTexture("assets/images/blendImage2.png")); // image 2
-        obj2sprite.SetAsSingleImage();
-        SpriteRenderer obj2SpriteRender = new SpriteRenderer();
-        obj2SpriteRender.setSprite(obj2sprite);
-        obj2.addComponent(obj2SpriteRender);
-        this.addGameObjectToScene(obj2);
-        
-        GameObject obj3 = new GameObject("Object 3", new Transform(new Vector2i(400, 100), new Vector2i(10, 10)),-2);
+        GameObject obj3 = new GameObject("Object 3", new Transform(new Vector2i(400, 100), new Vector2i(150, 50)),0);
         SpriteRenderer obj3SpriteRender = new SpriteRenderer();
         obj3SpriteRender.setColor(new Vector4f(1.0f,1.0f,0.0f,1.0f));
         obj3.addComponent(obj3SpriteRender); // just a color 
+        //obj3.addClickListener(this::StartGame);
         this.addGameObjectToScene(obj3);
-    }
-    private void loadResources() {
-        
-        // TODO: FIX TEXTURE SAVE SYSTEM TO USE PATH INSTEAD OF ID
-        AssetPool.addSpritesheet("assets/images/spritesheet.png",
-                new Spritesheet(AssetPool.getTexture("assets/images/spritesheet.png"),
-                        16, 16, 27,18, 1));
-        AssetPool.getTexture("assets/images/blendImage2.png");
     }
     
     @Override
@@ -83,20 +52,7 @@ public class Game_Scene extends Scene{
 
     @Override
     public void mouseClicked(MouseEvent me) {
-        /*
-            GameObject obj1 = new GameObject("Object 1", new Transform(new Vector2i(me.getX(), me.getY()), new Vector2i(40, 40)) , -1);
-            SpriteRenderer obj1SpriteRenderer = new SpriteRenderer();
-            obj1SpriteRenderer.setSprite(sprites.getSprite(24));    // sprite
-            obj1.addComponent(obj1SpriteRenderer);
-            this.addGameObjectToScene(obj1);
-        */
         
-        System.out.println("size:  "+this.gameObjects.size());
-        System.out.println("X:"+this.gameObjects.get(0).transform.position.x+" , Y: "+this.gameObjects.get(0).transform.position.y);
-        this.obj1.transform.position.x = me.getX();
-        this.obj1.transform.position.y = me.getY();
-        System.out.println("X:"+this.gameObjects.get(0).transform.position.x+" , Y: "+this.gameObjects.get(0).transform.position.y);
-        System.out.println("mouseClicked");
     }
 
     @Override

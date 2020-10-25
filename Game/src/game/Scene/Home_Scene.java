@@ -7,6 +7,7 @@ import game.Build.GameObject;
 import game.Build.Transform;
 import game.Build.Window;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
@@ -28,6 +29,7 @@ public class Home_Scene extends Scene{
         SpriteRenderer obj1SpriteRender = new SpriteRenderer();
         obj1SpriteRender.setColor(new Vector4f(0.0f,0.0f,0.0f,1.0f));
         obj1SpriteRender.setText("START GAME");
+        obj1SpriteRender.setFont(new Font ("TimesRoman", 1, 18));
         obj1.addComponent(obj1SpriteRender); // just a color 
         this.addGameObjectToScene(obj1);
         

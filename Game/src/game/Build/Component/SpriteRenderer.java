@@ -4,6 +4,7 @@ package game.Build.Component;
 import game.Build.Transform;
 import game.Renderer.Texture;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Image;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
@@ -14,6 +15,7 @@ public class SpriteRenderer extends Component {
     private Vector4f color = new Vector4f(1, 1, 1, 1);
     private Sprite sprite = new Sprite();
     private String text = null;
+    private Font font = null;
     private transient Transform lastTransform;
     private transient boolean isDirty = true;
 
@@ -28,6 +30,12 @@ public class SpriteRenderer extends Component {
             this.gameObject.transform.copy(this.lastTransform);
             isDirty = true;
         }
+    }
+    public Font getFont(){
+        return this.font;
+    }
+    public void setFont(Font font){
+        this.font = font;
     }
     public String getText(){
         return this.text;
