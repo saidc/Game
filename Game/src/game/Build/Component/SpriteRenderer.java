@@ -7,12 +7,12 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import org.joml.Vector2f;
-import org.joml.Vector4f;
+import org.joml.Vector4i;
 
 
 public class SpriteRenderer extends Component {
 
-    private Vector4f color = new Vector4f(1, 1, 1, 1);
+    private Vector4i color = new Vector4i(255, 255, 255, 255);
     private Sprite sprite = new Sprite();
     private String text = null;
     private Font font = null;
@@ -43,7 +43,7 @@ public class SpriteRenderer extends Component {
     public void setText(String text){
         this.text = text;
     }
-    public Vector4f getColor() {
+    public Vector4i getColor() {
         return this.color;
     }
 
@@ -63,7 +63,7 @@ public class SpriteRenderer extends Component {
         this.isDirty = true;
     }
 
-    public void setColor(Vector4f color) {
+    public void setColor(Vector4i color) {
         if (!this.color.equals(color)) {
             this.isDirty = true;
             this.color.set(color);

@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import org.joml.Vector2i;
 import org.joml.Vector4f;
+import org.joml.Vector4i;
 
 
 public class Temporal extends Scene{
@@ -61,7 +62,7 @@ public class Temporal extends Scene{
         
         GameObject obj3 = new GameObject("Object 3", new Transform(new Vector2i(400, 100), new Vector2i(10, 10)),-2);
         SpriteRenderer obj3SpriteRender = new SpriteRenderer();
-        obj3SpriteRender.setColor(new Vector4f(1.0f,1.0f,0.0f,1.0f));
+        obj3SpriteRender.setColor(new Vector4i(1,1,0,1));
         obj3.addComponent(obj3SpriteRender); // just a color 
         this.addGameObjectToScene(obj3);
     }

@@ -8,16 +8,10 @@ import game.Build.Transform;
 import game.Build.Window;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
 import org.joml.Vector2i;
-import org.joml.Vector4f;
-//import org.joml.Vector2i;
-//import org.joml.Vector4f;
+import org.joml.Vector4i;
 
 
 public class Home_Scene extends Scene{
@@ -27,7 +21,7 @@ public class Home_Scene extends Scene{
     public void init() {
         GameObject obj1 = new GameObject("Object 1", new Transform(new Vector2i(410, 125), new Vector2i(100, 100)),1);
         SpriteRenderer obj1SpriteRender = new SpriteRenderer();
-        obj1SpriteRender.setColor(new Vector4f(0.0f,0.0f,0.0f,1.0f));
+        obj1SpriteRender.setColor(new Vector4i(0,0,0,255));
         obj1SpriteRender.setText("START GAME");
         obj1SpriteRender.setFont(new Font ("TimesRoman", 1, 18));
         obj1.addComponent(obj1SpriteRender); // just a color 
@@ -35,7 +29,7 @@ public class Home_Scene extends Scene{
         
         GameObject obj3 = new GameObject("Object 3", new Transform(new Vector2i(400, 100), new Vector2i(150, 50)),0);
         SpriteRenderer obj3SpriteRender = new SpriteRenderer();
-        obj3SpriteRender.setColor(new Vector4f(1.0f,1.0f,0.0f,1.0f));
+        obj3SpriteRender.setColor(new Vector4i(255,255,0,255));
         obj3.addComponent(obj3SpriteRender); // just a color 
         obj3.addClickListener(this::StartGame);
         this.addGameObjectToScene(obj3);

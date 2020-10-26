@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import org.joml.Vector4f;
+import org.joml.Vector4i;
 
 public class RenderBatch implements java.lang.Comparable<RenderBatch>{
     
@@ -65,7 +66,7 @@ public class RenderBatch implements java.lang.Comparable<RenderBatch>{
             //if (sprite.isDirty()) {
                 sprite.setClean();
                 if(sprite.getText() != null){
-                    Vector4f color = null;
+                    Vector4i color = null;
                     if( sprite.getColor() != null){
                         color =  sprite.getColor();
                         graphics.setColor(new Color(color.x,color.y,color.z,color.w));
@@ -84,10 +85,10 @@ public class RenderBatch implements java.lang.Comparable<RenderBatch>{
                     if (sprite.getTexture() != null) {
                         graphics.drawImage(sprite.getImage(), sprite.gameObject.getPosition().x, sprite.gameObject.getPosition().y, null);
                     }else{
-                        float r = sprite.getColor().x;
-                        float g = sprite.getColor().y;
-                        float b = sprite.getColor().z;
-                        float a = sprite.getColor().w;
+                        int r = sprite.getColor().x;
+                        int g = sprite.getColor().y;
+                        int b = sprite.getColor().z;
+                        int a = sprite.getColor().w;
                         graphics.setColor(new Color(r,g,b,a));
                         graphics.fillRect( sprite.gameObject.getPosition().x,sprite.gameObject.getPosition().y, sprite.gameObject.getScale().x , sprite.gameObject.getScale().y);
                     }
