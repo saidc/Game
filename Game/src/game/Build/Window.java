@@ -19,7 +19,7 @@ public class Window implements Runnable,WindowListener{//,KeyListener,MouseListe
     private String title;
     private int WindowID;
 
-    public float r, g, b, a;
+    public int r, g, b, a;
     
     public Frame frame ;
     public  Canvas canvas;
@@ -39,9 +39,9 @@ public class Window implements Runnable,WindowListener{//,KeyListener,MouseListe
         this.dimension = new Dimension(1000, 1000);
         this.title = "Game";
         r = 0;
-        b = 0;
         g = 0;
-        a = 1;
+        b = 0;
+        a = 255;
         this.WindowID = this.hashCode();
     }
     

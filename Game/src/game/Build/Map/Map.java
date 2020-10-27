@@ -88,6 +88,7 @@ public class Map {
         }
         System.out.println("GenarateGameObjectMap");
     }
+    
     public List<List<GameObject>> getMap(){
         return this.MapOfGameObjects;
     }
@@ -103,22 +104,31 @@ public class Map {
         }
         System.out.println("GeneratePlainMap");
     }
+    
     /**
      * the idea is to generate a list of position where
      * its located a Mountain, this is to know where i cant put 
      * another Mountain, an then whe draw the list of position of the 
      * mountains or put in to the map.
      */
-    private void GenerateMountains(){
+    private boolean GenerateMountains(){
+        int freeMovement = (int)Math.sqrt((this.MapDimension.width*this.MapDimension.height)/this.NumberOfMountains);
+        if(freeMovement*freeMovement*NumberOfMountains > this.MapDimension.width*this.MapDimension.height*NumberOfMountains){
+            System.out.println("the number of mountaint exeed the capacity of the map");
+            return false;
+        }
+        System.out.println("freeMovement: "+freeMovement);
         
         List<Vector2i> MountainPos = new ArrayList<>();
         int NumberOfMountainCreated = 0;
+        int tryCount = 0;
         while(NumberOfMountainCreated < this.NumberOfMountains){ 
             try {
-                    Vector2i NewPos = getRandomMountainPosition();
+                    
+                    Vector2i NewPos = getRandomMountainPosition(0,99,0,99);
                     if(MountainPos.size() > 0 ){
                         boolean sw = true;
-                        /*
+                        
                         for (Vector2i MountainPo : MountainPos) {
                             Vector2i TopLeft     = new Vector2i(NewPos.x - 2,NewPos.y - 2);
                             Vector2i TopRight    = new Vector2i(NewPos.x + 3,NewPos.y - 2);
@@ -135,14 +145,16 @@ public class Map {
                                ( BottonRight.x  <= MountainPo.x + 3   && BottonRight.y  <= MountainPo.y + 3))  
                               ){
                                 sw = false;
-
+                                tryCount++;
                             }
                         }
-                        */
-//                        if(sw){
+                        
+                        if(sw ){//|| tryCount > 10){
                             MountainPos.add(NewPos);
                             NumberOfMountainCreated++;
-//                        }
+                            tryCount = 0;
+                        }
+                        
                     }else{
                         if(NewPos.x >= 2 && NewPos.y >=2){
                             MountainPos.add(NewPos);
@@ -161,12 +173,13 @@ public class Map {
             addMountainAndHillInPos(MountainPo);
         }
         System.out.println("GenerateMountains");
+        return true;
     }
     
     /**
      * Mountain has a size of 2x2 and
      * Hill has a size of 6x6
-     */
+    */
     private void addMountainAndHillInPos(Vector2i pos){
         for (int i = -2; i <= 3; i++) {
             List<Integer> line = Int_map.get(pos.y+i);
@@ -180,18 +193,20 @@ public class Map {
         }
     }
     
-    private Vector2i getRandomMountainPosition(){
+    private Vector2i getRandomMountainPosition(int xi,int xf, int yi,int yf){
         Random r1 = new Random();
         Random r2 = new Random();
-        int low1  = 2;
-        int high1 = this.MapDimension.width-3;
-        int low2  = 2;
-        int high2 = this.MapDimension.height-3;
+        int low1  = xi;
+        int high1 = xf;
+        int low2  = yi;
+        int high2 = yf;
         return new Vector2i(r1.nextInt(high1-low1) + low1 , r2.nextInt(high2-low2) + low2) ;
     }
+    
     public void ShowMap(){
         ShowMap(this.Int_map);
     }
+    
     private static void ShowMap(List<List<Integer>> map){
         for (List<Integer> line : map) {
             for (Integer integer : line) {
