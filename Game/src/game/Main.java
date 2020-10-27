@@ -47,18 +47,21 @@ public class Main {
             }
         }
     }
-    private static Vector2i getRandomMountainPosition(){
+    private static Vector2i getRandomMountainPosition(int xi,int xf, int yi,int yf){
         Random r1 = new Random();
         Random r2 = new Random();
-        int low1  = 2;
-        int high1 = 100-3;
-        int low2  = 2;
-        int high2 = 100-3;
+        int low1  = xi;
+        int high1 = xf;
+        int low2  = yi;
+        int high2 = yf;
         return new Vector2i(r1.nextInt(high1-low1) + low1 , r2.nextInt(high2-low2) + low2) ;
     }
     public static void main(String[] args) {
-        
-        
+//        Vector2i pos = getRandomMountainPosition(0,2,0,2);
+//        System.out.println("pos: "+pos.toString());
+//        Random r1 = new Random();
+//        
+//        System.out.println(r1.nextInt(2));
         /*
         List<List<Integer>> map = GeneratePlainMap();
         ShowMap(map);

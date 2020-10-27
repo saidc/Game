@@ -1,11 +1,10 @@
 
 package game.Scene;
 
-import game.Build.Component.Sprite;
-import game.Build.Component.SpriteRenderer;
 import game.Build.Component.Spritesheet;
 import game.Build.GameObject;
 import game.Build.Map.Map;
+import game.Build.Window;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -13,13 +12,11 @@ import java.util.List;
 
 public class Game_Scene extends Scene{
     private Spritesheet sprites;
-    //private List<List<GameObject>> Obj_Map;
     
     @Override
     public void init() {
         System.out.println("start init");
-        
-        if(Map.get().init(new Dimension(10,10), new Dimension(100,100), 200)){
+        if(Map.get().init(new Dimension(10,10), new Dimension(100,100), 200)){ // the map has to be square map
             for (List<GameObject> list : Map.get().getMap()) {
                 this.gameObjects.addAll(list);
             }
@@ -27,13 +24,6 @@ public class Game_Scene extends Scene{
         }else{
             System.out.println("Error ");
         }
-        //Map.get().ShowMap();
-        
-//        GameObject obj3 = new GameObject("Object 3", new Transform(new Vector2i(10, 10), new Vector2i(150, 50)),0);
-//        SpriteRenderer obj3SpriteRender = new SpriteRenderer();
-//        obj3SpriteRender.setColor(new Vector4i(1,1,0,1));
-//        obj3.addComponent(obj3SpriteRender); // just a color 
-//        this.addGameObjectToScene(obj3);
     }
     
     @Override
@@ -47,7 +37,11 @@ public class Game_Scene extends Scene{
 
     @Override
     public void keyTyped(KeyEvent ke) {
-        
+        if(ke.getKeyChar() == 'q' || ke.getKeyChar() == 'Q'){
+            System.out.println("quit");
+            Window.changeScene(0);
+        }
+        //System.out.println("KeyTuped: "+ ke.getKeyChar() + " , "+ ke.getID());
     }
 
     @Override

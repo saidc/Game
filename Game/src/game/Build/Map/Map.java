@@ -113,7 +113,7 @@ public class Map {
      */
     private boolean GenerateMountains(){
         int freeMovement = (int)Math.sqrt((this.MapDimension.width*this.MapDimension.height)/this.NumberOfMountains);
-        if(freeMovement*freeMovement*NumberOfMountains > this.MapDimension.width*this.MapDimension.height*NumberOfMountains){
+        if(freeMovement*freeMovement*NumberOfMountains > this.MapDimension.width*this.MapDimension.height){
             System.out.println("the number of mountaint exeed the capacity of the map");
             return false;
         }
@@ -121,51 +121,26 @@ public class Map {
         
         List<Vector2i> MountainPos = new ArrayList<>();
         int NumberOfMountainCreated = 0;
-        int tryCount = 0;
+        int randomRange = freeMovement - 6;
         while(NumberOfMountainCreated < this.NumberOfMountains){ 
-            try {
-                    
-                    Vector2i NewPos = getRandomMountainPosition(0,99,0,99);
-                    if(MountainPos.size() > 0 ){
-                        boolean sw = true;
-                        
-                        for (Vector2i MountainPo : MountainPos) {
-                            Vector2i TopLeft     = new Vector2i(NewPos.x - 2,NewPos.y - 2);
-                            Vector2i TopRight    = new Vector2i(NewPos.x + 3,NewPos.y - 2);
-                            Vector2i BottonLeft  = new Vector2i(NewPos.x - 2,NewPos.y + 3);
-                            Vector2i BottonRight = new Vector2i(NewPos.x + 3,NewPos.y + 3);
-
-                            if(((TopLeft.x      >= MountainPo.x - 2   && TopLeft.y      >= MountainPo.y - 2)&&
-                               ( TopLeft.x      <= MountainPo.x + 3   && TopLeft.y      <= MountainPo.y + 3))||
-                               ((TopRight.x     >= MountainPo.x - 2   && TopRight.y     >= MountainPo.y - 2)&&
-                               ( TopRight.x     <= MountainPo.x + 3   && TopRight.y     <= MountainPo.y + 3))||
-                               ((BottonLeft.x   >= MountainPo.x - 2   && BottonLeft.y   >= MountainPo.y - 2)&&
-                               ( BottonLeft.x   <= MountainPo.x + 3   && BottonLeft.y   <= MountainPo.y + 3))||
-                               ((BottonRight.x  >= MountainPo.x - 2   && BottonRight.y  >= MountainPo.y - 2)&&
-                               ( BottonRight.x  <= MountainPo.x + 3   && BottonRight.y  <= MountainPo.y + 3))  
-                              ){
-                                sw = false;
-                                tryCount++;
-                            }
-                        }
-                        
-                        if(sw ){//|| tryCount > 10){
-                            MountainPos.add(NewPos);
-                            NumberOfMountainCreated++;
-                            tryCount = 0;
-                        }
-                        
-                    }else{
-                        if(NewPos.x >= 2 && NewPos.y >=2){
-                            MountainPos.add(NewPos);
-                            NumberOfMountainCreated++;
-                        }
+            //Vector2i NewPos = null;//getRandomMountainPosition(0,99,0,99);
+            for (int y = 0; y < this.MapDimension.height - freeMovement; y+= freeMovement) {
+                for (int x = 0; x < this.MapDimension.width - freeMovement; x+=freeMovement) {
+                    Vector2i add_random = new Vector2i(0,0);
+                    if(randomRange > 0){
+                        add_random = getRandomMountainPosition(0,randomRange,0,randomRange);
                     }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("Error: " + e.getMessage());
-                break;
+                    MountainPos.add(new Vector2i(x+add_random.x+2,y+add_random.y+2));
+                    NumberOfMountainCreated++;
+                    if(!(NumberOfMountainCreated < this.NumberOfMountains)){
+                        System.out.println("NumberOfMountainCreated "+NumberOfMountainCreated);
+                        break;
+                    }
+                }
+                if(!(NumberOfMountainCreated < this.NumberOfMountains)){
+                    System.out.println("NumberOfMountainCreated "+NumberOfMountainCreated);
+                    break;
+                }
             }
         }
         
@@ -197,9 +172,9 @@ public class Map {
         Random r1 = new Random();
         Random r2 = new Random();
         int low1  = xi;
-        int high1 = xf;
+        int high1 = xf+1;
         int low2  = yi;
-        int high2 = yf;
+        int high2 = yf+1;
         return new Vector2i(r1.nextInt(high1-low1) + low1 , r2.nextInt(high2-low2) + low2) ;
     }
     
