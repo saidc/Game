@@ -7,11 +7,8 @@ import game.Build.Component.Component;
 import game.Build.GameObject;
 import game.Build.serializer.*;
 import game.Renderer.Renderer;
-import java.awt.Canvas;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.image.BufferStrategy;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -22,7 +19,7 @@ import java.util.List;
 
 public abstract class Scene implements KeyListener,MouseListener{
     protected List<GameObject> gameObjects = new ArrayList<>();
-    public abstract void update();
+    public abstract void update(long time);
     private boolean isRunning = false;
     protected Renderer renderer = new Renderer();
     protected boolean levelLoaded = false;

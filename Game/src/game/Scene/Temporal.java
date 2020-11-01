@@ -27,9 +27,9 @@ public class Temporal extends Scene{
     }
     
     @Override
-    public void update() {
+    public void update(long time) {
         for (GameObject go : this.gameObjects) {
-            go.update(0);
+            go.update(time);
         }
         
         this.renderer.render();

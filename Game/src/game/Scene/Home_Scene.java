@@ -53,7 +53,7 @@ public class Home_Scene extends Scene{
     }
     public void StartGame(Dimension d){
         System.out.println("Start game");
-        Window.changeScene(1);
+       Window.changeScene(1);
     }
     public void QuitGame(Dimension d){
         System.out.println("Quit Game");
@@ -61,19 +61,19 @@ public class Home_Scene extends Scene{
     }
     
     @Override
-    public void update() {
+    public void update(long time) {
         
         for (GameObject go : this.gameObjects) {
             go.update(0);
             if(this.isClicked){
-                go.isClicked(ClickedPosition);
+                if(go.isClicked(ClickedPosition)){
+                    System.out.println("");
+                }
             }
-            
         }
         if(this.isClicked){
             this.isClicked = false;
         }
-        
         this.renderer.render();
     }
     

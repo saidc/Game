@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.joml.Random;
 import org.joml.Vector2i;
-import org.joml.Vector4f;
 import org.joml.Vector4i;
 
 
@@ -18,14 +17,15 @@ public class Map {
     
     private Dimension unitDimension = null;
     private Dimension MapDimension  = null;
-    private static final int Mountain_size = 36;
-    private static final int Plain    = 0 ;
-    private static final int hill     = 1 ;
-    private static final int Mountain = 2 ;
     
-    private static final Vector4i Plain_Color     = new Vector4i( 21  , 173 , 41 , 255 );
-    private static final Vector4i hill_Color      = new Vector4i( 197 , 202 , 25 , 255 );
-    private static final Vector4i Mountain_Color  = new Vector4i( 181 , 116 , 11 , 255 );
+    private static final int Mountain_size = 36;
+    public static  final int Plain    = 0 ;
+    public static  final int hill     = 1 ;
+    public static  final int Mountain = 2 ;
+    
+    public static final Vector4i Plain_Color     = new Vector4i( 21  , 173 , 41 , 255 );
+    public static final Vector4i hill_Color      = new Vector4i( 197 , 202 , 25 , 255 );
+    public static final Vector4i Mountain_Color  = new Vector4i( 181 , 116 , 11 , 255 );
     
     private List<List<Integer>> Int_map;
     private List<List<GameObject>> MapOfGameObjects;
@@ -46,11 +46,16 @@ public class Map {
             return false;
         }
     }
+    
     public static Map get(){
         if(Map.map == null){
             Map.map = new Map();
         }
         return Map.map;
+    }
+    
+    public List<List<Integer>> getInt_Map(){
+        return Int_map;
     }
     
     private void GenarateGameObjectMap(){
@@ -82,6 +87,7 @@ public class Map {
                 
                 objSpriteRender.setColor(color);
                 obj.addComponent(objSpriteRender); // just a color 
+                
                 line.add(obj);
             }
             this.MapOfGameObjects.add(line);
@@ -117,61 +123,66 @@ public class Map {
             System.out.println("the number of mountaint exeed the capacity of the map");
             return false;
         }
-        System.out.println("freeMovement: "+freeMovement);
+        //System.out.println("freeMovement: "+freeMovement);
         
         List<Vector2i> MountainPos = new ArrayList<>();
         int NumberOfMountainCreated = 0;
-        int tryCount = 0;
-        while(NumberOfMountainCreated < this.NumberOfMountains){ 
-            try {
-                    
-                    Vector2i NewPos = getRandomMountainPosition(0,99,0,99);
-                    if(MountainPos.size() > 0 ){
-                        boolean sw = true;
-                        
-                        for (Vector2i MountainPo : MountainPos) {
-                            Vector2i TopLeft     = new Vector2i(NewPos.x - 2,NewPos.y - 2);
-                            Vector2i TopRight    = new Vector2i(NewPos.x + 3,NewPos.y - 2);
-                            Vector2i BottonLeft  = new Vector2i(NewPos.x - 2,NewPos.y + 3);
-                            Vector2i BottonRight = new Vector2i(NewPos.x + 3,NewPos.y + 3);
+        //int tryCount = 0;
+        try {
+            while(NumberOfMountainCreated < this.NumberOfMountains){ 
 
-                            if(((TopLeft.x      >= MountainPo.x - 2   && TopLeft.y      >= MountainPo.y - 2)&&
-                               ( TopLeft.x      <= MountainPo.x + 3   && TopLeft.y      <= MountainPo.y + 3))||
-                               ((TopRight.x     >= MountainPo.x - 2   && TopRight.y     >= MountainPo.y - 2)&&
-                               ( TopRight.x     <= MountainPo.x + 3   && TopRight.y     <= MountainPo.y + 3))||
-                               ((BottonLeft.x   >= MountainPo.x - 2   && BottonLeft.y   >= MountainPo.y - 2)&&
-                               ( BottonLeft.x   <= MountainPo.x + 3   && BottonLeft.y   <= MountainPo.y + 3))||
-                               ((BottonRight.x  >= MountainPo.x - 2   && BottonRight.y  >= MountainPo.y - 2)&&
-                               ( BottonRight.x  <= MountainPo.x + 3   && BottonRight.y  <= MountainPo.y + 3))  
-                              ){
-                                sw = false;
-                                tryCount++;
+                        Vector2i NewPos = getRandomMountainPosition(2,this.MapDimension.width-4,2,this.MapDimension.height-4);
+                        if(MountainPos.size() > 0 ){
+                            boolean sw = true;
+
+                            for (Vector2i MountainPo : MountainPos) {
+                                Vector2i TopLeft     = new Vector2i(NewPos.x    ,NewPos.y    );
+                                Vector2i TopRight    = new Vector2i(NewPos.x + 1,NewPos.y    );
+                                Vector2i BottonLeft  = new Vector2i(NewPos.x    ,NewPos.y + 1);
+                                Vector2i BottonRight = new Vector2i(NewPos.x + 1,NewPos.y + 1);
+
+                                if(((TopLeft.x      >= MountainPo.x       && TopLeft.y      >= MountainPo.y    )&&
+                                   ( TopLeft.x      <= MountainPo.x + 1   && TopLeft.y      <= MountainPo.y + 1))||
+                                   ((TopRight.x     >= MountainPo.x       && TopRight.y     >= MountainPo.y    )&&
+                                   ( TopRight.x     <= MountainPo.x + 1   && TopRight.y     <= MountainPo.y + 1))||
+                                   ((BottonLeft.x   >= MountainPo.x       && BottonLeft.y   >= MountainPo.y    )&&
+                                   ( BottonLeft.x   <= MountainPo.x + 1   && BottonLeft.y   <= MountainPo.y + 1))||
+                                   ((BottonRight.x  >= MountainPo.x       && BottonRight.y  >= MountainPo.y    )&&
+                                   ( BottonRight.x  <= MountainPo.x + 1   && BottonRight.y  <= MountainPo.y + 1))  
+                                  ){
+                                    sw = false;
+                                    //tryCount++;
+                                }
+                            }
+
+                            if(sw ){//|| tryCount > 10){
+                                MountainPos.add(NewPos);
+                                NumberOfMountainCreated++;
+                                //tryCount = 0;
+                            }
+
+                        }else{
+                            if(NewPos.x >= 2 && NewPos.y >=2){
+                                MountainPos.add(NewPos);
+                                NumberOfMountainCreated++;
                             }
                         }
-                        
-                        if(sw ){//|| tryCount > 10){
-                            MountainPos.add(NewPos);
-                            NumberOfMountainCreated++;
-                            tryCount = 0;
-                        }
-                        
-                    }else{
-                        if(NewPos.x >= 2 && NewPos.y >=2){
-                            MountainPos.add(NewPos);
-                            NumberOfMountainCreated++;
-                        }
-                    }
 
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("Error: " + e.getMessage());
-                break;
             }
+            
+            for (Vector2i MountainPo : MountainPos) {
+                addHillInPos(MountainPo);
+            }
+            for (Vector2i MountainPo : MountainPos) {
+                addMountainInPos(MountainPo);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error: " + e.getMessage() + " line: " + e.getLocalizedMessage());
+            
+            
         }
         
-        for (Vector2i MountainPo : MountainPos) {
-            addMountainAndHillInPos(MountainPo);
-        }
         System.out.println("GenerateMountains");
         return true;
     }
@@ -180,14 +191,22 @@ public class Map {
      * Mountain has a size of 2x2 and
      * Hill has a size of 6x6
     */
-    private void addMountainAndHillInPos(Vector2i pos){
+    private void addHillInPos(Vector2i pos){
+        for (int i = -2; i <= 3; i++) {
+            List<Integer> line = Int_map.get(pos.y+i);
+            for (int j = -2; j <= 3; j++) {
+                if( !( (i >= 0 && i < 2)&& (j >= 0 && j < 2) )){
+                    line.set(pos.x+j, hill);
+                }
+            }
+        }
+    }
+    private void addMountainInPos(Vector2i pos){
         for (int i = -2; i <= 3; i++) {
             List<Integer> line = Int_map.get(pos.y+i);
             for (int j = -2; j <= 3; j++) {
                 if((i >= 0 && i < 2)&& (j >= 0 && j < 2)){
                     line.set(pos.x+j, Mountain);
-                }else{
-                    line.set(pos.x+j, hill);
                 }
             }
         }

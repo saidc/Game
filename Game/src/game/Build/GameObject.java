@@ -10,6 +10,7 @@ import java.util.function.Consumer;
 import org.joml.Vector2i;
 
 public class GameObject {
+    
     private String name;
     private List<Component> components;
     public Transform transform;
@@ -61,10 +62,10 @@ public class GameObject {
         c.gameObject = this;
     }
     
-    public void update(float dt) {
+    public void update(long time) {
         
         for (int i=0; i < components.size(); i++) {
-            components.get(i).update(dt);
+            components.get(i).update(time);
         }
     }
 
@@ -93,29 +94,29 @@ public class GameObject {
         return this.transform;
     }
 
-    public void isClicked(Vector2i ClickedPosition) {
-        if(ClickListener != null){
-            SpriteRenderer spr = this.getComponent(SpriteRenderer.class);
-            Dimension dimension = null;
-            if(spr.getTexture() != null){
-                dimension = spr.getDimension();
-            }else{
-                dimension = new Dimension(this.transform.scale.x,this.transform.scale.y);
-            }
-            Vector2i pos = this.transform.getPosition();
-            try {
-                if(     (ClickedPosition.x > pos.x && ClickedPosition.y > pos.y) &&
-                        (ClickedPosition.x < pos.x + dimension.width && ClickedPosition.y < pos.y + dimension.height)
-                  ){
-                    this.ClickListener.accept(new Dimension(ClickedPosition.x-pos.x, ClickedPosition.y - pos.y));
-                } 
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println(e.getMessage());
-            }
+    public boolean isClicked(Vector2i ClickedPosition) {
+        boolean isclicked = false;
+        SpriteRenderer spr = this.getComponent(SpriteRenderer.class);
+        Dimension dimension = null;
+        if(spr.getTexture() != null){
+            dimension = spr.getDimension();
+        }else{
+            dimension = new Dimension(this.transform.scale.x,this.transform.scale.y);
         }
+        Vector2i pos = this.transform.getPosition();
+
+        if(     (ClickedPosition.x > pos.x && ClickedPosition.y > pos.y) &&
+                (ClickedPosition.x < pos.x + dimension.width && ClickedPosition.y < pos.y + dimension.height)
+          ){
+            isclicked = true;
+            if(ClickListener != null){
+                this.ClickListener.accept(new Dimension(ClickedPosition.x-pos.x, ClickedPosition.y - pos.y));
+            }
+
+        } 
+        return isclicked;
     }
+    
     public void addClickListener(Consumer<Dimension> ClickListener){
         this.ClickListener = ClickListener;
     }

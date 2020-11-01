@@ -11,7 +11,6 @@ import java.awt.Dimension;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-
 public class Window implements Runnable,WindowListener{//,KeyListener,MouseListener{
     private static Window window = null;
     
@@ -99,7 +98,7 @@ public class Window implements Runnable,WindowListener{//,KeyListener,MouseListe
         while(this.running) {
             
             if (dt >= 10) {
-                currentScene.update();
+                currentScene.update(endTime);
                 beginTime = endTime;
                 dt = 0;
             }else{
@@ -116,19 +115,21 @@ public class Window implements Runnable,WindowListener{//,KeyListener,MouseListe
          Window.get().frame.removeKeyListener(currentScene);
          Window.get().canvas.removeMouseListener(currentScene);           
         }
+        
         switch (newScene) {
             case 0:
                 currentScene = new Home_Scene();
                 break;
             case 1:
                 currentScene = new Game_Scene();
+                
                 break;
             default:
                 assert false : "Unknown scene '" + newScene + "'";
                 break;
         }
 
-        currentScene.load();
+        //currentScene.load(); // upload the previous configuration
         currentScene.init();
         currentScene.start( window.dimension.width,window.dimension.height);
         Window.get().frame.addKeyListener  (currentScene);
