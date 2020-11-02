@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import org.joml.Random;
+import org.joml.Vector2f;
 import org.joml.Vector2i;
 import org.joml.Vector4i;
 
@@ -21,9 +22,9 @@ public class Units extends Component{
     private static final Vector4i Unit_Color          = new Vector4i( 4  , 47 , 102 , 255 );
     private static final Vector4i Unit_Selected_Color = new Vector4i( 25 , 94 , 131 , 255 );
     private static final Vector4i Unit_Execut_Color = new Vector4i( 25 , 94 , 255 , 255 );
-    private static final int Sleep_Mode         = 0;
-    private static final int Waiting_for_Orders = 1;
-    private static final int Executing_Orders   = 2;
+    public static final int Sleep_Mode         = 0;
+    public static final int Waiting_for_Orders = 1;
+    public static final int Executing_Orders   = 2;
     
     public static List<Units> get(){
         if(units == null){
@@ -53,7 +54,6 @@ public class Units extends Component{
         
         return objs;
     }
-    private static boolean allowClickEvent = true;
     public static void addClickListeners(Consumer<Boolean> ClickListener) {
         if(units == null){
             return;
@@ -68,6 +68,8 @@ public class Units extends Component{
     public static void GenerateRandomUnits(int NumberOfRandomUnits,Dimension unitPixelSize, List<List<Integer>> Int_map , int Terrain_Int){
         if(units == null){
             units = new ArrayList<>();
+        }else{
+            units.clear();
         }
         // obtain the position of the plain terrain 
         List<Vector2i> TerrainPositionSelected = new ArrayList<>();
@@ -108,7 +110,7 @@ public class Units extends Component{
                 Vector2i PixelPos = new Vector2i(unitPixelSize.width*TerrainPositionSelected.get(pos).x , unitPixelSize.height*TerrainPositionSelected.get(pos).y);
 
                 // generate a GameObject
-                GameObject obj = new GameObject("Unit-"+i, new Transform(PixelPos, new Vector2i(10, 10)),Unit);
+                GameObject obj = new GameObject("Unit-"+i, new Transform(PixelPos, new Vector2i(unitPixelSize.width, unitPixelSize.height)),Unit);
                 SpriteRenderer objSpriteRender = new SpriteRenderer();
                 objSpriteRender.setColor(Unit_Color);
                 obj.addComponent(objSpriteRender); // just a color
@@ -134,10 +136,9 @@ public class Units extends Component{
         return false;
     }
     
+    private Vector2i    target          = null ; // its the square position not the pixel position
     private boolean unit_hasToken = false;
     private Dimension   unitDimension   = null ; // its the pixel dimension of the unit
-    //private Vector2i  position        = null ; // its the square position not the pixel position
-    private Vector2i    target          = null ; // its the square position not the pixel position
     private Consumer<Boolean> ClickListener = null;
     private Timer time ;
     /**
@@ -146,17 +147,20 @@ public class Units extends Component{
      * 2:   Executing orders
      */
     private int State;
-    private int Previous_State;
-   // private GameObject  unit_Object     = null ;
+    private boolean move = false;
     
+    public int getState(){
+        return this.State;
+    }
     public void init(Vector2i position,Dimension unitDimension){
         this.unitDimension = unitDimension;
         //this.position = position;
         this.State = Sleep_Mode;
-        this.time = new Timer();
-        
+        this.time = new Timer();  
     }
-    
+    public void Move(){
+        this.move = true;
+    }
     private void getToken(){
         if(hasToken){
             this.unit_hasToken = true;
@@ -175,26 +179,50 @@ public class Units extends Component{
         }
         return false;
     }
+    
+    private void setSleepMode(){
+        this.State = Sleep_Mode;
+        SpriteRenderer s = this.gameObject.getComponent(SpriteRenderer.class);
+        s.setColor(Unit_Color);
+        s.outline = null;
+        releaseToken();
+        deleteOrder();
+    }
+    private void WaitingForOrders(int state){
+        getToken();
+        if(this.unit_hasToken){
+            SpriteRenderer s = this.gameObject.getComponent(SpriteRenderer.class);
+            this.State = Waiting_for_Orders;
+            if(state == 0){
+                s.setColor(Unit_Selected_Color);
+            }else if(state == 1){
+                s.setColor(new Vector4i(255,0,255,255));
+            }
+            s.outline = new Vector4i(255,255,255,255);
+        }
+    }
+    private void ExecutingOrders(){
+        this.State = Executing_Orders;
+        SpriteRenderer s = this.gameObject.getComponent(SpriteRenderer.class);
+        s.setColor(new Vector4i(255,0,255,255));
+        s.outline = null;
+        releaseToken();
+    }
+    
     private void ClickListener (Dimension d){
         
-        SpriteRenderer s = this.gameObject.getComponent(SpriteRenderer.class);
-        
         if(       this.State == Sleep_Mode         ){
-            getToken();
-            if(this.unit_hasToken){
-                this.State = Waiting_for_Orders;
-                s.setColor(Unit_Selected_Color);
-                System.out.println("Waiting_for_Orders");
-            }
+            WaitingForOrders(0);
+            //System.out.println("Waiting_for_Orders");
         }else if( this.State == Waiting_for_Orders ){
-            this.State = Sleep_Mode;
-            s.setColor(Unit_Color);
-            releaseToken();
-            System.out.println("Sleep_Mode");
+            setSleepMode();
+            //System.out.println("Sleep_Mode");
             
         }else if( this.State == Executing_Orders   ){
-            setSleepMode();
+            WaitingForOrders(1);
+           // System.out.println("Sleep_Mode");
         }
+        
     }
     
     public void deleteOrder(){
@@ -203,29 +231,43 @@ public class Units extends Component{
     
     public void update(long time){
         if(this.State == Executing_Orders){
+              
             if( !this.time.isStart ){
-                this.time.init(3000);
+                this.time.init(30);
                 this.time.start();
             }else{
                 if(this.time.isEnd()){
-                    System.out.println("finalizar orders");
-                    setSleepMode();
+                    if(this.move){
+                        Vector2f v = new Vector2f(this.target.x - this.gameObject.transform.position.x ,
+                                                  this.target.y - this.gameObject.transform.position.y  );
+    //                    System.out.println("vs1:"+v.length());
+                        v.normalize();
+    //                    System.out.println("vs2:"+v.length());
+                        v.mul(this.gameObject.transform.scale.x /2, this.gameObject.transform.scale.y /2);
+    //                    System.out.println("vs3:"+v.length());
+
+                        this.gameObject.transform.position.x += v.x;
+                        this.gameObject.transform.position.y += v.y;
+
+                        int x = this.gameObject.transform.position.x ;
+                        int y = this.gameObject.transform.position.y ;
+                        int x1 =target.x- (this.gameObject.transform.scale.x /2), x2 =target.x+(this.gameObject.transform.scale.x /2);
+                        int y1 =target.y- (this.gameObject.transform.scale.y /2), y2 =target.y+ (this.gameObject.transform.scale.y /2);
+
+                        if( x > x1 && x < x2 && y > y1 && y < y2){
+                            setSleepMode();
+                        }
+                        this.move = false;
+                    }
                 }
             }
         }
     }
     
-    private void setSleepMode(){
-        this.State = Sleep_Mode;
-        SpriteRenderer s = this.gameObject.getComponent(SpriteRenderer.class);
-        s.setColor(Unit_Color);
-        releaseToken();
-        deleteOrder();
-    }
-    public void update(int GameState) {
+    public void update(int GameState, GameObject temp) {
         if(this.State == Waiting_for_Orders && this.unit_hasToken && GameState == 1){
-            this.State = Executing_Orders;
-            releaseToken();
+            ExecutingOrders();
+            this.target = temp.getPosition();
         }
     }
     
@@ -257,6 +299,10 @@ public class Units extends Component{
         public void setTimer(int time){
             this.target = time;
         }
+        
+    }
+    
+    private class Path{
         
     }
 }

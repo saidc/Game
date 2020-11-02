@@ -6,16 +6,10 @@ import game.Build.GameObject;
 import game.Build.Window;
 import java.awt.Canvas;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.image.BufferStrategy;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 
 public class Renderer {
     private final int MAX_BATCH_SIZE = 1000;

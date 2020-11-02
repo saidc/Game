@@ -220,6 +220,7 @@ public class Map {
         int low2  = yi;
         int high2 = yf;
         return new Vector2i(r1.nextInt(high1-low1) + low1 , r2.nextInt(high2-low2) + low2) ;
+        
     }
     
     public void ShowMap(){

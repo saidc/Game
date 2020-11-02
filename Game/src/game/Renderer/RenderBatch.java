@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import org.joml.Vector4f;
 import org.joml.Vector4i;
 
 public class RenderBatch implements java.lang.Comparable<RenderBatch>{
@@ -89,6 +88,11 @@ public class RenderBatch implements java.lang.Comparable<RenderBatch>{
                         int g = sprite.getColor().y;
                         int b = sprite.getColor().z;
                         int a = sprite.getColor().w;
+                        if(sprite.outline != null){
+                            graphics.setColor( new Color(sprite.outline.x,sprite.outline.y,sprite.outline.z,sprite.outline.w) );
+                            graphics.fillRect( sprite.gameObject.getPosition().x-2,sprite.gameObject.getPosition().y-2, sprite.gameObject.getScale().x + 4, sprite.gameObject.getScale().y + 4);
+                            
+                        }
                         graphics.setColor(new Color(r,g,b,a));
                         graphics.fillRect( sprite.gameObject.getPosition().x,sprite.gameObject.getPosition().y, sprite.gameObject.getScale().x , sprite.gameObject.getScale().y);
                     }

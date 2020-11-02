@@ -13,6 +13,7 @@ import org.joml.Vector4i;
 public class SpriteRenderer extends Component {
 
     private Vector4i color = new Vector4i(255, 255, 255, 255);
+    public Vector4i outline = null;
     private Sprite sprite = new Sprite();
     private String text = null;
     private Font font = null;
@@ -31,6 +32,7 @@ public class SpriteRenderer extends Component {
             isDirty = true;
         }
     }
+    
     public Font getFont(){
         return this.font;
     }
