@@ -75,17 +75,49 @@ public class Game_Scene extends Scene{
     @Override
     public void update(long time) {
         int UnitExecutingOrders = 0;
+        List<Units> UnitsToUpdate = null;
+        
         for (GameObject go : this.gameObjects) {
             go.update(time); // update GameObject
             
             Units u = go.getComponent(Units.class);
             if(u != null ){ 
-                u.update(time);
+                if(u.getPreviousOverTerrain() == -1){
+                    if(UnitsToUpdate == null){
+                        UnitsToUpdate = new ArrayList<>();
+                    }
+                    UnitsToUpdate.add(u);
+                }else if(u.getState() == Units.Executing_Orders){
+                    if(UnitsToUpdate == null){
+                        UnitsToUpdate = new ArrayList<>();
+                    }
+                    UnitsToUpdate.add(u);
+                }
+                u.update(time, u.getPreviousOverTerrain());
+                
                 if(u.getState() == Units.Executing_Orders ){
                     UnitExecutingOrders++;
                 }
             }
         }
+        
+        if(UnitsToUpdate != null){
+            for (GameObject go : this.gameObjects) {
+                int x1 = go.transform.getPosition().x - go.transform.scale.x/2, x2 = go.transform.getPosition().x + go.transform.scale.x/2;
+                int y1 = go.transform.getPosition().y - go.transform.scale.y/2, y2 = go.transform.getPosition().y + go.transform.scale.y/2;
+                Units unit = go.getComponent(Units.class);
+                if(unit == null){
+                    for (Units u : UnitsToUpdate) {
+                        int x = u.gameObject.transform.position.x,y = u.gameObject.transform.position.y;
+                        if(x > x1 && x < x2 && y > y1 && y < y2){
+                            u.setPreviousOverTerrain(go.zIndex()); // in this case the zIndex also its the same number of the terrain
+                        }
+                    }
+                }
+            }
+            UnitsToUpdate.clear();
+        }
+        
         if(UnitExecutingOrders > 0 && !this.isUnitExecutingOrders ){
             SpriteRenderer obj3SpriteRender = this.button1.getComponent(SpriteRenderer.class);
             obj3SpriteRender.setColor(Map.Plain_Color);
@@ -95,7 +127,6 @@ public class Game_Scene extends Scene{
         }
         
         this.isUnitExecutingOrders = (UnitExecutingOrders > 0);
-        
         
         if(this.isClicked){
             this.isClicked = false;

@@ -148,7 +148,13 @@ public class Units extends Component{
      */
     private int State;
     private boolean move = false;
-    
+    private int previousOverTerrain = -1;
+    public int getPreviousOverTerrain(){
+        return this.previousOverTerrain;
+    }
+    public void setPreviousOverTerrain(int previousOverTerrain ){
+        this.previousOverTerrain = previousOverTerrain;
+    }
     public int getState(){
         return this.State;
     }
@@ -229,7 +235,7 @@ public class Units extends Component{
         System.out.println("Order Deleteds");
     }
     
-    public void update(long time){
+    public void update(long time, int terrain){
         if(this.State == Executing_Orders){
               
             if( !this.time.isStart ){
@@ -242,8 +248,36 @@ public class Units extends Component{
                                                   this.target.y - this.gameObject.transform.position.y  );
     //                    System.out.println("vs1:"+v.length());
                         v.normalize();
+                        if(terrain == Map.Plain){
+                            //System.out.println("terrain: Plain");
+                            v.mul(this.gameObject.transform.scale.x /2, this.gameObject.transform.scale.y /2);
+                        }else if(terrain == Map.hill){
+                            //System.out.println("terrain: Hill");
+                            Random r1 = new Random();
+                            int low1  = 0;
+                            int high1 = 2;
+                            
+                            if(r1.nextInt(high1-low1) == 1){
+                                v.mul(this.gameObject.transform.scale.x /2, this.gameObject.transform.scale.y /2);
+                            }else{
+                                v.mul(0, 0);
+                            }
+                            
+                        }else if(terrain == Map.Mountain){
+                            //System.out.println("terrain: Mountain");
+                            Random r1 = new Random();
+                            int low1  = 1;
+                            int high1 = 10;
+                            
+                            if(r1.nextInt(high1-low1) == 1){
+                                v.mul(this.gameObject.transform.scale.x /2, this.gameObject.transform.scale.y /2);
+                            }else{
+                                v.mul(0, 0);
+                            }
+                            
+                        }
+                        
     //                    System.out.println("vs2:"+v.length());
-                        v.mul(this.gameObject.transform.scale.x /2, this.gameObject.transform.scale.y /2);
     //                    System.out.println("vs3:"+v.length());
 
                         this.gameObject.transform.position.x += v.x;
@@ -258,6 +292,7 @@ public class Units extends Component{
                             setSleepMode();
                         }
                         this.move = false;
+                        
                     }
                 }
             }
