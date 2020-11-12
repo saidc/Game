@@ -11,6 +11,12 @@ import org.joml.Random;
 import org.joml.Vector2i;
 import org.joml.Vector4i;
 
+import org.jgrapht.*;
+//import org.jgrapht.alg.connectivity.*;
+//import org.jgrapht.alg.interfaces.*;
+//import org.jgrapht.alg.interfaces.*;
+//import org.jgrapht.alg.shortestpath.*;
+import org.jgrapht.graph.*;
 
 public class Map {
     private static Map map = null;
@@ -29,6 +35,9 @@ public class Map {
     
     private List<List<Integer>> Int_map;
     private List<List<GameObject>> MapOfGameObjects;
+    //private Graph g = new Graph();
+    
+    //        new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
     private int NumberOfMountains = 0;
     
     //                          (10,10)                 (100,100)           (200)
@@ -40,6 +49,7 @@ public class Map {
             this.GeneratePlainMap();
             this.GenerateMountains();
             this.GenarateGameObjectMap();
+            //directedGraph = new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
             return true;
         }else{
             Map.map = null;
@@ -57,7 +67,15 @@ public class Map {
     public List<List<Integer>> getInt_Map(){
         return Int_map;
     }
-    
+    public static void addLinesBetweenSquares(){
+        SpriteRenderer.addLinesBetweenSquares();
+    }
+    public static void RemoveLinesBetweenSquares(){
+        SpriteRenderer.RemoveLinesBetweenSquares();
+    }
+    public static boolean getLinesBetweenSquares(){
+        return SpriteRenderer.getLinesBetweenSquares();
+    }
     private void GenarateGameObjectMap(){
         
         this.MapOfGameObjects = new ArrayList<>();

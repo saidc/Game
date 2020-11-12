@@ -91,7 +91,11 @@ public class RenderBatch implements java.lang.Comparable<RenderBatch>{
                         if(sprite.outline != null){
                             graphics.setColor( new Color(sprite.outline.x,sprite.outline.y,sprite.outline.z,sprite.outline.w) );
                             graphics.fillRect( sprite.gameObject.getPosition().x-2,sprite.gameObject.getPosition().y-2, sprite.gameObject.getScale().x + 4, sprite.gameObject.getScale().y + 4);
-                            
+                        }else{
+                            if(SpriteRenderer.getLinesBetweenSquares()){
+                                graphics.setColor( Color.RED );
+                                graphics.fillRect( sprite.gameObject.getPosition().x-1,sprite.gameObject.getPosition().y-1, sprite.gameObject.getScale().x + 2, sprite.gameObject.getScale().y + 2);
+                            }
                         }
                         graphics.setColor(new Color(r,g,b,a));
                         graphics.fillRect( sprite.gameObject.getPosition().x,sprite.gameObject.getPosition().y, sprite.gameObject.getScale().x , sprite.gameObject.getScale().y);

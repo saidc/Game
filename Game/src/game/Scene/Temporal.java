@@ -28,7 +28,7 @@ public class Temporal extends Scene{
     
     @Override
     public void update(long time) {
-        for (GameObject go : this.gameObjects) {
+        for (GameObject go : this.getGameObjectList()) {
             go.update(time);
         }
         
@@ -81,11 +81,11 @@ public class Temporal extends Scene{
 
     @Override
     public void mouseClicked(MouseEvent me) {
-        System.out.println("size:  "+this.gameObjects.size());
-        System.out.println("X:"+this.gameObjects.get(0).transform.position.x+" , Y: "+this.gameObjects.get(0).transform.position.y);
+        System.out.println("size:  "+this.getGameObjectList().size());
+        System.out.println("X:"+this.getGameObjectList().get(0).transform.position.x+" , Y: "+this.getGameObjectList().get(0).transform.position.y);
         this.obj1.transform.position.x = me.getX();
         this.obj1.transform.position.y = me.getY();
-        System.out.println("X:"+this.gameObjects.get(0).transform.position.x+" , Y: "+this.gameObjects.get(0).transform.position.y);
+        System.out.println("X:"+this.getGameObjectList().get(0).transform.position.x+" , Y: "+this.getGameObjectList().get(0).transform.position.y);
         System.out.println("mouseClicked");
     }
 

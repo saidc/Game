@@ -19,7 +19,8 @@ public class SpriteRenderer extends Component {
     private Font font = null;
     private transient Transform lastTransform;
     private transient boolean isDirty = true;
-
+    private static boolean linesBetweenSquares = false;
+    
     @Override
     public void start() {
         this.lastTransform = gameObject.transform.copy();
@@ -32,7 +33,15 @@ public class SpriteRenderer extends Component {
             isDirty = true;
         }
     }
-    
+    public static void addLinesBetweenSquares(){
+        SpriteRenderer.linesBetweenSquares = true;
+    }
+    public static void RemoveLinesBetweenSquares(){
+        SpriteRenderer.linesBetweenSquares = false;
+    }
+    public static boolean getLinesBetweenSquares(){
+        return SpriteRenderer.linesBetweenSquares;
+    }
     public Font getFont(){
         return this.font;
     }

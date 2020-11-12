@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Scene implements KeyListener,MouseListener{
-    protected List<GameObject> gameObjects = new ArrayList<>();
+    private List<GameObject> gameObjects = new ArrayList<>();
     public abstract void update(long time);
     private boolean isRunning = false;
     protected Renderer renderer = new Renderer();
@@ -33,7 +33,21 @@ public abstract class Scene implements KeyListener,MouseListener{
             this.renderer.add(go);
         }
     }
+    public void addGameObjectToScene(List<GameObject> gos) {
+        if (!isRunning) {
+            gameObjects.addAll(gos);
+        } else {
+            gameObjects.addAll(gos);
+            for (GameObject go : gos) {
+                go.start();
+                this.renderer.add(go);
+            }
+        }
+    }
     
+    public List<GameObject> getGameObjectList(){
+        return this.gameObjects;
+    }
     
     public abstract void init();
     

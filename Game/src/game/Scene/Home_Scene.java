@@ -63,7 +63,7 @@ public class Home_Scene extends Scene{
     @Override
     public void update(long time) {
         
-        for (GameObject go : this.gameObjects) {
+        for (GameObject go : this.getGameObjectList()) {
             go.update(0);
             if(this.isClicked){
                 if(go.isClicked(ClickedPosition)){

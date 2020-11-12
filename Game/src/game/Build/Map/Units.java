@@ -32,6 +32,7 @@ public class Units extends Component{
         }
         return units;
     }
+    
     public static Units get(int i){
         if(units == null){
             units = new ArrayList<>();
@@ -41,6 +42,7 @@ public class Units extends Component{
         }
         return units.get(i);
     }
+    
     public static List<GameObject> getGameObjects(){
         if(units == null){
             return null;
@@ -54,6 +56,7 @@ public class Units extends Component{
         
         return objs;
     }
+    
     public static void addClickListeners(Consumer<Boolean> ClickListener) {
         if(units == null){
             return;
@@ -65,6 +68,7 @@ public class Units extends Component{
         }
         
     }
+    
     public static void GenerateRandomUnits(int NumberOfRandomUnits,Dimension unitPixelSize, List<List<Integer>> Int_map , int Terrain_Int){
         if(units == null){
             units = new ArrayList<>();
@@ -123,12 +127,14 @@ public class Units extends Component{
         }
         System.out.println("units.size: "+units.size());
     }
+    
     private static Integer getRandomPosition(int xi,int xf){
         Random r1 = new Random();
         int low1  = xi;
         int high1 = xf;
         return r1.nextInt(high1-low1) + low1  ;
     }
+    
     public static boolean getTokenState(){
         if(hasToken){
             return true;
@@ -152,33 +158,40 @@ public class Units extends Component{
     public int getPreviousOverTerrain(){
         return this.previousOverTerrain;
     }
+    
     public void setPreviousOverTerrain(int previousOverTerrain ){
         this.previousOverTerrain = previousOverTerrain;
     }
+    
     public int getState(){
         return this.State;
     }
+    
     public void init(Vector2i position,Dimension unitDimension){
         this.unitDimension = unitDimension;
         //this.position = position;
         this.State = Sleep_Mode;
         this.time = new Timer();  
     }
+    
     public void Move(){
         this.move = true;
     }
+    
     private void getToken(){
         if(hasToken){
             this.unit_hasToken = true;
             hasToken = false;
         }
     }
+    
     private void releaseToken(){
         if(this.unit_hasToken){
             hasToken = true;
             this.unit_hasToken = false;
         }
     }
+    
     public boolean getUnitTokenState(){
         if(this.unit_hasToken){
             return true;
@@ -194,6 +207,7 @@ public class Units extends Component{
         releaseToken();
         deleteOrder();
     }
+    
     private void WaitingForOrders(int state){
         getToken();
         if(this.unit_hasToken){
@@ -207,6 +221,7 @@ public class Units extends Component{
             s.outline = new Vector4i(255,255,255,255);
         }
     }
+    
     private void ExecutingOrders(){
         this.State = Executing_Orders;
         SpriteRenderer s = this.gameObject.getComponent(SpriteRenderer.class);
@@ -250,7 +265,7 @@ public class Units extends Component{
                         v.normalize();
                         if(terrain == Map.Plain){
                             //System.out.println("terrain: Plain");
-                            v.mul(this.gameObject.transform.scale.x /2, this.gameObject.transform.scale.y /2);
+                            v.mul(this.gameObject.transform.scale.x , this.gameObject.transform.scale.y );
                         }else if(terrain == Map.hill){
                             //System.out.println("terrain: Hill");
                             Random r1 = new Random();
@@ -258,11 +273,10 @@ public class Units extends Component{
                             int high1 = 2;
                             
                             if(r1.nextInt(high1-low1) == 1){
-                                v.mul(this.gameObject.transform.scale.x /2, this.gameObject.transform.scale.y /2);
+                                v.mul(this.gameObject.transform.scale.x , this.gameObject.transform.scale.y );
                             }else{
                                 v.mul(0, 0);
                             }
-                            
                         }else if(terrain == Map.Mountain){
                             //System.out.println("terrain: Mountain");
                             Random r1 = new Random();
@@ -270,28 +284,32 @@ public class Units extends Component{
                             int high1 = 10;
                             
                             if(r1.nextInt(high1-low1) == 1){
-                                v.mul(this.gameObject.transform.scale.x /2, this.gameObject.transform.scale.y /2);
+                                v.mul(this.gameObject.transform.scale.x , this.gameObject.transform.scale.y );
                             }else{
                                 v.mul(0, 0);
-                            }
-                            
+                            }   
                         }
                         
-    //                    System.out.println("vs2:"+v.length());
-    //                    System.out.println("vs3:"+v.length());
+//                      System.out.println("vs2:"+v.length());
+//                      System.out.println("vs3:"+v.length());
+                        System.out.println("V.x: "+v.x+" ,V.y:"+v.y);
+                        try {
+                            this.gameObject.transform.position.x += v.x;
+                            this.gameObject.transform.position.y += v.y;
 
-                        this.gameObject.transform.position.x += v.x;
-                        this.gameObject.transform.position.y += v.y;
+                            int x = this.gameObject.transform.position.x ;
+                            int y = this.gameObject.transform.position.y ;
+                            int x1 =target.x- (this.gameObject.transform.scale.x /2), x2 =target.x+(this.gameObject.transform.scale.x /2);
+                            int y1 =target.y- (this.gameObject.transform.scale.y /2), y2 =target.y+ (this.gameObject.transform.scale.y /2);
 
-                        int x = this.gameObject.transform.position.x ;
-                        int y = this.gameObject.transform.position.y ;
-                        int x1 =target.x- (this.gameObject.transform.scale.x /2), x2 =target.x+(this.gameObject.transform.scale.x /2);
-                        int y1 =target.y- (this.gameObject.transform.scale.y /2), y2 =target.y+ (this.gameObject.transform.scale.y /2);
-
-                        if( x > x1 && x < x2 && y > y1 && y < y2){
-                            setSleepMode();
+                            if( x > x1 && x < x2 && y > y1 && y < y2){
+                                setSleepMode();
+                            }
+                            this.move = false;
+                        }catch(Exception e){
+                            e.printStackTrace();
+                            System.out.println(" error: "+ e.getMessage());
                         }
-                        this.move = false;
                         
                     }
                 }
@@ -333,12 +351,7 @@ public class Units extends Component{
         }
         public void setTimer(int time){
             this.target = time;
-        }
-        
-    }
-    
-    private class Path{
-        
+        }   
     }
 }
 
