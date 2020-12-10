@@ -4,6 +4,8 @@ package game.Build.Map;
 import game.Build.Component.SpriteRenderer;
 import game.Build.GameObject;
 import game.Build.Transform;
+import game.Utils.GraphWeighted;
+import game.Utils.NodeWeighted;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +13,6 @@ import org.joml.Random;
 import org.joml.Vector2i;
 import org.joml.Vector4i;
 
-import org.jgrapht.*;
-//import org.jgrapht.alg.connectivity.*;
-//import org.jgrapht.alg.interfaces.*;
-//import org.jgrapht.alg.interfaces.*;
-//import org.jgrapht.alg.shortestpath.*;
-import org.jgrapht.graph.*;
 
 public class Map {
     private static Map map = null;
@@ -35,21 +31,21 @@ public class Map {
     
     private List<List<Integer>> Int_map;
     private List<List<GameObject>> MapOfGameObjects;
-    //private Graph g = new Graph();
+    private GraphWeighted graphWeighted = new GraphWeighted(true);
+    private List<NodeWeighted> Nodes = new ArrayList();
     
-    //        new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
     private int NumberOfMountains = 0;
     
     //                          (10,10)                 (100,100)           (200)
     public boolean init(Dimension unitDimension, Dimension MapDimension, int NumberOfMountains){
-        if(MapDimension.width*MapDimension.height > Mountain_size * NumberOfMountains ){
+        if( MapDimension.width*MapDimension.height > Mountain_size * NumberOfMountains ){
             this.unitDimension = unitDimension ; // size of a single square in pixels
             this.MapDimension  = MapDimension  ; // size of the map in number of squares
             this.NumberOfMountains = NumberOfMountains;
             this.GeneratePlainMap();
             this.GenerateMountains();
             this.GenarateGameObjectMap();
-            //directedGraph = new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
+            this.GenerateMapConexion();
             return true;
         }else{
             Map.map = null;
@@ -100,7 +96,7 @@ public class Map {
                         color = Mountain_Color;
                         break;
                 }
-                GameObject obj = new GameObject("Object 3", new Transform(new Vector2i(x*unitDimension.width, y*unitDimension.height), new Vector2i(unitDimension.width, unitDimension.height)),level);
+                GameObject obj = new GameObject("('x':"+x+",'y':"+y+")", new Transform(new Vector2i(x*unitDimension.width, y*unitDimension.height), new Vector2i(unitDimension.width, unitDimension.height)),level);
                 SpriteRenderer objSpriteRender = new SpriteRenderer();
                 
                 objSpriteRender.setColor(color);
@@ -113,6 +109,48 @@ public class Map {
         System.out.println("GenarateGameObjectMap");
     }
     
+    private void GenerateMapConexion(){
+        for (int i = 0; i < this.MapOfGameObjects.size(); i++) {
+            List<GameObject> MapOfGameObject = this.MapOfGameObjects.get(i);
+            List<GameObject> MapOfGameObject_C = null;
+            if(i < this.MapOfGameObjects.size() - 1){
+                MapOfGameObject_C = this.MapOfGameObjects.get(i+1);
+            }
+            for (int j = 0; j < MapOfGameObject.size()-1; j++) {
+                
+                GameObject go_A = MapOfGameObject.get(j);
+                GameObject go_B = MapOfGameObject.get(j+1);
+                
+                NodeWeighted A = new NodeWeighted( go_A);
+                NodeWeighted B = new NodeWeighted( go_B);
+                
+                if(i < this.MapOfGameObjects.size() - 1){
+                    GameObject go_C = MapOfGameObject_C.get(j);
+                    NodeWeighted C = new NodeWeighted( go_C );
+
+                    // adding right  object
+                    this.graphWeighted.addEdge(A, B, 1);
+                    // adding bottom object
+                    this.graphWeighted.addEdge(A, C, 1);
+                    if(j+1 == MapOfGameObject.size() -1 ){
+                        this.graphWeighted.addEdge(B, C, 1);
+                    }
+                }else{
+                    // adding right  object
+                    this.graphWeighted.addEdge(A, B, 1);
+                }
+                
+                this.Nodes.add(A);
+                if(j+1 == MapOfGameObject.size() -1 ){
+                    this.Nodes.add(B);
+                }
+            }
+        }
+    }
+    public ArrayList<GameObject> getShortestPath( NodeWeighted A , NodeWeighted B ){
+        ArrayList<GameObject> path = this.graphWeighted.DijkstraShortestPath(A, B);
+        return path;
+    }
     public List<List<GameObject>> getMap(){
         return this.MapOfGameObjects;
     }
@@ -254,4 +292,5 @@ public class Map {
         }
         System.out.println("");
     }
+    
 }

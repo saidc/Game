@@ -93,7 +93,9 @@ public class GameObject {
     public Transform getTransform(){
         return this.transform;
     }
-
+    public String getname(){
+        return this.name;
+    }
     public boolean isClicked(Vector2i ClickedPosition) {
         boolean isclicked = false;
         SpriteRenderer spr = this.getComponent(SpriteRenderer.class);

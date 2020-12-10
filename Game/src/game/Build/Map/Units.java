@@ -234,14 +234,10 @@ public class Units extends Component{
         
         if(       this.State == Sleep_Mode         ){
             WaitingForOrders(0);
-            //System.out.println("Waiting_for_Orders");
         }else if( this.State == Waiting_for_Orders ){
             setSleepMode();
-            //System.out.println("Sleep_Mode");
-            
         }else if( this.State == Executing_Orders   ){
             WaitingForOrders(1);
-           // System.out.println("Sleep_Mode");
         }
         
     }
@@ -252,10 +248,10 @@ public class Units extends Component{
     
     public void update(long time, int terrain){
         if(this.State == Executing_Orders){
-              
             if( !this.time.isStart ){
                 this.time.init(30);
                 this.time.start();
+                //Map.get().getShortestPath(A, B)
             }else{
                 if(this.time.isEnd()){
                     if(this.move){

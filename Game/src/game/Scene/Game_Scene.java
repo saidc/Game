@@ -1,21 +1,21 @@
 
 package game.Scene;
 
-import game.Build.Component.SpriteRenderer;
-import game.Build.GameObject;
-import game.Build.Map.Map;
-import game.Build.Map.Units;
-import game.Build.Transform;
-import game.Build.Window;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Consumer;
-import org.joml.Vector2i;
-import org.joml.Vector4i;
+import game.Build.Component.SpriteRenderer  ;
+import game.Build.GameObject      ;
+import game.Build.Map.Map         ;
+import game.Build.Map.Units       ;
+import game.Build.Transform       ;
+import game.Build.Window          ;
+import java.awt.Dimension         ;
+import java.awt.Font              ;
+import java.awt.event.KeyEvent    ;
+import java.awt.event.MouseEvent  ;
+import java.util.ArrayList  ;
+import java.util.List       ;
+import java.util.function.Consumer ;
+import org.joml.Vector2i    ;
+import org.joml.Vector4i    ;
 
 public class Game_Scene extends Scene{
    // private Spritesheet sprites;
@@ -105,7 +105,6 @@ public class Game_Scene extends Scene{
     }
     
     public void UnitClicked(boolean b){
-        
         System.out.println("mouseClicked");
     }
     
@@ -198,7 +197,6 @@ public class Game_Scene extends Scene{
                 }
             }
         }
-        
         if(Case == 1){
             GameState = 1;
             for (GameObject gameObject : temp) {
