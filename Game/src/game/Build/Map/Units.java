@@ -5,6 +5,7 @@ import game.Build.Component.Component;
 import game.Build.Component.SpriteRenderer;
 import game.Build.GameObject;
 import game.Build.Transform;
+import game.Utils.NodeWeighted;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
@@ -143,6 +144,8 @@ public class Units extends Component{
     }
     
     private Vector2i    target          = null ; // its the square position not the pixel position
+    private NodeWeighted node_target = null;
+    private ArrayList<GameObject> path;
     private boolean unit_hasToken = false;
     private Dimension   unitDimension   = null ; // its the pixel dimension of the unit
     private Consumer<Boolean> ClickListener = null;
@@ -251,13 +254,14 @@ public class Units extends Component{
             if( !this.time.isStart ){
                 this.time.init(30);
                 this.time.start();
-                //Map.get().getShortestPath(A, B)
+                
+                
             }else{
                 if(this.time.isEnd()){
                     if(this.move){
                         Vector2f v = new Vector2f(this.target.x - this.gameObject.transform.position.x ,
                                                   this.target.y - this.gameObject.transform.position.y  );
-    //                    System.out.println("vs1:"+v.length());
+    //                  System.out.println("vs1:"+v.length());
                         v.normalize();
                         if(terrain == Map.Plain){
                             //System.out.println("terrain: Plain");
@@ -288,7 +292,7 @@ public class Units extends Component{
                         
 //                      System.out.println("vs2:"+v.length());
 //                      System.out.println("vs3:"+v.length());
-                        System.out.println("V.x: "+v.x+" ,V.y:"+v.y);
+                        //System.out.println("V.x: "+v.x+" ,V.y:"+v.y);
                         try {
                             this.gameObject.transform.position.x += v.x;
                             this.gameObject.transform.position.y += v.y;
@@ -299,6 +303,8 @@ public class Units extends Component{
                             int y1 =target.y- (this.gameObject.transform.scale.y /2), y2 =target.y+ (this.gameObject.transform.scale.y /2);
 
                             if( x > x1 && x < x2 && y > y1 && y < y2){
+                                this.node_target = null;
+                                this.target = null;
                                 setSleepMode();
                             }
                             this.move = false;
@@ -313,10 +319,19 @@ public class Units extends Component{
         }
     }
     
-    public void update(int GameState, GameObject temp) {
+    public void update(int GameState, GameObject temp , NodeWeighted nodew_target, NodeWeighted nodew_ActualPosition) {
         if(this.State == Waiting_for_Orders && this.unit_hasToken && GameState == 1){
             ExecutingOrders();
             this.target = temp.getPosition();
+            this.node_target = nodew_target;
+            System.out.println("target name: "+ this.node_target.getName());
+            System.out.println("Actual position name: "+ nodew_ActualPosition.getName());
+            ArrayList<GameObject> path = Map.get().getShortestPath(nodew_target,nodew_ActualPosition);
+            if (path != null){
+                for (GameObject go : path) {
+                    System.out.print(" ,"+ go.getPosition());
+                }
+            }
         }
     }
     

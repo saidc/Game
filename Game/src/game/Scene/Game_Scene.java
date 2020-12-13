@@ -7,6 +7,7 @@ import game.Build.Map.Map         ;
 import game.Build.Map.Units       ;
 import game.Build.Transform       ;
 import game.Build.Window          ;
+import game.Utils.NodeWeighted;
 import java.awt.Dimension         ;
 import java.awt.Font              ;
 import java.awt.event.KeyEvent    ;
@@ -173,19 +174,19 @@ public class Game_Scene extends Scene{
         this.renderer.render();
     }
     
-    private int GameState = 0;
+    private int GameState = 0; // identify the state of the game, if there is a unit selected or waiting for select a target
     
     private void inspectClickEvent(Vector2i ClickedPosition){
         List<GameObject> temp = new ArrayList<>();
         GameObject temp2 = null;
         int Case = 0;
-        for (GameObject go : this.getGameObjectList()) {
-            Units u = go.getComponent(Units.class);
-            if(      GameState == 0){
+        for (GameObject go : this.getGameObjectList()) { // list of objets in the game
+            Units u = go.getComponent(Units.class);  // try to get the unit class
+            if(      GameState == 0){ 
                 if(go.isClicked(ClickedPosition)){
-                    if(u != null){
+                    if(u != null){ // if click over a unit object
                         temp.add(go);
-                        Case = 1;
+                        Case = 1; // move the game to the case 1 , that means that a unit is waiting to a target
                     }
                 }
             }else if(GameState == 1){
@@ -202,13 +203,18 @@ public class Game_Scene extends Scene{
             for (GameObject gameObject : temp) {
                 Units u = gameObject.getComponent(Units.class);
                 if(u.getUnitTokenState()){
-                    asignNewClickedGameobject = gameObject;
+                    asignNewClickedGameobject = gameObject; // add as a unit that was clicked
                 }
             }
             System.out.println("state = 0");
         }else if(Case == 2){
             Units asignNewClickedUnit = asignNewClickedGameobject.getComponent(Units.class);
-            asignNewClickedUnit.update(GameState,temp2);
+            // get de target node from map conexions (graph)
+            
+            NodeWeighted nodew_target = Map.get().getNodeWeighted(temp2);
+            NodeWeighted nodew_actualPosition = Map.get().getNodeWeighted(asignNewClickedGameobject.getPosition());
+            
+            asignNewClickedUnit.update(GameState,temp2,nodew_target,nodew_actualPosition);
             GameState = 0;
             System.out.println("state = 1");
         }

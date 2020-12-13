@@ -1,4 +1,3 @@
-
 package game.Build.Map;
 
 import game.Build.Component.SpriteRenderer;
@@ -12,7 +11,6 @@ import java.util.List;
 import org.joml.Random;
 import org.joml.Vector2i;
 import org.joml.Vector4i;
-
 
 public class Map {
     private static Map map = null;
@@ -31,8 +29,8 @@ public class Map {
     
     private List<List<Integer>> Int_map;
     private List<List<GameObject>> MapOfGameObjects;
-    private GraphWeighted graphWeighted = new GraphWeighted(true);
-    private List<NodeWeighted> Nodes = new ArrayList();
+    private GraphWeighted graphWeighted ;
+    private ArrayList<ArrayList<NodeWeighted>> matriz = new ArrayList();
     
     private int NumberOfMountains = 0;
     
@@ -96,7 +94,7 @@ public class Map {
                         color = Mountain_Color;
                         break;
                 }
-                GameObject obj = new GameObject("('x':"+x+",'y':"+y+")", new Transform(new Vector2i(x*unitDimension.width, y*unitDimension.height), new Vector2i(unitDimension.width, unitDimension.height)),level);
+                GameObject obj = new GameObject("{'x':"+x+",'y':"+y+"}", new Transform(new Vector2i(x*unitDimension.width, y*unitDimension.height), new Vector2i(unitDimension.width, unitDimension.height)),level);
                 SpriteRenderer objSpriteRender = new SpriteRenderer();
                 
                 objSpriteRender.setColor(color);
@@ -110,47 +108,80 @@ public class Map {
     }
     
     private void GenerateMapConexion(){
-        for (int i = 0; i < this.MapOfGameObjects.size(); i++) {
-            List<GameObject> MapOfGameObject = this.MapOfGameObjects.get(i);
-            List<GameObject> MapOfGameObject_C = null;
-            if(i < this.MapOfGameObjects.size() - 1){
-                MapOfGameObject_C = this.MapOfGameObjects.get(i+1);
+        this.graphWeighted = new GraphWeighted(true);
+        
+        this.matriz = new ArrayList<>();
+        for (int y = 0; y < this.MapOfGameObjects.size(); y++) {
+            List<GameObject> MOGO = this.MapOfGameObjects.get(y);
+            ArrayList<NodeWeighted> line = new ArrayList<>();
+            for (int x = 0; x < MOGO.size(); x++) {
+                NodeWeighted node = new NodeWeighted( MOGO.get(x) );
+                line.add(node);
             }
-            for (int j = 0; j < MapOfGameObject.size()-1; j++) {
+            matriz.add(line);
+        }
+        
+        for (int y = 0; y < matriz.size(); y++) {
+            ArrayList<NodeWeighted> line = matriz.get(y);
+            
+            boolean sw = ( y  < matriz.size() - 1 );
+            ArrayList<NodeWeighted> linePlus = null;
+            if(sw){ linePlus = matriz.get(y+1); }
+            
+            for (int x = 0; x < line.size()-1; x++) {
                 
-                GameObject go_A = MapOfGameObject.get(j);
-                GameObject go_B = MapOfGameObject.get(j+1);
+                NodeWeighted A = line.get(x)      ;
+                NodeWeighted B = line.get(x + 1 ) ;
                 
-                NodeWeighted A = new NodeWeighted( go_A);
-                NodeWeighted B = new NodeWeighted( go_B);
+                this.graphWeighted.addEdge(A,B, 1);
+                //System.out.print("[ "+A.getName()+" -> "+B.getName()+"]");
                 
-                if(i < this.MapOfGameObjects.size() - 1){
-                    GameObject go_C = MapOfGameObject_C.get(j);
-                    NodeWeighted C = new NodeWeighted( go_C );
-
-                    // adding right  object
-                    this.graphWeighted.addEdge(A, B, 1);
-                    // adding bottom object
-                    this.graphWeighted.addEdge(A, C, 1);
-                    if(j+1 == MapOfGameObject.size() -1 ){
-                        this.graphWeighted.addEdge(B, C, 1);
+                if(sw){
+                    NodeWeighted C =  linePlus.get(x);
+                    this.graphWeighted.addEdge(A,C, 1);
+                    //System.out.print(",["+A.getName()+" -> "+C.getName()+"]");
+                    
+                    if( x + 1 == line.size() -1 ){ 
+                        NodeWeighted D = linePlus.get(x+1);
+                        this.graphWeighted.addEdge(B,D, 1); 
+                        //System.out.print(",["+B.getName()+" -> "+D.getName()+"]");
                     }
-                }else{
-                    // adding right  object
-                    this.graphWeighted.addEdge(A, B, 1);
-                }
-                
-                this.Nodes.add(A);
-                if(j+1 == MapOfGameObject.size() -1 ){
-                    this.Nodes.add(B);
+                    //System.out.println("");
                 }
             }
         }
+        
+        System.out.println("GenerateMapConexion");
+        this.graphWeighted.printNumberOfEdges();
     }
+    
+    public NodeWeighted getNodeWeighted(GameObject go){
+        for (ArrayList<NodeWeighted> line : this.matriz) {
+            for (NodeWeighted Node : line) {
+                if(Node.getGmObj().equals(go)){
+                    return Node;
+                }
+            }
+        }
+        return null;
+    }
+    
+    public NodeWeighted getNodeWeighted(Vector2i position){
+        for (ArrayList<NodeWeighted> line : this.matriz) {
+            for (NodeWeighted Node : line) {
+                if(Node.getGmObj().getPosition().equals(position)){
+                    return Node;
+                }
+            }
+        }
+        return null;
+    }
+    
     public ArrayList<GameObject> getShortestPath( NodeWeighted A , NodeWeighted B ){
         ArrayList<GameObject> path = this.graphWeighted.DijkstraShortestPath(A, B);
         return path;
     }
+    
     public List<List<GameObject>> getMap(){
         return this.MapOfGameObjects;
     }

@@ -73,6 +73,26 @@ public class GraphWeighted {
             System.out.println();
         }
     }
+    
+    public void printNumberOfEdges() {
+        int count = 0;
+        for (NodeWeighted node : nodes) {
+            LinkedList<EdgeWeighted> edges = node.edges;
+
+            if (edges.isEmpty()) {
+                //System.out.println("Node " + node.name + " has no edges.");
+                continue;
+            }
+            //System.out.print("Node " + node.name + " has edges to: ");
+
+            for (EdgeWeighted edge : edges) {
+                //System.out.print(edge.destination.name + "(" + edge.weight + ") ");
+                count = count + 1;
+            }
+            //System.out.println();
+        }
+        System.out.println("the number of edges is: " + count);
+    }
     public boolean hasEdge(NodeWeighted source, NodeWeighted destination) {
         LinkedList<EdgeWeighted> edges = source.edges;
         for (EdgeWeighted edge : edges) {
