@@ -255,40 +255,9 @@ public class Units extends Component{
             }else{
                 if(this.time.isEnd()){
                     if(this.move){
-                        Vector2f v = new Vector2f(this.target.x - this.gameObject.transform.position.x ,
-                                                  this.target.y - this.gameObject.transform.position.y  );
-    //                    System.out.println("vs1:"+v.length());
-                        v.normalize();
-                        if(terrain == Map.Plain){
-                            //System.out.println("terrain: Plain");
-                            v.mul(this.gameObject.transform.scale.x , this.gameObject.transform.scale.y );
-                        }else if(terrain == Map.hill){
-                            //System.out.println("terrain: Hill");
-                            Random r1 = new Random();
-                            int low1  = 0;
-                            int high1 = 2;
-                            
-                            if(r1.nextInt(high1-low1) == 1){
-                                v.mul(this.gameObject.transform.scale.x , this.gameObject.transform.scale.y );
-                            }else{
-                                v.mul(0, 0);
-                            }
-                        }else if(terrain == Map.Mountain){
-                            //System.out.println("terrain: Mountain");
-                            Random r1 = new Random();
-                            int low1  = 1;
-                            int high1 = 10;
-                            
-                            if(r1.nextInt(high1-low1) == 1){
-                                v.mul(this.gameObject.transform.scale.x , this.gameObject.transform.scale.y );
-                            }else{
-                                v.mul(0, 0);
-                            }   
-                        }
-                        
-//                      System.out.println("vs2:"+v.length());
-//                      System.out.println("vs3:"+v.length());
-                        System.out.println("V.x: "+v.x+" ,V.y:"+v.y);
+                        boolean canMove = canUnitMove(terrain);
+                        Vector2i v = movementdirection(canMove,this.target );
+                        //System.out.println("V.x: "+v.x+" ,V.y:"+v.y);
                         try {
                             this.gameObject.transform.position.x += v.x;
                             this.gameObject.transform.position.y += v.y;
@@ -306,11 +275,34 @@ public class Units extends Component{
                             e.printStackTrace();
                             System.out.println(" error: "+ e.getMessage());
                         }
-                        
                     }
                 }
             }
         }
+    }
+    private boolean canUnitMove(int terrain){
+        if(terrain == Map.Plain){
+            return true;
+        }else if(terrain == Map.hill){
+            Random r1 = new Random();
+            int low1  = 0;
+            int high1 = 2;
+            if(r1.nextInt(high1-low1) == 1){
+                return true;
+            }else{
+                return false;
+            }
+        }else if(terrain == Map.Mountain){
+            Random r1 = new Random();
+            int low1  = 1;
+            int high1 = 10;
+            if(r1.nextInt(high1-low1) == 1){
+                return true;
+            }else{
+                return false;
+            }   
+        }
+        return false;
     }
     
     public void update(int GameState, GameObject temp) {
@@ -318,6 +310,22 @@ public class Units extends Component{
             ExecutingOrders();
             this.target = temp.getPosition();
         }
+    }
+
+    private Vector2i movementdirection(boolean canMove, Vector2i target) {
+        if (canMove){
+            if(target.x > this.gameObject.transform.position.x ){
+                return new Vector2i(this.gameObject.transform.scale.x,0);
+            }else if (target.x < this.gameObject.transform.position.x){
+                return new Vector2i(-this.gameObject.transform.scale.x,0);
+            }else if (target.y > this.gameObject.transform.position.y){
+                return new Vector2i(0,this.gameObject.transform.scale.y);
+            }else if (target.y < this.gameObject.transform.position.y){
+                return new Vector2i(0,-this.gameObject.transform.scale.y);
+            }
+        }
+        return new Vector2i(0,0);
+        
     }
     
     private class Timer {
