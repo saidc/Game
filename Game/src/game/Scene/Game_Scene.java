@@ -59,11 +59,22 @@ public class Game_Scene extends Scene{
         buttonSpriteRender.setColor(new Vector4i(23,54,100,255));
         button.addComponent(buttonSpriteRender); // just a color 
         button.addClickListener(this::NextRound);
+        
         this.addGameObjectToScene(button);
         
         this.button1 = this.getGameObjectList().indexOf(button);
         
         createaButton("LinesBetweenSquares",new Vector2i( 1010 , 100),new Vector2i(180, 50),new Vector4i(23,54,100,255),"LinesBetweenSquares",this::LinesBetweenSquares,4);
+    }
+    
+    private GameObject CreateLine(String idText, Vector4i line , int level){
+        GameObject Line = new GameObject(idText, null ,level);
+        SpriteRenderer LineSpriteRender = new SpriteRenderer();
+        LineSpriteRender.setColor(new Vector4i(255,255,255,255));
+        LineSpriteRender.setLine( line );
+        Line.addComponent(LineSpriteRender); // just a color 
+        this.addGameObjectToScene(Line);
+        return Line;
     }
     
     private void createaButton(String idText, Vector2i Position , Vector2i Dimension ,Vector4i Color, String text,Consumer<Dimension> ClickListener, int level){
@@ -134,6 +145,7 @@ public class Game_Scene extends Scene{
                 
                 if(u.getState() == Units.Executing_Orders ){
                     UnitExecutingOrders++;
+                    
                 }
             }
         }

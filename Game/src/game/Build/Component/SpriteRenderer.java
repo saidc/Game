@@ -38,7 +38,9 @@ public class SpriteRenderer extends Component {
     public Vector4i getline(){
         return this.Targetline;
     }
-    
+    public void setLine(Vector4i line){
+        this.Targetline = line;
+    }
     public static void addLinesBetweenSquares(){
         SpriteRenderer.linesBetweenSquares = true;
     }
