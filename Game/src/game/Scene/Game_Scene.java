@@ -129,6 +129,7 @@ public class Game_Scene extends Scene{
                     }
                     UnitsToUpdate.add(u);
                 }
+                
                 u.update(time, u.getPreviousOverTerrain());
                 
                 if(u.getState() == Units.Executing_Orders ){
@@ -209,6 +210,11 @@ public class Game_Scene extends Scene{
         }else if(Case == 2){
             Units asignNewClickedUnit = asignNewClickedGameobject.getComponent(Units.class);
             asignNewClickedUnit.update(GameState,temp2);
+            /*
+            if (asignNewClickedUnit.isWaiting_for_Orders() && asignNewClickedUnit.hasToken() && GameState == 1){ // if exist a target
+                
+            }
+            */
             GameState = 0;
             System.out.println("state = 1");
         }

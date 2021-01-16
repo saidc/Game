@@ -14,6 +14,7 @@ public class SpriteRenderer extends Component {
 
     private Vector4i color = new Vector4i(255, 255, 255, 255);
     public Vector4i outline = null;
+    public Vector4i Targetline = null;
     private Sprite sprite = new Sprite();
     private String text = null;
     private Font font = null;
@@ -33,6 +34,11 @@ public class SpriteRenderer extends Component {
             isDirty = true;
         }
     }
+    
+    public Vector4i getline(){
+        return this.Targetline;
+    }
+    
     public static void addLinesBetweenSquares(){
         SpriteRenderer.linesBetweenSquares = true;
     }

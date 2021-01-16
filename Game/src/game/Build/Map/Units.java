@@ -310,7 +310,13 @@ public class Units extends Component{
             this.target = temp.getPosition();
         }
     }
-
+    public boolean isWaiting_for_Orders(){
+        return (this.State == Waiting_for_Orders);
+    }
+    public boolean hasToken(){
+        return this.unit_hasToken;
+    }
+    
     private Vector2i movementdirection(boolean canMove, Vector2i target) {
         if (canMove){
             if(target.x > this.gameObject.transform.position.x ){

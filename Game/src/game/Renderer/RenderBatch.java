@@ -80,6 +80,14 @@ public class RenderBatch implements java.lang.Comparable<RenderBatch>{
                         graphics.setFont(myFont);
                     }
                     graphics.drawString(sprite.getText(), sprite.gameObject.getPosition().x, sprite.gameObject.getPosition().y);
+                }else if(sprite.getline() != null){
+                        int r = sprite.getColor().x;
+                        int g = sprite.getColor().y;
+                        int b = sprite.getColor().z;
+                        int a = sprite.getColor().w;
+                        graphics.setColor(new Color(r,g,b,a));
+                        Vector4i Targetline = sprite.getline();
+                        graphics.drawLine(Targetline.x,Targetline.y,Targetline.z,Targetline.w);
                 }else{
                     if (sprite.getTexture() != null) {
                         graphics.drawImage(sprite.getImage(), sprite.gameObject.getPosition().x, sprite.gameObject.getPosition().y, null);
