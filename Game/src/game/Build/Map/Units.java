@@ -1,4 +1,3 @@
-
 package game.Build.Map;
 
 import game.Build.Component.Component;
