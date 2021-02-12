@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+
+<Scene>
+    <Square>
+        <position>
+            <x>600</x>
+            <y>500</y>
+        </position>
+        <dimension>
+            <w>30</w>
+            <h>40</h>
+        </dimension>
+        <color>
+            <r>200</r>
+            <g>60</g>
+            <b>40</b>
+            <a>255</a>
+        </color>
+        <level>1</level>
+        <Event>
+            <IsClicked>
+                <callback>Square1</callback>
+            </IsClicked>
+        </Event>
+    </Square>
+</Scene>
