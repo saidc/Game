@@ -10,6 +10,7 @@ public class Type {
     public static final int Circle          = 3 ;
     public static final int Text            = 4 ;
     public static final int Timer           = 5 ;
+    public static final int Line            = 6 ;
     
     // ACCTIONS
     public static final int IsClicked       = 106 ;

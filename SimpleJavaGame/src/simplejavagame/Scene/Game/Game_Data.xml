@@ -1,26 +1,94 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 
 <Scene>
-    <Square>
+    
+    <Text>
         <position>
-            <x>600</x>
-            <y>500</y>
+            <x>1085</x>
+            <y>100</y>
         </position>
-        <dimension>
-            <w>30</w>
-            <h>40</h>
-        </dimension>
+        <Value>NextRound</Value>
         <color>
-            <r>200</r>
-            <g>60</g>
-            <b>40</b>
+            <r>0</r>
+            <g>0</g>
+            <b>0</b>
             <a>255</a>
         </color>
+        <font>
+            <family>TimesRoman</family>
+            <size>30</size>
+        </font>
+        <background-color>
+            <r>255</r>
+            <g>255</g>
+            <b>255</b>
+            <a>255</a>
+        </background-color>
+        
+        <hover-background-color>
+            <r>155</r>
+            <g>155</g>
+            <b>155</b>
+            <a>255</a>
+        </hover-background-color>
+        
+        <hover-text-color>
+            <r>55</r>
+            <g>55</g>
+            <b>55</b>
+            <a>255</a>
+        </hover-text-color>
+        
         <level>1</level>
         <Event>
             <IsClicked>
-                <callback>Square1</callback>
+                <callback>NextRound</callback>
             </IsClicked>
         </Event>
-    </Square>
+    </Text>
+    
+    <Text>
+        <position>
+            <x>1157</x>
+            <y>160</y>
+        </position>
+        <Value>LineBetweenSquares</Value>
+        <color>
+            <r>0</r>
+            <g>0</g>
+            <b>0</b>
+            <a>255</a>
+        </color>
+        <font>
+            <family>TimesRoman</family>
+            <size>30</size>
+        </font>
+        <background-color>
+            <r>255</r>
+            <g>255</g>
+            <b>255</b>
+            <a>255</a>
+        </background-color>
+        
+        <hover-background-color>
+            <r>155</r>
+            <g>155</g>
+            <b>155</b>
+            <a>255</a>
+        </hover-background-color>
+        
+        <hover-text-color>
+            <r>55</r>
+            <g>55</g>
+            <b>55</b>
+            <a>255</a>
+        </hover-text-color>
+        
+        <level>1</level>
+        <Event>
+            <IsClicked>
+                <callback>LineBetweenSquares</callback>
+            </IsClicked>
+        </Event>
+    </Text>
 </Scene>

@@ -18,11 +18,14 @@ public class Object {
     
     private int type    ;
     private int level   ;
-    private String name ;
+    private String name = "";
     // Square
         private Vector2i position       ;   
         private Vector2i dimension      = null;   
-        private Vector4i color          ;   
+        private Vector4i color          ;
+        private boolean hasLineBetweenSquares = false ;
+        private Vector4i LineBetweenSquares_color          ;
+        private boolean LineBetweenSquares_Visible = false;
     private boolean hasCallbackEvent    ;
     private String CallbackName         ;
     private Consumer<String> RootOfCallback = null;
@@ -39,7 +42,9 @@ public class Object {
         private boolean hasHover_background_color = false;
         private Vector4i hover_text_color ;
         private boolean hasHover_text_color = false;
-    // PUBLIC
+    // Line
+        private Vector2i target       ;   
+// PUBLIC
     public Object( int _type, Map<String, String> _attributes){
         this.type = _type;
         this.isVisible = true;
@@ -78,6 +83,10 @@ public class Object {
     }
     public void render(Graphics graphics){
         if(this.type == Type.Square){
+            if(this.LineBetweenSquares_Visible && this.hasLineBetweenSquares){
+                graphics.setColor( Color.RED );
+                graphics.fillRect( this.position.X()-1,this.position.Y()-1,this.dimension.W()+ 2, this.dimension.H() + 2);
+            }
             graphics.setColor( tools.NewColor(this.color) );
             graphics.fillRect(this.position.X(),this.position.Y(),this.dimension.W(),this.dimension.H());
         }else if (this.type == Type.Text){
@@ -107,6 +116,10 @@ public class Object {
                 graphics.setColor(tools.NewColor(this.color));
             }
             graphics.drawString(this.Text, this.position.X()-(this.dimension.W()/2), this.position.Y()-(this.dimension.H()/4));
+        }else if (this.type == Type.Line){
+            graphics.setColor(tools.NewColor(this.color));
+            graphics.drawLine(this.position.X(), this.position.Y(), this.target.X(), this.target.Y());
+            
         }
     }
     public void isClicked(Vector2i position){
@@ -131,6 +144,26 @@ public class Object {
         }
         return "null";
     }
+    public void RemoveCallbackEvent(){
+        this.CallbackName = "";
+        this.hasCallbackEvent = false;
+    }
+    public boolean hasLineBetweenSquares (){
+        return this.hasLineBetweenSquares;
+    }
+    public void SwitchLineBetweenSquares_Visible(){
+        this.LineBetweenSquares_Visible = !this.LineBetweenSquares_Visible;
+    }
+    public void isHover(Vector2i point) {
+        if(isInside(point)){
+            hasHover_text_color = true;
+            hasHover_background_color = true;
+        }else{
+            hasHover_text_color = false;
+            hasHover_background_color = false;
+        }
+    }
+    // Set
     public void setBackground(Vector4i color){
         this.hasBackground = true;
         this.background_color = color;
@@ -143,17 +176,9 @@ public class Object {
         this.hasHover_text_color = true;
         this.hover_text_color = color;
     }
-    
-    public int getLevel(){
-        return this.level;
-    }
     public void setCallbackEvent(String CallbackName){
         this.hasCallbackEvent = true;
         this.CallbackName = CallbackName;
-    }
-    public void RemoveCallbackEvent(){
-        this.CallbackName = "";
-        this.hasCallbackEvent = false;
     }
     public void setFont(Font _font){
         this.hasFont = true;
@@ -169,19 +194,44 @@ public class Object {
     public void setName(String _name){
         this.name = _name;
     }
+    public void setLineBetweenSquares_color(Vector4i color){
+        this.LineBetweenSquares_color = color;
+        this.hasLineBetweenSquares = true;
+    }
+    public void SetLineBetweenSquares_Hide(){
+        this.LineBetweenSquares_Visible = false;
+    }
+    public void SetLineBetweenSquares_Visible(){
+        this.LineBetweenSquares_Visible = true;
+    }
+    public void SetColor(Vector4i color){
+        this.color = color;
+    }
+    public void setPosition(int x , int y){
+        this.position.setPosition(x, y);
+    }
+    public void setPosition(Vector2i _position){
+        this.position.setPosition(_position.X(), _position.Y());
+    }
+    
+    // get
+    public int getLevel(){
+        return this.level;
+    }
     public String getName(){
         return this.name;
     }
-    public void isHover(Vector2i point) {
-        if(isInside(point)){
-            hasHover_text_color = true;
-            hasHover_background_color = true;
-        }else{
-            hasHover_text_color = false;
-            hasHover_background_color = false;
-        }
+    public Vector2i getPosition(){
+        return this.position;
     }
-    // PRIVATE
+    public Vector4i getColor(){
+        return this.color;
+    }
+    public Vector2i getDimension(){
+        return this.dimension;
+    }
+    
+// PRIVATE
     private boolean isInside(Vector2i point){
         if(this.type == Type.Square){
             return (     (point.X() > this.position.X() && point.Y() > this.position.Y()) &&
@@ -245,6 +295,27 @@ public class Object {
                 this.Text        = attr.get("text")            ;
             } catch (Exception e) {
                 this.Text        = ""                          ;
+            }
+        }else if (this.type == Type.Line){
+            try {
+                this.position     = Vector2i.StringToVector2i(attr.get("position"))    ;
+            } catch (Exception e) {
+                this.position     = new Vector2i(0 ,0)         ;
+            }
+            try {
+                this.target    = Vector2i.StringToVector2i(attr.get("target"))   ;
+            } catch (Exception e) {
+                this.target    = new Vector2i(10,10)        ;
+            }
+            try {
+                this.color        = Vector4i.StringToVector4i(attr.get("color"))       ;
+            } catch (Exception e) {
+                this.color        = new Vector4i(0 ,0  ,0,255) ;
+            }
+            try {
+                this.level        = Integer.parseInt(attr.get("level"))                ;
+            } catch (Exception e) {
+                this.level        = 0                          ;
             }
         }
     }

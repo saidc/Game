@@ -28,7 +28,9 @@ public abstract class Scene implements KeyListener,MouseListener ,MouseMotionLis
     private Vector2i mouse = new Vector2i(0,0);
     private Vector2i Previous_mouse = new Vector2i(0,0);
     private boolean mouseMove = false;
-    
+    public List<simplejavagame.Object.Object> getObjects(){
+        return this.Objects;
+    }
     public void update() {
         if(Previous_mouse.X() == mouse.X() && Previous_mouse.Y() == mouse.Y()){
             mouseMove = true;
@@ -41,7 +43,14 @@ public abstract class Scene implements KeyListener,MouseListener ,MouseMotionLis
         Previous_mouse.setPosition(mouse.X(), mouse.Y());
         mouseMove = false;
     }
-    
+    public simplejavagame.Object.Object getObjectByName(String name){
+        for (simplejavagame.Object.Object obj : Objects) {
+            if(obj.getName() == name){
+                return obj;
+            }
+        }
+        return null;
+    }
     public void addObjectToScene(simplejavagame.Object.Object obj) {
         isSortingObjects = true;
         this.Objects.add(obj);

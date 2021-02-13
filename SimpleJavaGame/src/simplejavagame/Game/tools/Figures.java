@@ -21,7 +21,6 @@ public class Figures {
         _attributes.put("level", Integer.toString(level));
         return new simplejavagame.Object.Object(Type.Square , _attributes);
     }
-    
     private static Object getText(String _text, Vector2i _position, Vector4i _color, int level) {
         Map<String, String> _attributes = new HashMap<>();
         _attributes.put("level", Integer.toString(level));
@@ -30,7 +29,14 @@ public class Figures {
         _attributes.put("text", _text);
         return new simplejavagame.Object.Object(Type.Text , _attributes);
     }
-    
+    public static simplejavagame.Object.Object getLine(Vector2i _position,Vector2i _target,Vector4i _color,int level){
+        Map<String, String> _attributes = new HashMap<>();
+        _attributes.put("position", _position.toString());
+        _attributes.put("target",   _target.toString());
+        _attributes.put("color", _color.toString());
+        _attributes.put("level", Integer.toString(level));
+        return new simplejavagame.Object.Object(Type.Line , _attributes);
+    }
     public static ArrayList<simplejavagame.Object.Object> getObjects(String FilePath){
         Node n = FileManage.getSceneNode(FilePath);
         if(n != null){
@@ -68,6 +74,8 @@ public class Figures {
             return NodeToSquare(n);
         }else if(n.getNodeName() == "Text"){
             return NodeToText(n);
+        }else if(n.getNodeName() == "Line"){
+            return NodeToLine(n);
         }
         return null;
     }
@@ -169,6 +177,30 @@ public class Figures {
             square.setCallbackEvent(callbackName);
         }
         return square;
+    }
+    private static simplejavagame.Object.Object NodeToLine(Node n){
+        int xl=0,yl=0 , xt=100,yt=100 ,r=0,g=0,b=0,a=255 , level = 0; //default
+        ArrayList<Node> nodes = getChildNodes(n);
+        for (Node node : nodes)  {
+            if(node.getNodeName() == "position"){
+                Vector2i p = getPosition(node);
+                xl = p.X();
+                yl = p.Y();
+            }else if(node.getNodeName() == "target"){
+                Vector2i d = getPosition(node);
+                xt = d.X();
+                yt = d.Y();
+            }else if(node.getNodeName() == "color"){
+                Vector4i color = getColor(node);
+                r = color.X();
+                g = color.Y();
+                b = color.Z();
+                a = color.W();
+            }else if(node.getNodeName() == "level"){
+                level = getLevel(node);
+            }
+        }
+        return getLine(new Vector2i(xl,yl),new Vector2i(xt,yt),new Vector4i(r,g,b,a), level);
     }
     private static Vector2i getPosition(Node node){
         boolean isX = false , isY = false;

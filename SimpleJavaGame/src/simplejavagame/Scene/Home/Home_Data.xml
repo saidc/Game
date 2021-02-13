@@ -3,7 +3,7 @@
 <Scene>
     <Text>
         <position>
-            <x>600</x>
+            <x>650</x>
             <y>500</y>
         </position>
         <Value> Start </Value>
@@ -15,7 +15,7 @@
         </color>
         <font>
             <family>TimesRoman</family>
-            <size>30</size>
+            <size>40</size>
         </font>
         <background-color>
             <r>255</r>
@@ -45,4 +45,21 @@
             </IsClicked>
         </Event>
     </Text>
+    <Line>
+        <position>
+            <x>0</x>
+            <y>0</y>
+        </position>
+        <target>
+            <x>750</x>
+            <y>600</y>
+        </target>
+        <color>
+            <r>255</r>
+            <g>255</g>
+            <b>255</b>
+            <a>255</a>
+        </color>
+        <level>2</level>
+    </Line>
 </Scene>

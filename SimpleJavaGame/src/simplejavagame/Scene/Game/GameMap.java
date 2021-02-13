@@ -167,30 +167,43 @@ public class GameMap {
     }
     private void GenarateGameObjectMap(){
         this.MapOfGameObjects = new ArrayList<>();
+        int Plain_count = 0 , hill_count = 0 , Mountain_count = 0;
         for (int y = 0; y < Int_map.size(); y++) {
             List<Integer> list = Int_map.get(y);
             List<simplejavagame.Object.Object> line = new ArrayList<>();
             for (int x = 0; x < list.size(); x++) {
                 int level = 0;
                 Vector4i color = new Vector4i(0, 0, 0, 255);
-                
+                String name = "";
+                int index = 0;
                 switch(list.get(x)){
                     case Plain: // plain
                         level = Plain;
                         color = Plain_Color;
+                        name = "Plain";
+                        Plain_count += 1;
+                        index = Plain_count;
                         break;
                     case hill:
                         level = hill;
                         color = hill_Color;
+                        name = "hill";
+                        hill_count += 1;
+                        index = hill_count;
                         break;
                     case Mountain:
                         level = Mountain;
                         color = Mountain_Color;
+                        name = "Mountain";
+                        Mountain_count += 1;
+                        index = Mountain_count;
                         break;
                 }
                 //simplejavagame.Object.Object obj = new simplejavagame.Object.Object("{'x':"+x+",'y':"+y+"}", new Transform(new Vector2i(x*unitDimension.width, y*unitDimension.height), new Vector2i(unitDimension.width, unitDimension.height)),level);
                 simplejavagame.Object.Object obj = Figures.getSquare(new Vector2i(x*unitDimension.W(), y*unitDimension.H()), unitDimension, color, level);
-                
+                obj.setName(name+"-"+index);
+                obj.setCallbackEvent(obj.getName());
+                obj.setLineBetweenSquares_color(new Vector4i(191,63,63,255));
                 line.add(obj);
             }
             this.MapOfGameObjects.add(line);
@@ -202,17 +215,42 @@ public class GameMap {
     public List<List<simplejavagame.Object.Object>> getMap(){
         return this.MapOfGameObjects;
     }
+    public void update(){
+        for (int i = 0; i < this.UnitActions.size(); i++) {
+            this.UnitActions.get(i).update();
+            if(this.UnitActions.get(i).isDone()){
+                this.UnitActions.get(i).getLocal().SetColor(Unit_Color);
+                this.UnitActions.remove(i);
+            }
+        }
+    }
+    public int getTypeofTerrain(Vector2i position){
+        for (List<simplejavagame.Object.Object> line : MapOfGameObjects) {
+            for (simplejavagame.Object.Object obj : line) {
+                if(obj.getPosition().equals(position)){
+                    if(obj.getName().indexOf("Plain") != -1){
+                        return Plain;
+                    }else if(obj.getName().indexOf("hill") != -1){
+                        return hill;
+                    }else if(obj.getName().indexOf("Mountain") != -1){
+                        return Mountain;
+                    }
+                }
+            }
+        }
+        return -1;
+    }
     // UNITS
-    private static final int Unit = 3 ;
-    private static final Vector4i Unit_Color          = new Vector4i( 4  , 47 , 102 , 255 );
-    private static final Vector4i Unit_Selected_Color = new Vector4i( 25 , 94 , 131 , 255 );
-    private static final Vector4i Unit_Execut_Color = new Vector4i( 25 , 94 , 255 , 255 );
-    public static final int Sleep_Mode         = 4;
-    public static final int Waiting_for_Orders = 5;
-    public static final int Executing_Orders   = 6;
+    private static final Vector4i Unit_Color          = new Vector4i( 4  , 47 , 102 , 255 ) ;
+    private static final Vector4i Unit_Selected_Color = new Vector4i( 25 , 94 , 131 , 255 ) ;
+    private static final Vector4i Unit_Execut_Color   = new Vector4i( 25 , 94 , 255 , 255 ) ;
+    private static final int Unit               = 3 ;
+    public  static final int Sleep_Mode         = 4 ;
+    public  static final int Waiting_for_Orders = 5 ;
+    public  static final int Executing_Orders   = 6 ;
     
-    public static List<simplejavagame.Object.Object> units = null;
-    public static void GenerateRandomUnits(int NumberOfRandomUnits,Vector2i unitPixelSize, List<List<Integer>> Int_map , int Terrain_Int){
+    public  static List<simplejavagame.Object.Object> units = null;
+    public  static void GenerateRandomUnits(int NumberOfRandomUnits,Vector2i unitPixelSize, List<List<Integer>> Int_map , int Terrain_Int){
         if(units == null){
             units = new ArrayList<>();
         }else{
@@ -253,6 +291,7 @@ public class GameMap {
 
                 simplejavagame.Object.Object u = Figures.getSquare(PixelPos, unitPixelSize, Unit_Color, Unit);
                 u.setName("Unit-"+i);
+                u.setLineBetweenSquares_color(new Vector4i(191,63,63,255));
                 units.add(u);
                 i++;
             }
@@ -264,16 +303,170 @@ public class GameMap {
         int high1 = xf;
         return r1.nextInt(high1-low1) + low1  ;
     }
-    public static void addClickListeners() {
+    public  static void addClickListeners() {
         if(units == null){
             return;
         }
-        
         for (simplejavagame.Object.Object unit : units) {
             if(unit.getName().indexOf("Unit") != -1){
                 unit.setCallbackEvent(unit.getName());
+                
             }
         }
-        
+    }
+    
+    //Unit Actions
+    private simplejavagame.Object.Object UnitPressed = null;
+    //private Vector4i PressedColor = Unit_Selected_Color;
+    //private Vector4i PressedColor = Unit_Color;
+    private ArrayList<UnitAction> UnitActions = new ArrayList<>();
+    public boolean hasUnitPressed(){ return (UnitPressed != null);}
+    public void setUnitPressed(simplejavagame.Object.Object unit){
+        this.UnitPressed = unit;
+        this.UnitPressed.SetColor(Unit_Selected_Color);
+    }
+    public void setUnitRelease(){
+        this.UnitPressed.SetColor(Unit_Color);
+        if(hasUnitPressedAnAction()){
+            this.UnitPressed.SetColor(Unit_Execut_Color);
+        }
+        this.UnitPressed = null;
+    }
+    public simplejavagame.Object.Object getUnitPressed(){
+        return this.UnitPressed;
+    }
+    public void addNewTarget(simplejavagame.Object.Object target){
+        if(hasUnitPressedAnAction()){
+            removeActionByUnutPressed();
+        }
+        UnitAction n = new UnitAction(UnitPressed,target);
+        setUnitRelease();
+        n.getLocal().SetColor(Unit_Execut_Color);
+        UnitActions.add(n);
+    }
+    public boolean hasUnitPressedAnAction(){
+        for (UnitAction u : this.UnitActions) { // if the unit pressed is all ready executing an action
+            if(u.getLocal().getName() == this.UnitPressed.getName()){
+                return true;
+            }
+        }
+        return false;
+    }
+    private void removeActionByUnutPressed(){
+        for (int i = 0; i < this.UnitActions.size(); i++) {
+            if(this.UnitActions.get(i).Local.getName() == this.UnitPressed.getName()){
+                this.UnitActions.remove(i);
+            }
+        }
+    }
+    public class UnitAction{
+        private simplejavagame.Object.Object Local = null , Target = null;
+        public UnitAction(simplejavagame.Object.Object _Local , simplejavagame.Object.Object _Target){
+            this.Local  = _Local;
+            this.Target = _Target;
+        }
+        public simplejavagame.Object.Object getLocal(){
+            return this.Local;
+        }
+        public simplejavagame.Object.Object getTarget(){
+            return this.Target;
+        }
+        public void setTarget(simplejavagame.Object.Object target){
+            this.Target = target;
+        }
+        public void update(){
+            int terrain = getTypeofTerrain(this.Local.getPosition());
+            if(CanUnitMove(terrain)){
+                move();
+            }
+        }
+        public boolean isDone(){
+            return (this.Local.getPosition().equals(this.Target.getPosition()));
+        }
+        public void moveRight(){ this.Local.setPosition(this.Local.getPosition().X()+this.Target.getDimension().W(),this.Local.getPosition().Y());}
+        public void moveLeft (){ this.Local.setPosition(this.Local.getPosition().X()-this.Target.getDimension().W(),this.Local.getPosition().Y());}
+        public void moveUp   (){ this.Local.setPosition(this.Local.getPosition().X(),this.Local.getPosition().Y()-this.Target.getDimension().H());}
+        public void moveDown (){ this.Local.setPosition(this.Local.getPosition().X(),this.Local.getPosition().Y()+this.Target.getDimension().H());}
+        public boolean CanUnitMove(int terrain){
+            if(terrain == Plain){
+                //I can move
+                return true;
+            }else if(terrain == hill){
+                //System.out.println("terrain: Hill");
+                Random r1 = new Random();
+                int low1  = 0;
+                int high1 = 2;
+
+                if(r1.nextInt(high1-low1) == 1){
+                    // I can move
+                    return true;
+                }else{
+                    // I can't move
+                    return false;
+                }
+            }else if(terrain == Mountain){
+                //System.out.println("terrain: Mountain");
+                Random r1 = new Random();
+                int low1  = 1;
+                int high1 = 10;
+
+                if(r1.nextInt(high1-low1) == 1){
+                    // I can move
+                    return true;
+                }else{
+                    // I can't move
+                    return false;
+                }
+            }
+            return false;
+        }
+        public void move(){
+            int c = this.Local.getPosition().compare(this.Target.getPosition()); // comparation of two points
+            Random r = new Random();
+            int low1  = 0;
+            int high1 = 2;
+            switch(c){              
+                case 1:
+                    moveRight();
+                    break;                   
+                case 2:
+                    if(r.nextInt(high1-low1) == 1){
+                        moveRight();
+                    }else{
+                        moveUp();
+                    }
+                    break;                   
+                case 3: 
+                    moveUp();
+                    break;                   
+                case 4: 
+                    if(r.nextInt(high1-low1) == 1){
+                        moveLeft();
+                    }else{
+                        moveUp();
+                    }
+                    break;                   
+                case 5: 
+                    moveLeft();
+                    break;                   
+                case 6: 
+                    if(r.nextInt(high1-low1) == 1){
+                        moveLeft();
+                    }else{
+                        moveDown();
+                    }
+                    break;                   
+                case 7: 
+                    moveDown();
+                    break;                   
+                case 8: 
+                    if(r.nextInt(high1-low1) == 1){
+                        moveRight();
+                    }else{
+                        moveDown();
+                    }
+                    break;                   
+            }
+        }
     }
 }

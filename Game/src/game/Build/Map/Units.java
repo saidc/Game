@@ -18,7 +18,6 @@ import org.joml.Vector4i;
 public class Units extends Component{
     public static List<Units> units = null;
     private static boolean hasToken = true;
-    
     private static final int Unit = 3 ;
     private static final Vector4i Unit_Color          = new Vector4i( 4  , 47 , 102 , 255 );
     private static final Vector4i Unit_Selected_Color = new Vector4i( 25 , 94 , 131 , 255 );
@@ -33,7 +32,6 @@ public class Units extends Component{
         }
         return units;
     }
-    
     public static Units get(int i){
         if(units == null){
             units = new ArrayList<>();

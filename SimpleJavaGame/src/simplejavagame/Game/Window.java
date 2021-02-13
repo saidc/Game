@@ -65,7 +65,7 @@ public class Window implements Runnable,WindowListener{
     public  Canvas canvas;
     
     public void init(){
-        dimension = new Dimension(1200, 1000);
+        dimension = new Dimension(1310, 1000);//1200 ,1000
         this.tittle = "Game";
         this.frame = new Frame(this.tittle);
         this.canvas = new Canvas();

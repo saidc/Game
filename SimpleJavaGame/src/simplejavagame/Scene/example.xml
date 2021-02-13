@@ -24,6 +24,7 @@
             </IsClicked>
         </Event>
     </Square>
+    
     <Text>
         <position>
             <x>600</x>
