@@ -1,7 +1,190 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 
 <Scene>
-    
+    <!-- Delete -->
+    <Text>
+        <Name>DeleteButton</Name>
+        <position>
+            <x>1157</x>
+            <y>380</y>
+        </position>
+        <Value>Delete</Value>
+        <color>
+            <r>0</r>
+            <g>0</g>
+            <b>0</b>
+            <a>255</a>
+        </color>
+        <font>
+            <family>TimesRoman</family>
+            <size>30</size>
+        </font>
+        <background-color>
+            <r>255</r>
+            <g>255</g>
+            <b>255</b>
+            <a>255</a>
+        </background-color>
+        
+        <hover-background-color>
+            <r>155</r>
+            <g>155</g>
+            <b>155</b>
+            <a>255</a>
+        </hover-background-color>
+        
+        <hover-text-color>
+            <r>55</r>
+            <g>55</g>
+            <b>55</b>
+            <a>255</a>
+        </hover-text-color>
+        
+        <level>1</level>
+        <Event>
+            <IsClicked>
+                <callback>Delete</callback>
+            </IsClicked>
+        </Event>
+    </Text>
+    <!-- Cancel -->
+    <Text>
+        <Name>CancelButton</Name>
+        <position>
+            <x>1157</x>
+            <y>340</y>
+        </position>
+        <Value>Cancel</Value>
+        <color>
+            <r>0</r>
+            <g>0</g>
+            <b>0</b>
+            <a>255</a>
+        </color>
+        <font>
+            <family>TimesRoman</family>
+            <size>30</size>
+        </font>
+        <background-color>
+            <r>255</r>
+            <g>255</g>
+            <b>255</b>
+            <a>255</a>
+        </background-color>
+        
+        <hover-background-color>
+            <r>155</r>
+            <g>155</g>
+            <b>155</b>
+            <a>255</a>
+        </hover-background-color>
+        
+        <hover-text-color>
+            <r>55</r>
+            <g>55</g>
+            <b>55</b>
+            <a>255</a>
+        </hover-text-color>
+        
+        <level>1</level>
+        <Event>
+            <IsClicked>
+                <callback>Cancel</callback>
+            </IsClicked>
+        </Event>
+    </Text>
+    <!-- Ok -->
+    <Text>
+        <Name>OkButton</Name>
+        <position>
+            <x>1157</x>
+            <y>300</y>
+        </position>
+        <Value>Ok</Value>
+        <color>
+            <r>0</r>
+            <g>0</g>
+            <b>0</b>
+            <a>255</a>
+        </color>
+        <font>
+            <family>TimesRoman</family>
+            <size>30</size>
+        </font>
+        <background-color>
+            <r>255</r>
+            <g>255</g>
+            <b>255</b>
+            <a>255</a>
+        </background-color>
+        
+        <hover-background-color>
+            <r>155</r>
+            <g>155</g>
+            <b>155</b>
+            <a>255</a>
+        </hover-background-color>
+        
+        <hover-text-color>
+            <r>55</r>
+            <g>55</g>
+            <b>55</b>
+            <a>255</a>
+        </hover-text-color>
+        
+        <level>1</level>
+        <Event>
+            <IsClicked>
+                <callback>OkOrder</callback>
+            </IsClicked>
+        </Event>
+    </Text>
+    <!-- LineBetweenSquares -->
+    <Text>
+        <position>
+            <x>1157</x>
+            <y>160</y>
+        </position>
+        <Value>LineBetweenSquares</Value>
+        <color>
+            <r>0</r>
+            <g>0</g>
+            <b>0</b>
+            <a>255</a>
+        </color>
+        <font>
+            <family>TimesRoman</family>
+            <size>30</size>
+        </font>
+        <background-color>
+            <r>255</r>
+            <g>255</g>
+            <b>255</b>
+            <a>255</a>
+        </background-color>
+        
+        <hover-background-color>
+            <r>155</r>
+            <g>155</g>
+            <b>155</b>
+            <a>255</a>
+        </hover-background-color>
+        
+        <hover-text-color>
+            <r>55</r>
+            <g>55</g>
+            <b>55</b>
+            <a>255</a>
+        </hover-text-color>
+        
+        <level>1</level>
+        <Event>
+            <IsClicked>
+                <callback>LineBetweenSquares</callback>
+            </IsClicked>
+        </Event>
+    </Text>
+    <!-- NextRound -->
     <Text>
         <position>
             <x>1085</x>
@@ -47,48 +230,5 @@
         </Event>
     </Text>
     
-    <Text>
-        <position>
-            <x>1157</x>
-            <y>160</y>
-        </position>
-        <Value>LineBetweenSquares</Value>
-        <color>
-            <r>0</r>
-            <g>0</g>
-            <b>0</b>
-            <a>255</a>
-        </color>
-        <font>
-            <family>TimesRoman</family>
-            <size>30</size>
-        </font>
-        <background-color>
-            <r>255</r>
-            <g>255</g>
-            <b>255</b>
-            <a>255</a>
-        </background-color>
-        
-        <hover-background-color>
-            <r>155</r>
-            <g>155</g>
-            <b>155</b>
-            <a>255</a>
-        </hover-background-color>
-        
-        <hover-text-color>
-            <r>55</r>
-            <g>55</g>
-            <b>55</b>
-            <a>255</a>
-        </hover-text-color>
-        
-        <level>1</level>
-        <Event>
-            <IsClicked>
-                <callback>LineBetweenSquares</callback>
-            </IsClicked>
-        </Event>
-    </Text>
+    
 </Scene>

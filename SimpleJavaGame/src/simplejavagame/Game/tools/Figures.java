@@ -68,7 +68,6 @@ public class Figures {
         }
         return nodes;
     }
-    
     private static simplejavagame.Object.Object getObject(Node n ){
         if(n.getNodeName() == "Square"){
             return NodeToSquare(n);
@@ -80,9 +79,9 @@ public class Figures {
         return null;
     }
     private static simplejavagame.Object.Object NodeToText(Node n){
-        int x = 10,y = 10,r = 0,g = 0,b = 0,a = 255 , level = 0; // defauld
-        boolean hasEvent = false, hasFont = false,hasBackground = false,has_hover_background_color = false,hasHover_text_color = false;
-        String callbackName = "" , Value = "";
+        int x = 10,y = 10,r = 0,g = 0,b = 0,a = 255 , level = 0; // default
+        boolean hasEvent = false, hasFont = false,hasBackground = false,has_hover_background_color = false,hasHover_text_color = false,hasName = false;
+        String callbackName = "" , Value = "", name = "TextObj"; // default
         ArrayList<Node> nodes = getChildNodes(n);
         Font font = null;
         Vector4i background = new Vector4i(0,0,0,255) , hover_background_color = new Vector4i(0,0,0,255),hover_text_color = new Vector4i(0,0,0,255); // default
@@ -112,13 +111,15 @@ public class Figures {
             }else if(node.getNodeName() == "hover-text-color"){
                 hover_text_color = getColor(node);
                 hasHover_text_color = true;
-                
             }else if(node.getNodeName() == "color"){
                 Vector4i color = getColor(node);
                 r = color.X();
                 g = color.Y();
                 b = color.Z();
                 a = color.W();
+            }else if(node.getNodeName() == "Name"){
+                hasName = true;
+                name = node.getTextContent();
             }else if(node.getNodeName() == "level"){
                 level = getLevel(node);
             }
@@ -138,6 +139,10 @@ public class Figures {
         }
         if(hasHover_text_color){
             Text.setHover_text_color(hover_text_color);
+        }
+        if(hasName){
+            //System.out.println("TextName: " + name);
+            Text.setName(name);
         }
         return Text;
     }

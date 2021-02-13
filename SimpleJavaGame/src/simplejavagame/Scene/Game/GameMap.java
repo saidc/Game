@@ -243,7 +243,7 @@ public class GameMap {
     // UNITS
     private static final Vector4i Unit_Color          = new Vector4i( 4  , 47 , 102 , 255 ) ;
     private static final Vector4i Unit_Selected_Color = new Vector4i( 25 , 94 , 131 , 255 ) ;
-    private static final Vector4i Unit_Execut_Color   = new Vector4i( 25 , 94 , 255 , 255 ) ;
+    public  static final Vector4i Unit_Execut_Color   = new Vector4i( 25 , 94 , 255 , 255 ) ;
     private static final int Unit               = 3 ;
     public  static final int Sleep_Mode         = 4 ;
     public  static final int Waiting_for_Orders = 5 ;
@@ -335,7 +335,7 @@ public class GameMap {
     public simplejavagame.Object.Object getUnitPressed(){
         return this.UnitPressed;
     }
-    public void addNewTarget(simplejavagame.Object.Object target){
+    public UnitAction addNewTarget(simplejavagame.Object.Object target){
         if(hasUnitPressedAnAction()){
             removeActionByUnutPressed();
         }
@@ -343,6 +343,7 @@ public class GameMap {
         setUnitRelease();
         n.getLocal().SetColor(Unit_Execut_Color);
         UnitActions.add(n);
+        return n;
     }
     public boolean hasUnitPressedAnAction(){
         for (UnitAction u : this.UnitActions) { // if the unit pressed is all ready executing an action
@@ -360,7 +361,9 @@ public class GameMap {
         }
     }
     public class UnitAction{
+        private simplejavagame.Object.Object TargetLine = null;
         private simplejavagame.Object.Object Local = null , Target = null;
+        private Consumer<UnitAction> unitAction = null;
         public UnitAction(simplejavagame.Object.Object _Local , simplejavagame.Object.Object _Target){
             this.Local  = _Local;
             this.Target = _Target;
@@ -371,6 +374,15 @@ public class GameMap {
         public simplejavagame.Object.Object getTarget(){
             return this.Target;
         }
+        public void addTargetLine(simplejavagame.Object.Object _TargetLine){
+            this.TargetLine = _TargetLine;
+        }
+        public void addDoneEvent(Consumer<UnitAction> _unitAction ){
+            this.unitAction = _unitAction;
+        }
+        public String getName(){
+            return this.Local.getName()+"-"+this.Target.getName();
+        }
         public void setTarget(simplejavagame.Object.Object target){
             this.Target = target;
         }
@@ -378,7 +390,25 @@ public class GameMap {
             int terrain = getTypeofTerrain(this.Local.getPosition());
             if(CanUnitMove(terrain)){
                 move();
+                this.TargetLine.setPosition(getLocalLinePosition()); // update line
             }
+        }
+        public simplejavagame.Object.Object getTargetLine(){
+            return this.TargetLine;
+        }
+        public Vector2i getLocalLinePosition(){
+            int x = this.Local.getPosition().X();
+            int y = this.Local.getPosition().Y();
+            int w = this.Local.getDimension().W()/2;
+            int h = this.Local.getDimension().H()/2;
+            return new Vector2i(x+w,y+h);
+        }
+        public Vector2i getTargetLinePosition(){
+            int x = this.Target.getPosition().X();
+            int y = this.Target.getPosition().Y();
+            int w = this.Target.getDimension().W()/2;
+            int h = this.Target.getDimension().H()/2;
+            return new Vector2i(x+w,y+h);
         }
         public boolean isDone(){
             return (this.Local.getPosition().equals(this.Target.getPosition()));
@@ -466,6 +496,12 @@ public class GameMap {
                         moveDown();
                     }
                     break;                   
+            }
+            if(isDone()){
+                // execute Done Event
+                if(unitAction != null){
+                    unitAction.accept(this);
+                }
             }
         }
     }

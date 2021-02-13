@@ -51,6 +51,15 @@ public abstract class Scene implements KeyListener,MouseListener ,MouseMotionLis
         }
         return null;
     }
+    public void removeObjectByName(String name){
+        for (int i = 0; i < this.Objects.size(); i++) {
+            if(this.Objects.get(i).getName() == name){
+                this.Objects.remove(i);
+                break;
+            }
+        }
+    }
+    
     public void addObjectToScene(simplejavagame.Object.Object obj) {
         isSortingObjects = true;
         this.Objects.add(obj);

@@ -34,12 +34,14 @@ public class Game extends Scene  {
         }else{
             System.out.println("Error ");
         }
+        System.out.println("++++++++++++++++++");
         ArrayList<simplejavagame.Object.Object> objs = Figures.getObjects(FileManage.localPath()+"/src/simplejavagame/Scene/Game/Game_Data.xml");
-        //simplejavagame.Object.Object obj = Figures.getSquare( new Vector2i(100,100), new Vector2i(30,30), new Vector4i(200,60,40,255));
         for(simplejavagame.Object.Object obj : objs){
             addObjectToScene(obj);
+            System.out.println(obj.getName());
             obj.addRootOfCallbacks(this::rootOfCallbacks);
         }
+        System.out.println("*************************");
     }
     @Override
     public void logic() {
@@ -79,8 +81,31 @@ public class Game extends Scene  {
         
         // Buttons 
         switch(callbackname){
+            case "Delete":
+                simplejavagame.Object.Object DeleteButton = getObjectByName("DeleteButton");
+                System.out.println("Delete");
+                if(DeleteButton != null){
+                }else{
+                    System.out.println("delete null");
+                }
+                break;
+            case "Cancel":
+                simplejavagame.Object.Object CancelButton = getObjectByName("CancelButton");
+                System.out.println("Cancel");
+                if(CancelButton != null){
+                }else{
+                    System.out.println("cancel null");
+                }
+                break;
+            case "OkOrder":
+                simplejavagame.Object.Object OkButton = getObjectByName("OkButton");
+                System.out.println("OkOrder");
+                if(OkButton != null){
+                }else{
+                    System.out.println("ok null");
+                }
+                break;
             case "NextRound":
-                System.out.println("NextRound");
                 GameMap.get().update();
                 break;
             case "LineBetweenSquares":
@@ -104,9 +129,18 @@ public class Game extends Scene  {
             simplejavagame.Object.Object unit    = GameMap.get().getUnitPressed(); // get the Unit pressed from GameMap
             if(!terrain.getPosition().equals(unit.getPosition())){
                 System.out.println("agregar nuevo target para un unit");
-                GameMap.get().addNewTarget(terrain);
+                GameMap.UnitAction Nt = GameMap.get().addNewTarget(terrain); // here we generate a new target acction
+                simplejavagame.Object.Object TargetLine = Figures.getLine(Nt.getLocalLinePosition(), Nt.getTargetLinePosition(), GameMap.Unit_Execut_Color, unit.getLevel());
+                TargetLine.setName(Nt.getName());
+                Nt.addTargetLine(TargetLine);
+                Nt.addDoneEvent(this::TargetDoneEvent);
+                addObjectToScene(TargetLine); // add to object list
             }
         }
+    }
+    public void TargetDoneEvent(GameMap.UnitAction Nt){
+        //System.out.println("remove line: "+Nt.getTargetLine().getName());
+        removeObjectByName(Nt.getTargetLine().getName());
     }
     @Override
     public void doAction(Map<String, String> acc) {

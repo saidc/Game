@@ -19,6 +19,7 @@ public class Object {
     private int type    ;
     private int level   ;
     private String name = "";
+    private boolean hasName = true;
     // Square
         private Vector2i position       ;   
         private Vector2i dimension      = null;   
@@ -192,6 +193,7 @@ public class Object {
         //setActualDimension();
     }
     public void setName(String _name){
+        this.hasName = true;
         this.name = _name;
     }
     public void setLineBetweenSquares_color(Vector4i color){

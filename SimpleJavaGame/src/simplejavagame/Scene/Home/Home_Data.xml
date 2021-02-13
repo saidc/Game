@@ -45,21 +45,7 @@
             </IsClicked>
         </Event>
     </Text>
-    <Line>
-        <position>
-            <x>0</x>
-            <y>0</y>
-        </position>
-        <target>
-            <x>750</x>
-            <y>600</y>
-        </target>
-        <color>
-            <r>255</r>
-            <g>255</g>
-            <b>255</b>
-            <a>255</a>
-        </color>
-        <level>2</level>
-    </Line>
+    <image>
+        
+    </image>
 </Scene>
