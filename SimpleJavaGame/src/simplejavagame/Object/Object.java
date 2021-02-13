@@ -166,6 +166,12 @@ public class Object {
         this.HasUpdateFont = true;
         //setActualDimension();
     }
+    public void setName(String _name){
+        this.name = _name;
+    }
+    public String getName(){
+        return this.name;
+    }
     public void isHover(Vector2i point) {
         if(isInside(point)){
             hasHover_text_color = true;

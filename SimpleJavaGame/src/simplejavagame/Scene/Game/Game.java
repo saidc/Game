@@ -1,10 +1,10 @@
 
 package simplejavagame.Scene.Game;
 
-import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import simplejavagame.Game.tools.Figures;
 import simplejavagame.Game.tools.FileManage;
@@ -13,15 +13,38 @@ import simplejavagame.Object.Type;
 import simplejavagame.Scene.Scene;
 import simplejavagame.Game.tools.*;
 public class Game extends Scene  {
-    
     @Override
     public void init(){
-         ArrayList<simplejavagame.Object.Object> objs = Figures.getObjects(FileManage.localPath()+"/src/simplejavagame/Scene/Game/Game_Data.xml");
+        
+        
+        if(GameMap.get().init(new Vector2i(10,10), new Vector2i(100,100), 200)){
+            
+            for (List<simplejavagame.Object.Object> list : GameMap.get().getMap()) {
+                for (simplejavagame.Object.Object obj : list) {
+                    addObjectToScene(obj);
+                    obj.addRootOfCallbacks(this::rootOfCallbacks);
+                }
+            }
+            GameMap.GenerateRandomUnits(20, new Vector2i(10,10), GameMap.get().getInt_Map(),GameMap.Plain);
+            GameMap.addClickListeners();
+            if( GameMap.units != null ){
+                for (simplejavagame.Object.Object unit : GameMap.units) {
+                    addObjectToScene(unit);
+                    unit.addRootOfCallbacks(this::rootOfCallbacks);
+                }
+            }
+            
+        }else{
+            System.out.println("Error ");
+        }
+        // ArrayList<simplejavagame.Object.Object> objs = Figures.getObjects(FileManage.localPath()+"/src/simplejavagame/Scene/Game/Game_Data.xml");
         //simplejavagame.Object.Object obj = Figures.getSquare( new Vector2i(100,100), new Vector2i(30,30), new Vector4i(200,60,40,255));
+        /*
         for(simplejavagame.Object.Object obj : objs){
             addObjectToScene(obj);
             obj.addRootOfCallbacks(this::rootOfCallbacks);
         }
+        */
     }
     @Override
     public void logic() {
@@ -31,7 +54,6 @@ public class Game extends Scene  {
             doAction(this.actions.get(i));
             this.actions.remove(this.actions.get(i)); // for every action that it's done, we remove it.
         }
-        updateObjects();
     }
     @Override
     public void rootOfCallbacks(String callbackname) {
@@ -62,7 +84,6 @@ public class Game extends Scene  {
             System.out.println("error to get the acction-type");
         }
     }
-    
     @Override
     public void mouseClicked(MouseEvent me) {
         this.actions.add(Actions.mouseClicked(me.getPoint()));
