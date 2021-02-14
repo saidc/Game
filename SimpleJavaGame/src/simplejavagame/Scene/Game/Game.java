@@ -13,7 +13,7 @@ import simplejavagame.Game.tools.*;
 public class Game extends Scene  {
     @Override
     public void init(){
-        
+        // load the objects form GameMap
         if(GameMap.get().init(new Vector2i(10,10), new Vector2i(100,100), 200)){
             
             for (List<simplejavagame.Object.Object> list : GameMap.get().getMap()) {
@@ -30,18 +30,54 @@ public class Game extends Scene  {
                     unit.addRootOfCallbacks(this::rootOfCallbacks);
                 }
             }
-            
         }else{
             System.out.println("Error ");
         }
-        System.out.println("++++++++++++++++++");
+        // load the objects from xml file
         ArrayList<simplejavagame.Object.Object> objs = Figures.getObjects(FileManage.localPath()+"/src/simplejavagame/Scene/Game/Game_Data.xml");
         for(simplejavagame.Object.Object obj : objs){
-            addObjectToScene(obj);
-            System.out.println(obj.getName());
             obj.addRootOfCallbacks(this::rootOfCallbacks);
+            addObjectToScene(obj);
         }
-        System.out.println("*************************");
+        
+        // init some buttons as hide
+        simplejavagame.Object.Object orderingMode = getObjectByName("OrderingMode");
+        simplejavagame.Object.Object deleteButton = getObjectByName("DeleteButton");
+        simplejavagame.Object.Object cancelButton = getObjectByName("CancelButton");
+        simplejavagame.Object.Object okButton     = getObjectByName("OkButton");
+        setHide(orderingMode);
+        setHide(deleteButton);
+        setHide(cancelButton);
+        setHide(okButton    );
+        
+    }
+    private void setHide(simplejavagame.Object.Object obj){
+        if(obj != null){
+            obj.setHide();
+        }
+    }
+    private void setVisible(simplejavagame.Object.Object obj){
+        if(obj != null){
+            obj.setVisible();
+        }
+    }
+    private void ReleaseMode(){
+        simplejavagame.Object.Object orderingMode = getObjectByName("OrderingMode");
+        simplejavagame.Object.Object NextRound = getObjectByName("NextRound");
+        simplejavagame.Object.Object okButton = getObjectByName("OkButton");
+        this.setHide(orderingMode);
+        this.setVisible(NextRound);
+        this.setHide(okButton);
+        GameMap.get().getUnitPressedByUnitPressed().showActualTargetLine();
+        GameMap.get().setUnitRelease();
+    }
+    private void OrderingMode(){
+        simplejavagame.Object.Object orderingMode = getObjectByName("OrderingMode");
+        simplejavagame.Object.Object NextRound = getObjectByName("NextRound");
+        simplejavagame.Object.Object okButton = getObjectByName("OkButton");
+        this.setVisible(okButton);
+        this.setVisible(orderingMode);
+        this.setHide(NextRound);
     }
     @Override
     public void logic() {
@@ -53,18 +89,18 @@ public class Game extends Scene  {
         }
     }
     @Override
-    public void rootOfCallbacks(String callbackname) {
-        
+    public void rootOfCallbacks(String callbackname){
         if(callbackname.indexOf("Unit") != -1){
             if(!GameMap.get().hasUnitPressed()){ // ask if there is a unit all ready pressed
                 simplejavagame.Object.Object unit = getObjectByName(callbackname); // get the unit pressed by the name
                 if(unit != null){ // confirm that the return unit or objet are not null
                     GameMap.get().setUnitPressed(unit); // add to the Map unit actions a unit pressed
+                    OrderingMode();
                 }
             }else{
                 simplejavagame.Object.Object unitPressed = GameMap.get().getUnitPressed();
                 if(unitPressed.getName() == callbackname){
-                    GameMap.get().setUnitRelease();
+                    ReleaseMode();
                 }
             }
             //System.out.println("Unit Pressed");
@@ -82,41 +118,26 @@ public class Game extends Scene  {
         // Buttons 
         switch(callbackname){
             case "Delete":
-                simplejavagame.Object.Object DeleteButton = getObjectByName("DeleteButton");
-                System.out.println("Delete");
-                if(DeleteButton != null){
-                }else{
-                    System.out.println("delete null");
+                if(GameMap.get().hasUnitPressed()){
+                    GameMap.get().removeActionByUnutPressed();
+                    this.ReleaseMode();
                 }
                 break;
             case "Cancel":
-                simplejavagame.Object.Object CancelButton = getObjectByName("CancelButton");
-                System.out.println("Cancel");
-                if(CancelButton != null){
-                }else{
-                    System.out.println("cancel null");
-                }
                 break;
             case "OkOrder":
-                simplejavagame.Object.Object OkButton = getObjectByName("OkButton");
-                System.out.println("OkOrder");
-                if(OkButton != null){
-                }else{
-                    System.out.println("ok null");
-                }
+                this.ReleaseMode();
                 break;
             case "NextRound":
                 GameMap.get().update();
                 break;
             case "LineBetweenSquares":
-                //System.out.println("LineBetweenSquares");
                 List<simplejavagame.Object.Object> objs = this.getObjects();
                 for (simplejavagame.Object.Object obj : objs) {
                     if(obj.getName().indexOf("Unit") != -1  || 
                        obj.getName().indexOf("Plain") != -1 ||
                        obj.getName().indexOf("hill") != -1  ||
                        obj.getName().indexOf("Mountain") != -1 ){
-                       
                        obj.SwitchLineBetweenSquares_Visible();
                     }
                 }
@@ -128,19 +149,31 @@ public class Game extends Scene  {
             simplejavagame.Object.Object terrain = getObjectByName(name); // get the Terrain pressed by the name
             simplejavagame.Object.Object unit    = GameMap.get().getUnitPressed(); // get the Unit pressed from GameMap
             if(!terrain.getPosition().equals(unit.getPosition())){
-                System.out.println("agregar nuevo target para un unit");
+                boolean sw = GameMap.get().hasUnitPressedAnAction();
                 GameMap.UnitAction Nt = GameMap.get().addNewTarget(terrain); // here we generate a new target acction
-                simplejavagame.Object.Object TargetLine = Figures.getLine(Nt.getLocalLinePosition(), Nt.getTargetLinePosition(), GameMap.Unit_Execut_Color, unit.getLevel());
-                TargetLine.setName(Nt.getName());
-                Nt.addTargetLine(TargetLine);
-                Nt.addDoneEvent(this::TargetDoneEvent);
-                addObjectToScene(TargetLine); // add to object list
+                if(Nt != null){
+                    simplejavagame.Object.Object TargetLine = null;
+                    if(GameMap.get().getUnitPressed() != null){
+                        if(sw){
+                            TargetLine = Figures.getLine(Nt.getPreviousTargetLinePosition(), Nt.getLastTargetLinePosition(), GameMap.Unit_Execut_Color, unit.getLevel());
+                        }else{
+                            TargetLine = Figures.getLine(Nt.getLocalLinePosition(), Nt.getActualTargetLinePosition(), GameMap.Unit_Execut_Color, unit.getLevel());
+                        }
+                    }
+                    if(TargetLine != null){
+                        TargetLine.setName(Nt.getName()+"-"+Nt.getNumberOfTargets()); // adding the name of the new lineTarget
+                        Nt.addTargetLine(TargetLine); // adding the targetLine to the New UnitAcction
+                        Nt.addDoneEvent(this::RemoveTargetLine); // adding the callback function when the Action of the unit is Done
+                        addObjectToScene(TargetLine); // add TargetLine to object list to be show 
+                    }
+                }
             }
         }
     }
-    public void TargetDoneEvent(GameMap.UnitAction Nt){
-        //System.out.println("remove line: "+Nt.getTargetLine().getName());
-        removeObjectByName(Nt.getTargetLine().getName());
+    public void RemoveTargetLine(ArrayList<simplejavagame.Object.Object> TargetLines){
+        for (simplejavagame.Object.Object TargetLine : TargetLines) {
+            removeObjectByName(TargetLine.getName());
+        }
     }
     @Override
     public void doAction(Map<String, String> acc) {

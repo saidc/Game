@@ -141,7 +141,6 @@ public class Figures {
             Text.setHover_text_color(hover_text_color);
         }
         if(hasName){
-            //System.out.println("TextName: " + name);
             Text.setName(name);
         }
         return Text;

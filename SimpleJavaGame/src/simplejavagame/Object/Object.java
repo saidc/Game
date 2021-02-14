@@ -30,7 +30,7 @@ public class Object {
     private boolean hasCallbackEvent    ;
     private String CallbackName         ;
     private Consumer<String> RootOfCallback = null;
-    private boolean isVisible           ;
+    private boolean isVisible            ;
     private ArrayList<Map<String, String>> actions ;
     // Text 
         private String  Text = "";
@@ -41,8 +41,10 @@ public class Object {
         private boolean hasBackground = false;
         private Vector4i hover_background_color ;
         private boolean hasHover_background_color = false;
+        private boolean isHover_background_color = false;
         private Vector4i hover_text_color ;
         private boolean hasHover_text_color = false;
+        private boolean isHover_text_color = false;
     // Line
         private Vector2i target       ;   
 // PUBLIC
@@ -83,44 +85,46 @@ public class Object {
         }
     }
     public void render(Graphics graphics){
-        if(this.type == Type.Square){
-            if(this.LineBetweenSquares_Visible && this.hasLineBetweenSquares){
-                graphics.setColor( Color.RED );
-                graphics.fillRect( this.position.X()-1,this.position.Y()-1,this.dimension.W()+ 2, this.dimension.H() + 2);
-            }
-            graphics.setColor( tools.NewColor(this.color) );
-            graphics.fillRect(this.position.X(),this.position.Y(),this.dimension.W(),this.dimension.H());
-        }else if (this.type == Type.Text){
-            if(this.hasFont){
-                graphics.setFont(this.font);
-            }
-            if(this.dimension == null || this.HasUpdateFont){
-                this.HasUpdateFont = false;
-                //setActualDimension();
-                AffineTransform affinetransform = new AffineTransform();     
-                FontRenderContext frc = new FontRenderContext(affinetransform,true,true);  
-                int height = (int)(this.font.getStringBounds(this.Text, frc).getHeight());
-                int width = graphics.getFontMetrics().stringWidth(this.Text);
-                this.dimension = new Vector2i(width, height);
-            }
-            if(this.hasBackground){
-                if(hasHover_background_color){
-                    graphics.setColor(tools.NewColor(this.hover_background_color));
-                }else{
-                    graphics.setColor(tools.NewColor(this.background_color));
+        if(this.isVisible){
+            if(this.type == Type.Square){
+                if(this.LineBetweenSquares_Visible && this.hasLineBetweenSquares){
+                    graphics.setColor( Color.RED );
+                    graphics.fillRect( this.position.X()-1,this.position.Y()-1,this.dimension.W()+ 2, this.dimension.H() + 2);
                 }
-                graphics.fillRect(this.position.X()-(this.dimension.W()/2),this.position.Y()-(this.dimension.H()),this.dimension.W(),this.dimension.H());
-            }
-            if(hasHover_text_color){
-                graphics.setColor(tools.NewColor(this.hover_text_color));
-            }else{
+                graphics.setColor( tools.NewColor(this.color) );
+                graphics.fillRect(this.position.X(),this.position.Y(),this.dimension.W(),this.dimension.H());
+            }else if (this.type == Type.Text){
+                if(this.hasFont){
+                    graphics.setFont(this.font);
+                }
+                if(this.dimension == null || this.HasUpdateFont){
+                    this.HasUpdateFont = false;
+                    //setActualDimension();
+                    AffineTransform affinetransform = new AffineTransform();     
+                    FontRenderContext frc = new FontRenderContext(affinetransform,true,true);  
+                    int height = (int)(this.font.getStringBounds(this.Text, frc).getHeight());
+                    int width = graphics.getFontMetrics().stringWidth(this.Text);
+                    this.dimension = new Vector2i(width, height);
+                }
+                if(this.hasBackground){
+                    if(hasHover_background_color && this.isHover_background_color){
+                        graphics.setColor(tools.NewColor(this.hover_background_color));
+                    }else{
+                        graphics.setColor(tools.NewColor(this.background_color));
+                    }
+                    graphics.fillRect(this.position.X()-(this.dimension.W()/2),this.position.Y()-(this.dimension.H()),this.dimension.W(),this.dimension.H());
+                }
+                if(hasHover_text_color && this.isHover_text_color){
+                    graphics.setColor(tools.NewColor(this.hover_text_color));
+                }else{
+                    graphics.setColor(tools.NewColor(this.color));
+                }
+                graphics.drawString(this.Text, this.position.X()-(this.dimension.W()/2), this.position.Y()-(this.dimension.H()/4));
+            }else if (this.type == Type.Line){
                 graphics.setColor(tools.NewColor(this.color));
+                graphics.drawLine(this.position.X(), this.position.Y(), this.target.X(), this.target.Y());
+
             }
-            graphics.drawString(this.Text, this.position.X()-(this.dimension.W()/2), this.position.Y()-(this.dimension.H()/4));
-        }else if (this.type == Type.Line){
-            graphics.setColor(tools.NewColor(this.color));
-            graphics.drawLine(this.position.X(), this.position.Y(), this.target.X(), this.target.Y());
-            
         }
     }
     public void isClicked(Vector2i position){
@@ -157,14 +161,20 @@ public class Object {
     }
     public void isHover(Vector2i point) {
         if(isInside(point)){
-            hasHover_text_color = true;
-            hasHover_background_color = true;
+            isHover_text_color = true;
+            isHover_background_color = true;
         }else{
-            hasHover_text_color = false;
-            hasHover_background_color = false;
+            isHover_text_color = false;
+            isHover_background_color = false;
         }
     }
     // Set
+    public void setVisible(){
+        this.isVisible = true;
+    }
+    public void setHide(){
+        this.isVisible = false;
+    }
     public void setBackground(Vector4i color){
         this.hasBackground = true;
         this.background_color = color;

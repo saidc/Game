@@ -1,6 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 
 <Scene>
+    <!-- ordering mode -->
+    <Text>
+        <Name>OrderingMode</Name>
+        <position>
+            <x>1157</x>
+            <y>250</y>
+        </position>
+        <Value>Ordering Mode</Value>
+        <color>
+            <r>0</r>
+            <g>0</g>
+            <b>0</b>
+            <a>255</a>
+        </color>
+        <font>
+            <family>TimesRoman</family>
+            <size>30</size>
+        </font>
+        <background-color>
+            <r>255</r>
+            <g>255</g>
+            <b>255</b>
+            <a>255</a>
+        </background-color>
+        <level>1</level>
+    </Text>
+    
     <!-- Delete -->
     <Text>
         <Name>DeleteButton</Name>
@@ -141,6 +168,7 @@
     </Text>
     <!-- LineBetweenSquares -->
     <Text>
+        <Name>LineBetweenSquares</Name>
         <position>
             <x>1157</x>
             <y>160</y>
@@ -186,6 +214,7 @@
     </Text>
     <!-- NextRound -->
     <Text>
+        <Name>NextRound</Name>
         <position>
             <x>1085</x>
             <y>100</y>

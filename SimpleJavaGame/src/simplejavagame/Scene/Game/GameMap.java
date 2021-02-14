@@ -310,7 +310,6 @@ public class GameMap {
         for (simplejavagame.Object.Object unit : units) {
             if(unit.getName().indexOf("Unit") != -1){
                 unit.setCallbackEvent(unit.getName());
-                
             }
         }
     }
@@ -336,6 +335,22 @@ public class GameMap {
         return this.UnitPressed;
     }
     public UnitAction addNewTarget(simplejavagame.Object.Object target){
+        if(this.UnitPressed != null){
+            if(!hasUnitPressedAnAction()){ // if doesnt have an actual unit
+                UnitAction n = new UnitAction(UnitPressed,target);
+                n.getLocal().SetColor(Unit_Execut_Color);
+                UnitActions.add(n);
+                return n;
+            }else{
+                UnitAction u = getUnitPressedByUnitPressed();
+                if(!u.hasTarget(target)){
+                    u.addTarget(target);
+                    u.getLocal().SetColor(Unit_Execut_Color);
+                    return u;
+                }
+            }
+        }
+        /*
         if(hasUnitPressedAnAction()){
             removeActionByUnutPressed();
         }
@@ -343,7 +358,8 @@ public class GameMap {
         setUnitRelease();
         n.getLocal().SetColor(Unit_Execut_Color);
         UnitActions.add(n);
-        return n;
+        */
+        return null;
     }
     public boolean hasUnitPressedAnAction(){
         for (UnitAction u : this.UnitActions) { // if the unit pressed is all ready executing an action
@@ -353,48 +369,71 @@ public class GameMap {
         }
         return false;
     }
-    private void removeActionByUnutPressed(){
-        for (int i = 0; i < this.UnitActions.size(); i++) {
-            if(this.UnitActions.get(i).Local.getName() == this.UnitPressed.getName()){
-                this.UnitActions.remove(i);
+    public UnitAction getUnitPressedByUnitPressed(){
+        for (UnitAction u : this.UnitActions) { 
+            if(u.getLocal().getName() == this.UnitPressed.getName()){
+                return u;
+            }
+        }
+        return null;
+    }
+    public void removeActionByUnutPressed(){
+        if(this.UnitPressed != null){
+            for (int i = 0; i < this.UnitActions.size(); i++) {
+                if(this.UnitActions.get(i).Local.getName() == this.UnitPressed.getName()){
+                    this.UnitActions.get(i).runEvent();
+                    this.UnitActions.remove(i);
+                }
             }
         }
     }
+    
     public class UnitAction{
-        private simplejavagame.Object.Object TargetLine = null;
-        private simplejavagame.Object.Object Local = null , Target = null;
-        private Consumer<UnitAction> unitAction = null;
+        private ArrayList<simplejavagame.Object.Object> TargetLines = new ArrayList();
+        private simplejavagame.Object.Object Local = null ;// Target = null;
+        private ArrayList<simplejavagame.Object.Object> Targets = new ArrayList();
+        private Consumer<ArrayList<simplejavagame.Object.Object>> unitAction = null;
+        private int actualTarget = 0;
+        public int getNumberOfTargets(){
+            return this.Targets.size();
+        }
         public UnitAction(simplejavagame.Object.Object _Local , simplejavagame.Object.Object _Target){
             this.Local  = _Local;
-            this.Target = _Target;
+            this.Targets.add(_Target);
         }
         public simplejavagame.Object.Object getLocal(){
             return this.Local;
         }
-        public simplejavagame.Object.Object getTarget(){
-            return this.Target;
+        public simplejavagame.Object.Object getActualTarget(){
+            return this.Targets.get(this.actualTarget);
         }
         public void addTargetLine(simplejavagame.Object.Object _TargetLine){
-            this.TargetLine = _TargetLine;
+            this.TargetLines.add(_TargetLine);
         }
-        public void addDoneEvent(Consumer<UnitAction> _unitAction ){
+        public void addDoneEvent(Consumer<ArrayList<simplejavagame.Object.Object>> _unitAction ){
             this.unitAction = _unitAction;
         }
         public String getName(){
-            return this.Local.getName()+"-"+this.Target.getName();
+            return this.Local.getName()+"-"+this.Targets.get(this.actualTarget).getName();
         }
-        public void setTarget(simplejavagame.Object.Object target){
-            this.Target = target;
+        public boolean addTarget(simplejavagame.Object.Object target){
+            for (simplejavagame.Object.Object t : this.Targets) {
+                if(t.getName() == target.getName()){
+                    return false; // you can't add a same target
+                }
+            }
+            this.Targets.add(target);
+            return true;
         }
         public void update(){
             int terrain = getTypeofTerrain(this.Local.getPosition());
             if(CanUnitMove(terrain)){
                 move();
-                this.TargetLine.setPosition(getLocalLinePosition()); // update line
+                this.TargetLines.get(this.actualTarget).setPosition(getLocalLinePosition()); // update line
             }
         }
         public simplejavagame.Object.Object getTargetLine(){
-            return this.TargetLine;
+            return this.TargetLines.get(this.actualTarget);
         }
         public Vector2i getLocalLinePosition(){
             int x = this.Local.getPosition().X();
@@ -403,20 +442,35 @@ public class GameMap {
             int h = this.Local.getDimension().H()/2;
             return new Vector2i(x+w,y+h);
         }
-        public Vector2i getTargetLinePosition(){
-            int x = this.Target.getPosition().X();
-            int y = this.Target.getPosition().Y();
-            int w = this.Target.getDimension().W()/2;
-            int h = this.Target.getDimension().H()/2;
+        public Vector2i getActualTargetLinePosition(){
+            int x = this.Targets.get(this.actualTarget).getPosition().X();
+            int y = this.Targets.get(this.actualTarget).getPosition().Y();
+            int w = this.Targets.get(this.actualTarget).getDimension().W()/2;
+            int h = this.Targets.get(this.actualTarget).getDimension().H()/2;
             return new Vector2i(x+w,y+h);
         }
-        public boolean isDone(){
-            return (this.Local.getPosition().equals(this.Target.getPosition()));
+        public Vector2i getPreviousTargetLinePosition(){
+            int x = this.Targets.get(this.Targets.size()-2).getPosition().X();
+            int y = this.Targets.get(this.Targets.size()-2).getPosition().Y();
+            int w = this.Targets.get(this.Targets.size()-2).getDimension().W()/2;
+            int h = this.Targets.get(this.Targets.size()-2).getDimension().H()/2;
+            return new Vector2i(x+w,y+h);
         }
-        public void moveRight(){ this.Local.setPosition(this.Local.getPosition().X()+this.Target.getDimension().W(),this.Local.getPosition().Y());}
-        public void moveLeft (){ this.Local.setPosition(this.Local.getPosition().X()-this.Target.getDimension().W(),this.Local.getPosition().Y());}
-        public void moveUp   (){ this.Local.setPosition(this.Local.getPosition().X(),this.Local.getPosition().Y()-this.Target.getDimension().H());}
-        public void moveDown (){ this.Local.setPosition(this.Local.getPosition().X(),this.Local.getPosition().Y()+this.Target.getDimension().H());}
+        public Vector2i getLastTargetLinePosition(){
+            int x = this.Targets.get(this.Targets.size()-1).getPosition().X();
+            int y = this.Targets.get(this.Targets.size()-1).getPosition().Y();
+            int w = this.Targets.get(this.Targets.size()-1).getDimension().W()/2;
+            int h = this.Targets.get(this.Targets.size()-1).getDimension().H()/2;
+            return new Vector2i(x+w,y+h);
+        }
+        
+        public boolean isDone(){
+            return (this.Local.getPosition().equals(this.Targets.get(this.actualTarget).getPosition()));
+        }
+        public void moveRight(){ this.Local.setPosition(this.Local.getPosition().X()+this.Targets.get(this.actualTarget).getDimension().W(),this.Local.getPosition().Y());}
+        public void moveLeft (){ this.Local.setPosition(this.Local.getPosition().X()-this.Targets.get(this.actualTarget).getDimension().W(),this.Local.getPosition().Y());}
+        public void moveUp   (){ this.Local.setPosition(this.Local.getPosition().X(),this.Local.getPosition().Y()-this.Targets.get(this.actualTarget).getDimension().H());}
+        public void moveDown (){ this.Local.setPosition(this.Local.getPosition().X(),this.Local.getPosition().Y()+this.Targets.get(this.actualTarget).getDimension().H());}
         public boolean CanUnitMove(int terrain){
             if(terrain == Plain){
                 //I can move
@@ -451,7 +505,7 @@ public class GameMap {
             return false;
         }
         public void move(){
-            int c = this.Local.getPosition().compare(this.Target.getPosition()); // comparation of two points
+            int c = this.Local.getPosition().compare(this.Targets.get(this.actualTarget).getPosition()); // comparation of two points
             Random r = new Random();
             int low1  = 0;
             int high1 = 2;
@@ -499,8 +553,34 @@ public class GameMap {
             }
             if(isDone()){
                 // execute Done Event
-                if(unitAction != null){
-                    unitAction.accept(this);
+                if(this.actualTarget + 1 < this.Targets.size()){
+                    this.actualTarget += 1;
+                    showActualTargetLine();
+                }else{
+                    if(unitAction != null){
+                        runEvent();
+                    }
+                }
+                
+            }
+        }
+        public void runEvent(){
+            unitAction.accept(this.TargetLines);
+        }
+        public boolean hasTarget(simplejavagame.Object.Object _target){
+            for (simplejavagame.Object.Object t : this.Targets) {
+                if(_target.getName().equals(t.getName())){
+                    return true;
+                }
+            }
+            return false;
+        }
+        public void showActualTargetLine(){
+            for (int i = 0; i < this.TargetLines.size(); i++) {
+                if(this.actualTarget == i){
+                    this.TargetLines.get(i).setVisible();
+                }else{
+                    this.TargetLines.get(i).setHide();
                 }
             }
         }

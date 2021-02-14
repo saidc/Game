@@ -44,8 +44,8 @@ public abstract class Scene implements KeyListener,MouseListener ,MouseMotionLis
         mouseMove = false;
     }
     public simplejavagame.Object.Object getObjectByName(String name){
-        for (simplejavagame.Object.Object obj : Objects) {
-            if(obj.getName() == name){
+        for (simplejavagame.Object.Object obj : this.Objects) {
+            if(obj.getName().equals(name)){
                 return obj;
             }
         }
