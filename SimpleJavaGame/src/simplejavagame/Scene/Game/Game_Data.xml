@@ -10,21 +10,16 @@
         </position>
         <Value>Ordering Mode</Value>
         <color>
-            <r>0</r>
-            <g>0</g>
-            <b>0</b>
+            <r>255</r>
+            <g>255</g>
+            <b>255</b>
             <a>255</a>
         </color>
         <font>
             <family>TimesRoman</family>
             <size>30</size>
         </font>
-        <background-color>
-            <r>255</r>
-            <g>255</g>
-            <b>255</b>
-            <a>255</a>
-        </background-color>
+        
         <level>1</level>
     </Text>
     

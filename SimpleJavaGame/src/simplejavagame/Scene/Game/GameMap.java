@@ -381,7 +381,7 @@ public class GameMap {
         if(this.UnitPressed != null){
             for (int i = 0; i < this.UnitActions.size(); i++) {
                 if(this.UnitActions.get(i).Local.getName() == this.UnitPressed.getName()){
-                    this.UnitActions.get(i).runEvent();
+                    this.UnitActions.get(i).RemoveTargetLines();
                     this.UnitActions.remove(i);
                 }
             }
@@ -392,8 +392,9 @@ public class GameMap {
         private ArrayList<simplejavagame.Object.Object> TargetLines = new ArrayList();
         private simplejavagame.Object.Object Local = null ;// Target = null;
         private ArrayList<simplejavagame.Object.Object> Targets = new ArrayList();
-        private Consumer<ArrayList<simplejavagame.Object.Object>> unitAction = null;
+        private Consumer<simplejavagame.Object.Object> unitAction = null;
         private int actualTarget = 0;
+        private boolean isDone = false;
         public int getNumberOfTargets(){
             return this.Targets.size();
         }
@@ -410,7 +411,7 @@ public class GameMap {
         public void addTargetLine(simplejavagame.Object.Object _TargetLine){
             this.TargetLines.add(_TargetLine);
         }
-        public void addDoneEvent(Consumer<ArrayList<simplejavagame.Object.Object>> _unitAction ){
+        public void addDoneEvent(Consumer<simplejavagame.Object.Object> _unitAction ){
             this.unitAction = _unitAction;
         }
         public String getName(){
@@ -422,13 +423,15 @@ public class GameMap {
                     return false; // you can't add a same target
                 }
             }
-            this.Targets.add(target);
+            this.isDone = false;
+            this.Targets.add(this.Targets.size(), target);
             return true;
         }
         public void update(){
             int terrain = getTypeofTerrain(this.Local.getPosition());
             if(CanUnitMove(terrain)){
                 move();
+                
                 this.TargetLines.get(this.actualTarget).setPosition(getLocalLinePosition()); // update line
             }
         }
@@ -465,7 +468,7 @@ public class GameMap {
         }
         
         public boolean isDone(){
-            return (this.Local.getPosition().equals(this.Targets.get(this.actualTarget).getPosition()));
+            return this.isDone;
         }
         public void moveRight(){ this.Local.setPosition(this.Local.getPosition().X()+this.Targets.get(this.actualTarget).getDimension().W(),this.Local.getPosition().Y());}
         public void moveLeft (){ this.Local.setPosition(this.Local.getPosition().X()-this.Targets.get(this.actualTarget).getDimension().W(),this.Local.getPosition().Y());}
@@ -551,21 +554,31 @@ public class GameMap {
                     }
                     break;                   
             }
-            if(isDone()){
+            
+            System.out.println("this.actualTarget: "+this.actualTarget);
+            if((this.Local.getPosition().equals(this.Targets.get(this.actualTarget).getPosition()))){
                 // execute Done Event
                 if(this.actualTarget + 1 < this.Targets.size()){
-                    this.actualTarget += 1;
+                    if(unitAction != null){
+                        unitAction.accept(this.TargetLines.get(this.actualTarget));
+                    }
+                    this.TargetLines.remove(this.actualTarget);
+                    this.Targets.remove(this.actualTarget);
+                    this.actualTarget = 0;
                     showActualTargetLine();
                 }else{
                     if(unitAction != null){
-                        runEvent();
+                        RemoveTargetLines();
+                        this.isDone = true;
                     }
                 }
                 
             }
         }
-        public void runEvent(){
-            unitAction.accept(this.TargetLines);
+        public void RemoveTargetLines(){
+            for (int i = 0; i < this.TargetLines.size(); i++) {
+                unitAction.accept(this.TargetLines.get(i));
+            }
         }
         public boolean hasTarget(simplejavagame.Object.Object _target){
             for (simplejavagame.Object.Object t : this.Targets) {
@@ -582,6 +595,22 @@ public class GameMap {
                 }else{
                     this.TargetLines.get(i).setHide();
                 }
+            }
+        }
+        public void showAllTargetLines(){
+            for (int i = 0; i < this.TargetLines.size(); i++) {
+                this.TargetLines.get(i).setVisible();
+            }
+        }
+        public void RemoveLastTarget(){
+            if (this.Targets.size() > 1){
+                int i = this.Targets.size() - 1;
+                this.Targets.remove(i);
+                if(this.unitAction != null){
+                    unitAction.accept(this.TargetLines.get(i));
+                }
+                this.TargetLines.remove(i);
+                showAllTargetLines();
             }
         }
     }

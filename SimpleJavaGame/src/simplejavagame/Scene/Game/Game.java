@@ -65,18 +65,28 @@ public class Game extends Scene  {
         simplejavagame.Object.Object orderingMode = getObjectByName("OrderingMode");
         simplejavagame.Object.Object NextRound = getObjectByName("NextRound");
         simplejavagame.Object.Object okButton = getObjectByName("OkButton");
+        simplejavagame.Object.Object deleteButton = getObjectByName("DeleteButton");
+        simplejavagame.Object.Object cancelButton = getObjectByName("CancelButton");
         this.setHide(orderingMode);
         this.setVisible(NextRound);
         this.setHide(okButton);
-        GameMap.get().getUnitPressedByUnitPressed().showActualTargetLine();
+        this.setHide(deleteButton);
+        this.setHide(cancelButton);
+        if(GameMap.get().getUnitPressedByUnitPressed() != null){
+            GameMap.get().getUnitPressedByUnitPressed().showActualTargetLine();
+        }
         GameMap.get().setUnitRelease();
     }
     private void OrderingMode(){
         simplejavagame.Object.Object orderingMode = getObjectByName("OrderingMode");
         simplejavagame.Object.Object NextRound = getObjectByName("NextRound");
         simplejavagame.Object.Object okButton = getObjectByName("OkButton");
+        simplejavagame.Object.Object deleteButton = getObjectByName("DeleteButton");
+        simplejavagame.Object.Object cancelButton = getObjectByName("CancelButton");
         this.setVisible(okButton);
         this.setVisible(orderingMode);
+        this.setVisible(deleteButton);
+        this.setVisible(cancelButton);
         this.setHide(NextRound);
     }
     @Override
@@ -96,6 +106,11 @@ public class Game extends Scene  {
                 if(unit != null){ // confirm that the return unit or objet are not null
                     GameMap.get().setUnitPressed(unit); // add to the Map unit actions a unit pressed
                     OrderingMode();
+                    if(GameMap.get().hasUnitPressed()){
+                        if(GameMap.get().hasUnitPressedAnAction()){
+                            GameMap.get().getUnitPressedByUnitPressed().showAllTargetLines();
+                        }
+                    }
                 }
             }else{
                 simplejavagame.Object.Object unitPressed = GameMap.get().getUnitPressed();
@@ -119,11 +134,21 @@ public class Game extends Scene  {
         switch(callbackname){
             case "Delete":
                 if(GameMap.get().hasUnitPressed()){
-                    GameMap.get().removeActionByUnutPressed();
-                    this.ReleaseMode();
+                    if(GameMap.get().hasUnitPressedAnAction()){
+                        GameMap.UnitAction u =  GameMap.get().getUnitPressedByUnitPressed();
+                        if(u.getNumberOfTargets() == 1){
+                            GameMap.get().removeActionByUnutPressed();
+                        }else{
+                            u.RemoveLastTarget();
+                        }
+                    }
                 }
                 break;
             case "Cancel":
+                if(GameMap.get().hasUnitPressed()){
+                    GameMap.get().removeActionByUnutPressed();
+                    this.ReleaseMode();
+                }
                 break;
             case "OkOrder":
                 this.ReleaseMode();
@@ -165,15 +190,14 @@ public class Game extends Scene  {
                         Nt.addTargetLine(TargetLine); // adding the targetLine to the New UnitAcction
                         Nt.addDoneEvent(this::RemoveTargetLine); // adding the callback function when the Action of the unit is Done
                         addObjectToScene(TargetLine); // add TargetLine to object list to be show 
+                        Nt.showAllTargetLines();
                     }
                 }
             }
         }
     }
-    public void RemoveTargetLine(ArrayList<simplejavagame.Object.Object> TargetLines){
-        for (simplejavagame.Object.Object TargetLine : TargetLines) {
-            removeObjectByName(TargetLine.getName());
-        }
+    public void RemoveTargetLine(simplejavagame.Object.Object TargetLine){
+        removeObjectByName(TargetLine.getName());
     }
     @Override
     public void doAction(Map<String, String> acc) {
