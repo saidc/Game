@@ -236,11 +236,20 @@ public class Object {
     public Vector2i getPosition(){
         return this.position;
     }
+    public Vector2i getMiddlePosition(){
+        return new Vector2i(this.position.X()+(this.dimension.W()/2) , this.position.Y()+(this.dimension.H()/2));
+    }
     public Vector4i getColor(){
         return this.color;
     }
     public Vector2i getDimension(){
         return this.dimension;
+    }
+    public Vector2i getTarget(){
+        if(this.type == Type.Line){
+            return this.target;
+        }
+        return null;
     }
     
 // PRIVATE

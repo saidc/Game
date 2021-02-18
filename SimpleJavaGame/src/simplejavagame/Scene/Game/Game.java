@@ -14,7 +14,7 @@ public class Game extends Scene  {
     @Override
     public void init(){
         // load the objects form GameMap
-        if(GameMap.get().init(new Vector2i(10,10), new Vector2i(100,100), 200)){
+        if(GameMap.get().init(new Vector2i(10,10), new Vector2i(100,100), 200,50)){
             
             for (List<simplejavagame.Object.Object> list : GameMap.get().getMap()) {
                 for (simplejavagame.Object.Object obj : list) {

@@ -66,6 +66,7 @@ public class Home extends Scene {
     
     @Override
     public void mouseClicked(MouseEvent me) {
+        //System.out.println("me: "+me.getPoint().toString());
         this.actions.add(Actions.mouseClicked(me.getPoint()));
     }
     @Override

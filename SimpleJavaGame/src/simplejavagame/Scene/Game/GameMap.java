@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Consumer;
 import simplejavagame.Game.tools.Figures;
+import simplejavagame.Game.tools.Vector;
 import simplejavagame.Game.tools.Vector2i;
 import simplejavagame.Game.tools.Vector4i;
 
@@ -13,10 +14,12 @@ public class GameMap {
     public static  final int Plain         = 0 ;
     public static  final int hill          = 1 ;
     public static  final int Mountain      = 2 ;
+    public static  final int Village       = 3 ;
     
     public static final Vector4i Plain_Color     = new Vector4i( 21  , 173 , 41 , 255 );
     public static final Vector4i hill_Color      = new Vector4i( 197 , 202 , 25 , 255 );
     public static final Vector4i Mountain_Color  = new Vector4i( 181 , 116 , 11 , 255 );
+    public static final Vector4i Village_Color   = new Vector4i( 200 , 191 , 231, 255 );
     private static GameMap map = null;
     
     public static GameMap get(){
@@ -29,21 +32,20 @@ public class GameMap {
     private Vector2i unitDimension = null;
     private Vector2i MapDimension  = null;
     private int NumberOfMountains = 0;
-    
+    private int NumberOfVillage = 0;
     private List<List<simplejavagame.Object.Object>> MapOfGameObjects;
     private List<List<Integer>> Int_map;
     
-    public boolean init(Vector2i unitDimension, Vector2i MapDimension, int NumberOfMountains){
-        if( MapDimension.W()*MapDimension.H() > Mountain_size * NumberOfMountains ){
+    public boolean init(Vector2i unitDimension, Vector2i MapDimension, int NumberOfMountains, int _NumberOfVillage){
+        if( MapDimension.W()*MapDimension.H() > (Mountain_size * NumberOfMountains)+NumberOfVillage ){
             this.unitDimension = unitDimension ; // size of a single square in pixels
             this.MapDimension  = MapDimension  ; // size of the map in number of squares
             this.NumberOfMountains = NumberOfMountains;
+            this.NumberOfVillage = _NumberOfVillage;
             this.GeneratePlainMap();
             this.GenerateMountains();
+            this.GenerateVillages();
             this.GenarateGameObjectMap();
-            /*
-            this.GenerateMapConexion();
-            */
             return true;
         }else{
             GameMap.map = null;
@@ -132,6 +134,43 @@ public class GameMap {
         System.out.println("GenerateMountains");
         return true;
     }
+    private boolean GenerateVillages(){
+        ArrayList<Vector2i> positions = new ArrayList<>();
+        //  move in the int map looking for plain positions where to put a village
+        for (int y = 0; y < this.Int_map.size(); y++) {
+            List<Integer> line = this.Int_map.get(y);
+            for (int x = 0; x < line.size(); x++) {
+                if(line.get(x) == Plain){
+                    positions.add(new Vector2i(x,y));
+                }
+            }
+        }
+        if(NumberOfVillage <= positions.size()){
+            Random r = new Random();
+            int low1  = 0;
+            int high1 = positions.size();
+            ArrayList<Integer> selected = new ArrayList<>();
+            int i = 0 , timeout= 0;
+            while( i < this.NumberOfVillage) {
+                int pos = r.nextInt(high1-low1);
+                if(pos < positions.size()){
+                    if(!selected.contains(pos)){
+                        selected.add(pos);
+                        i++;
+                    }
+                }
+                timeout++;
+                if( timeout >= this.NumberOfVillage * 100 ){
+                    break;
+                }
+            }
+            for (Integer pos : selected) {
+                this.Int_map.get(positions.get(pos).Y()).set(positions.get(pos).X(), Village);
+            }
+            return true;
+        }
+        return false;
+    }
     private Vector2i getRandomMountainPosition(int xi,int xf, int yi,int yf){
         Random r1 = new Random();
         Random r2 = new Random();
@@ -167,7 +206,7 @@ public class GameMap {
     }
     private void GenarateGameObjectMap(){
         this.MapOfGameObjects = new ArrayList<>();
-        int Plain_count = 0 , hill_count = 0 , Mountain_count = 0;
+        int Plain_count = 0 , hill_count = 0 , Mountain_count = 0 , village_count = 0;
         for (int y = 0; y < Int_map.size(); y++) {
             List<Integer> list = Int_map.get(y);
             List<simplejavagame.Object.Object> line = new ArrayList<>();
@@ -190,6 +229,13 @@ public class GameMap {
                         name = "hill";
                         hill_count += 1;
                         index = hill_count;
+                        break;
+                    case Village:
+                        level = Village;
+                        color = Village_Color;
+                        name = "Village";
+                        village_count +=1;
+                        index = village_count;
                         break;
                     case Mountain:
                         level = Mountain;
@@ -234,6 +280,8 @@ public class GameMap {
                         return hill;
                     }else if(obj.getName().indexOf("Mountain") != -1){
                         return Mountain;
+                    }else if(obj.getName().indexOf("Village") != -1){
+                        return Village;
                     }
                 }
             }
@@ -244,10 +292,10 @@ public class GameMap {
     private static final Vector4i Unit_Color          = new Vector4i( 4  , 47 , 102 , 255 ) ;
     private static final Vector4i Unit_Selected_Color = new Vector4i( 25 , 94 , 131 , 255 ) ;
     public  static final Vector4i Unit_Execut_Color   = new Vector4i( 25 , 94 , 255 , 255 ) ;
-    private static final int Unit               = 3 ;
-    public  static final int Sleep_Mode         = 4 ;
-    public  static final int Waiting_for_Orders = 5 ;
-    public  static final int Executing_Orders   = 6 ;
+    private static final int Unit               = 4 ;
+    public  static final int Sleep_Mode         = 5 ;
+    public  static final int Waiting_for_Orders = 6 ;
+    public  static final int Executing_Orders   = 7 ;
     
     public  static List<simplejavagame.Object.Object> units = null;
     public  static void GenerateRandomUnits(int NumberOfRandomUnits,Vector2i unitPixelSize, List<List<Integer>> Int_map , int Terrain_Int){
@@ -430,10 +478,13 @@ public class GameMap {
         public void update(){
             int terrain = getTypeofTerrain(this.Local.getPosition());
             if(CanUnitMove(terrain)){
-                move();
-                
-                this.TargetLines.get(this.actualTarget).setPosition(getLocalLinePosition()); // update line
-            }
+                int c = this.Local.getPosition().compare(this.Targets.get(this.actualTarget).getPosition());
+                move(c);
+                //this.TargetLines.get(this.actualTarget).setPosition(getLocalLinePosition()); // update line
+                //System.out.println(this.Local.getName()+" move");
+            }/*else{
+                //System.out.println(this.Local.getName()+" do not move");
+            }*/
         }
         public simplejavagame.Object.Object getTargetLine(){
             return this.TargetLines.get(this.actualTarget);
@@ -470,12 +521,20 @@ public class GameMap {
         public boolean isDone(){
             return this.isDone;
         }
-        public void moveRight(){ this.Local.setPosition(this.Local.getPosition().X()+this.Targets.get(this.actualTarget).getDimension().W(),this.Local.getPosition().Y());}
-        public void moveLeft (){ this.Local.setPosition(this.Local.getPosition().X()-this.Targets.get(this.actualTarget).getDimension().W(),this.Local.getPosition().Y());}
-        public void moveUp   (){ this.Local.setPosition(this.Local.getPosition().X(),this.Local.getPosition().Y()-this.Targets.get(this.actualTarget).getDimension().H());}
-        public void moveDown (){ this.Local.setPosition(this.Local.getPosition().X(),this.Local.getPosition().Y()+this.Targets.get(this.actualTarget).getDimension().H());}
+        public void moveRight(){ this.Local.setPosition(this.Local.getPosition().X()+this.Targets.get(this.actualTarget).getDimension().W(),this.Local.getPosition().Y());
+            //System.out.println("moveRight");
+        }
+        public void moveLeft (){ this.Local.setPosition(this.Local.getPosition().X()-this.Targets.get(this.actualTarget).getDimension().W(),this.Local.getPosition().Y());
+            //System.out.println("moveLeft");
+        }
+        public void moveUp   (){ this.Local.setPosition(this.Local.getPosition().X(),this.Local.getPosition().Y()-this.Targets.get(this.actualTarget).getDimension().H());
+            //System.out.println("moveUp");
+        }
+        public void moveDown (){ this.Local.setPosition(this.Local.getPosition().X(),this.Local.getPosition().Y()+this.Targets.get(this.actualTarget).getDimension().H());
+            //System.out.println("moveDown");
+        }
         public boolean CanUnitMove(int terrain){
-            if(terrain == Plain){
+            if(terrain == Plain || terrain == Village){
                 //I can move
                 return true;
             }else if(terrain == hill){
@@ -507,19 +566,20 @@ public class GameMap {
             }
             return false;
         }
-        public void move(){
-            int c = this.Local.getPosition().compare(this.Targets.get(this.actualTarget).getPosition()); // comparation of two points
-            Random r = new Random();
-            int low1  = 0;
-            int high1 = 2;
+        public void move(int c){
             switch(c){              
                 case 1:
                     moveRight();
                     break;                   
                 case 2:
-                    if(r.nextInt(high1-low1) == 1){
+                    Vector v2 = new Vector(this.TargetLines.get(this.actualTarget).getPosition(),this.TargetLines.get(this.actualTarget).getTarget());
+                    //System.out.println("v2 x: "+this.Local.getMiddlePosition().X()+ " , y1: "+v2.getY(this.Local.getMiddlePosition().X())+" , y0: "+(float)this.Local.getMiddlePosition().Y());
+                    if(v2.getY(this.Local.getMiddlePosition().X()) > (float)this.Local.getMiddlePosition().Y() ){
                         moveRight();
+                    }else if(v2.getY(this.Local.getMiddlePosition().X()) < (float)this.Local.getMiddlePosition().Y() ){
+                        moveUp();
                     }else{
+                        moveRight();
                         moveUp();
                     }
                     break;                   
@@ -527,19 +587,29 @@ public class GameMap {
                     moveUp();
                     break;                   
                 case 4: 
-                    if(r.nextInt(high1-low1) == 1){
+                    Vector v4 = new Vector(this.TargetLines.get(this.actualTarget).getPosition(),this.TargetLines.get(this.actualTarget).getTarget());
+                    //System.out.println("v4 x: "+this.Local.getMiddlePosition().X()+ " , y1: "+v4.getY(this.Local.getMiddlePosition().X())+" , y0: "+(float)this.Local.getMiddlePosition().Y());
+                    if(v4.getY(this.Local.getMiddlePosition().X()) > (float)this.Local.getMiddlePosition().Y() ){
                         moveLeft();
+                    }else if(v4.getY(this.Local.getMiddlePosition().X()) < (float)this.Local.getMiddlePosition().Y() ){
+                        moveUp();
                     }else{
+                        moveLeft();
                         moveUp();
                     }
-                    break;                   
+                    break;
                 case 5: 
                     moveLeft();
-                    break;                   
+                    break;     
                 case 6: 
-                    if(r.nextInt(high1-low1) == 1){
+                    Vector v6 = new Vector(this.TargetLines.get(this.actualTarget).getPosition(),this.TargetLines.get(this.actualTarget).getTarget());
+                    //System.out.println("v6 x: "+this.Local.getMiddlePosition().X()+ " , y1: "+v6.getY(this.Local.getMiddlePosition().X())+" , y0: "+(float)this.Local.getMiddlePosition().Y());
+                    if(v6.getY(this.Local.getMiddlePosition().X()) > (float)this.Local.getMiddlePosition().Y()){
+                        moveDown();
+                    }else if(v6.getY(this.Local.getMiddlePosition().X()) < (float)this.Local.getMiddlePosition().Y() ){
                         moveLeft();
                     }else{
+                        moveLeft();
                         moveDown();
                     }
                     break;                   
@@ -547,15 +617,21 @@ public class GameMap {
                     moveDown();
                     break;                   
                 case 8: 
-                    if(r.nextInt(high1-low1) == 1){
+                    Vector v8 = new Vector(this.TargetLines.get(this.actualTarget).getPosition(),this.TargetLines.get(this.actualTarget).getTarget());
+                    //System.out.println("v8 x: "+this.Local.getMiddlePosition().X()+ " , y1: "+v8.getY(this.Local.getMiddlePosition().X())+" , y0: "+(float)this.Local.getMiddlePosition().Y());
+                    if(v8.getY(this.Local.getMiddlePosition().X()) > this.Local.getMiddlePosition().Y() ){
+                        moveDown();
+                    }else if(v8.getY(this.Local.getMiddlePosition().X()) < this.Local.getMiddlePosition().Y() ){
                         moveRight();
                     }else{
+                        moveRight();
                         moveDown();
                     }
-                    break;                   
+                    break;      
+                default:
+                    System.out.println("direcction: "+ c);
             }
-            
-            System.out.println("this.actualTarget: "+this.actualTarget);
+            //System.out.println("this.actualTarget: "+this.actualTarget);
             if((this.Local.getPosition().equals(this.Targets.get(this.actualTarget).getPosition()))){
                 // execute Done Event
                 if(this.actualTarget + 1 < this.Targets.size()){

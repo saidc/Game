@@ -55,7 +55,6 @@ public class Figures {
         return new ArrayList<simplejavagame.Object.Object>();
     }
     
-    
     private static ArrayList<Node> getChildNodes(Node n){
         ArrayList<Node> nodes = new ArrayList<>();
         if(n.hasChildNodes()){
@@ -330,5 +329,4 @@ public class Figures {
         }
         return new Font(family, 1, size);
     }
-    
 }
